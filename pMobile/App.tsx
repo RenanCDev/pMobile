@@ -1,14 +1,15 @@
-import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
-import { AuthProvider } from './src/context/AuthContext';
+import { PersonalProvider } from './src/context/PersonalContext';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AuthProvider>
+    <PersonalProvider>
+      <NavigationContainer>
         <StackNavigator />
-      </AuthProvider>
-    </NavigationContainer>
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </PersonalProvider>
   );
 }
