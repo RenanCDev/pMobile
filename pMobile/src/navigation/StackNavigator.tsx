@@ -26,7 +26,7 @@ export default function StackNavigator() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ title: 'Home Screen' }}
+        options={{ title: 'Jose, vai tomar no cu' }}
       />
     </Stack.Navigator>
   );
