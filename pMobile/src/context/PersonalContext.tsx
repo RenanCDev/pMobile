@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-// Definição do tipo Personal
 export type Personal = {
   id: string;
   nome: string;
@@ -9,14 +8,14 @@ export type Personal = {
   email: string;
   telefone: string;
   ativo: boolean;
-  sessoesAssociadas: number; // para simular sessões ativas
+  sessoesAssociadas: number;
 };
 
 type PersonalContextType = {
   personals: Personal[];
   addPersonal: (personal: Omit<Personal, 'id'>) => void;
   editPersonal: (id: string, personal: Omit<Personal, 'id'>) => void;
-  deletePersonal: (id: string) => void; // exclusão lógica
+  deletePersonal: (id: string) => void;
 };
 
 const PersonalContext = createContext<PersonalContextType | undefined>(undefined);

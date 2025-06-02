@@ -16,16 +16,16 @@ export default function HomeScreen() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('CadastroPersonal')}
+        onPress={() => navigation.navigate('Staff')}
       >
-        <Text style={styles.buttonText}>Cadastrar Personal</Text>
+        <Text style={styles.buttonText}>Manter Personal</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, styles.secondaryButton]}
-        onPress={() => navigation.navigate('ListaPersonals')}
+        onPress={() => navigation.navigate('Student')}
       >
-        <Text style={styles.buttonText}>Listar Personals</Text>
+        <Text style={styles.buttonText}>Manter Estudante</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,7 +33,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background,      // lilás bem claro
+    backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -43,18 +43,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 30,
-    color: colors.primaryPurple,             // roxo principal
+    color: colors.primaryPurple,
     textAlign: 'center',
-  },
-  input: {
-    width: '100%',
-    backgroundColor: colors.white,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    marginBottom: 16,
-    fontSize: 16,
-    color: colors.textPurple,                // roxo claro para texto
   },
   button: {
     backgroundColor: colors.primaryPurple,
@@ -66,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   secondaryButton: {
-    backgroundColor: colors.secondaryPurple, // novo tom de lilás ou roxo secundário
+    backgroundColor: colors.secondaryPurple, // ou um tom diferente, se preferir
   },
   buttonText: {
     color: colors.white,
