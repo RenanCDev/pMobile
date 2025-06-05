@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/StackNavigator';
+import { RootStackParamList } from '../navigation/types';
 import CustomButton from '../components/CustomButton';
 import colors from '../constants/colors';
 
@@ -13,17 +13,49 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sistema de Gestão de Personals</Text>
+      <Text style={styles.title}>Vai Começar a Resenhitxa</Text>
 
+      {/* Botões para Personal */}
       <CustomButton
-        title="Manter Personal"
-        onPress={() => navigation.navigate('Staff')}
+        title="Cadastrar Personal"
+        onPress={() => navigation.navigate('RegisterStaff')}
+        type="primary"
+      />
+      <CustomButton
+        title="Editar Personal"
+        onPress={() => navigation.navigate('EditStaff')}
+        type="primary"
+      />
+      <CustomButton
+        title="Excluir Personal"
+        onPress={() => navigation.navigate('DeleteStaff')}
+        type="primary"
+      />
+      <CustomButton
+        title="Visualizar Personal"
+        onPress={() => navigation.navigate('ViewStaff')}
         type="primary"
       />
 
+      {/* Botões para Aluno */}
       <CustomButton
-        title="Manter Estudante"
-        onPress={() => navigation.navigate('Student')}
+        title="Cadastrar Aluno"
+        onPress={() => navigation.navigate('RegisterStudent')}
+        type="secondary"
+      />
+      <CustomButton
+        title="Editar Aluno"
+        onPress={() => navigation.navigate('EditStudent')}
+        type="secondary"
+      />
+      <CustomButton
+        title="Excluir Aluno"
+        onPress={() => navigation.navigate('DeleteStudent')}
+        type="secondary"
+      />
+      <CustomButton
+        title="Visualizar Aluno"
+        onPress={() => navigation.navigate('ViewStudent')}
         type="secondary"
       />
     </View>
