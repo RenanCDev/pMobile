@@ -462,20 +462,25 @@ export  default function RegisterPersonal() {
 
         <Controller
           control={control}
-          name="agencia"
+          name="horarios_disponiveis"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Agência</Text>
+              <Text>Horários disponíveis</Text>
               <TextInput
-                style={[styles.input, errors.agencia && styles.errorInput]}
-                onChangeText={onChange}
-                value={value?.toString() ?? ""}
-                placeholder="Agência"
+                style={[
+                  styles.inputMultiline,
+                  errors.horarios_disponiveis && styles.errorInput,
+                ]}
+                onChangeText={(text) => onChange(Number(text))}
+                value={value !== undefined ? String(value) : ""}
                 keyboardType="numeric"
+                placeholder="Ex: 1234"
                 placeholderTextColor="#999"
               />
-              {errors.agencia && (
-                <Text style={styles.errorText}>{errors.agencia.message}</Text>
+              {errors.horarios_disponiveis && (
+                <Text style={styles.errorText}>
+                  {errors.horarios_disponiveis.message}
+                </Text>
               )}
             </>
           )}
