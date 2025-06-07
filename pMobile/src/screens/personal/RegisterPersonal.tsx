@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { z } from "zod";
 import {
   ScrollView,
@@ -18,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { CreatePersonal } from "../../schemas/CreatePersonal";
 import { createPersonal } from "../../api/personal/createPersonal";
 import { getAllPersonal } from "../../api/personal/getPersonal";
+import colors from "../../constants/colors"
 import {
   formatCPF,
   removeCPFFormatting,
@@ -32,6 +34,7 @@ type PersonalFormData = z.infer<typeof CreatePersonal>;
 export  default function RegisterPersonal() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const {
     control,
@@ -49,7 +52,6 @@ export  default function RegisterPersonal() {
 
   function resetForm() {
     reset();
-    // ScrollView automatically scrolls to top if ref provided; for simplicity omitted here
   }
 
   const onSubmit = async (data: PersonalFormData) => {
@@ -104,7 +106,6 @@ export  default function RegisterPersonal() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* NavBar substituído por botão simples */}
       <TouchableOpacity style={styles.loginBtn} onPress={handleLoginClick}>
         <Text style={styles.loginBtnText}>Login</Text>
       </TouchableOpacity>
@@ -113,7 +114,6 @@ export  default function RegisterPersonal() {
         Cadastro de <Text style={styles.titleHighlight}>Personal</Text>
       </Text>
 
-      {/* Dados Pessoais */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>
           Dados <Text style={styles.titleHighlight}>Pessoais</Text>
@@ -237,13 +237,30 @@ export  default function RegisterPersonal() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Data de nascimento</Text>
-              <TextInput
-                style={[styles.input, errors.data_de_nascimento && styles.errorInput]}
-                onChangeText={onChange}
-                value={value}
-                placeholder="YYYY-MM-DD"
-                placeholderTextColor="#999"
-              />
+              <TouchableOpacity
+                style={[styles.input, errors.data_de_nascimento && styles.errorInput, { justifyContent: 'center' }]}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text style={{ color: value ? "#000" : "#999" }}>
+                  {value || "Selecionar data"}
+                </Text>
+              </TouchableOpacity>
+
+              {showDatePicker && (
+                <DateTimePicker
+                  value={value ? new Date(value) : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker(false);
+                    if (selectedDate) {
+                      const formattedDate = selectedDate.toISOString().split("T")[0]; // YYYY-MM-DD
+                      onChange(formattedDate);
+                    }
+                  }}
+                />
+              )}
+
               {errors.data_de_nascimento && (
                 <Text style={styles.errorText}>
                   {errors.data_de_nascimento.message}
@@ -252,6 +269,7 @@ export  default function RegisterPersonal() {
             </>
           )}
         />
+
 
         <Controller
           control={control}
@@ -345,7 +363,6 @@ export  default function RegisterPersonal() {
         />
       </View>
 
-      {/* Dados bancários */}
       <Controller
         control={control}
         name="agencia"
@@ -394,7 +411,6 @@ export  default function RegisterPersonal() {
         )}
       />
 
-      {/* Experiência */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>
           Experiência <Text style={styles.titleHighlight}>Profissional</Text>
@@ -425,7 +441,6 @@ export  default function RegisterPersonal() {
         />
       </View>
 
-      {/* Especialidades */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>
           Especialidades <Text style={styles.titleHighlight}>(separe por vírgula)</Text>
@@ -454,12 +469,10 @@ export  default function RegisterPersonal() {
         />
       </View>
 
-      {/* Horários disponíveis */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>
           Horários <Text style={styles.titleHighlight}>Disponíveis</Text>
         </Text>
-
         <Controller
           control={control}
           name="horarios_disponiveis"
@@ -471,10 +484,16 @@ export  default function RegisterPersonal() {
                   styles.inputMultiline,
                   errors.horarios_disponiveis && styles.errorInput,
                 ]}
-                onChangeText={(text) => onChange(Number(text))}
+                onChangeText={(text) => {
+                  // Remove caracteres que não são números ou vírgula
+                  const onlyNumbersAndCommas = text.replace(/[^0-9,]/g, "");
+                  onChange(onlyNumbersAndCommas);
+                }}
                 value={value !== undefined ? String(value) : ""}
+                multiline
+                numberOfLines={2}
                 keyboardType="numeric"
-                placeholder="Ex: 1234"
+                placeholder="Ex: 123,456,789"
                 placeholderTextColor="#999"
               />
               {errors.horarios_disponiveis && (
@@ -487,7 +506,6 @@ export  default function RegisterPersonal() {
         />
       </View>
 
-      {/* Locais disponíveis */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>
           Locais <Text style={styles.titleHighlight}>Disponíveis</Text>
@@ -552,23 +570,24 @@ export  default function RegisterPersonal() {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: colors.background,
   },
   loginBtn: {
     alignSelf: "flex-end",
     marginBottom: 8,
   },
   loginBtnText: {
-    color: "#1e90ff",
+    color: colors.primaryPurple,
     fontWeight: "bold",
   },
   title: {
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 16,
+    color: colors.textPurple,
   },
   titleHighlight: {
-    color: "#1e90ff",
+    color: colors.primaryPurple,
   },
   section: {
     marginBottom: 24,
@@ -577,31 +596,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 12,
+    color: colors.textPurple,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.secondaryPurple,
     borderRadius: 4,
     padding: 8,
     marginBottom: 8,
-    color: "#000",
+    color: colors.textPurple,
+    backgroundColor: colors.white,
   },
   inputMultiline: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.secondaryPurple,
     borderRadius: 4,
     padding: 8,
     marginBottom: 8,
     textAlignVertical: "top",
-    color: "#000",
+    color: colors.textPurple,
+    backgroundColor: colors.white,
   },
   picker: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.secondaryPurple,
     borderRadius: 4,
     marginBottom: 8,
     height: 50,
-    color: "#000",
+    color: colors.textPurple,
+    backgroundColor: colors.white,
   },
   buttons: {
     flexDirection: "row",
@@ -616,23 +639,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   submitButton: {
-    backgroundColor: "#1e90ff",
+    backgroundColor: colors.primaryPurple,
   },
   getButton: {
-    backgroundColor: "#4caf50",
+    backgroundColor: colors.secondaryPurple,
   },
   resetButton: {
-    backgroundColor: "#f44336",
+    backgroundColor: colors.deleteRed,
   },
   buttonText: {
-    color: "#fff",
+    color: colors.white,
     fontWeight: "bold",
   },
   errorText: {
-    color: "#f44336",
+    color: colors.deleteRed,
     marginBottom: 8,
   },
   errorInput: {
-    borderColor: "#f44336",
+    borderColor: colors.deleteRed,
   },
 });

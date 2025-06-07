@@ -29,11 +29,20 @@ export default function HeaderMenu() {
 
   return (
     <View>
-      <TouchableOpacity onPress={openMenu}>
+      <TouchableOpacity
+        onPress={openMenu}
+        style={{
+          backgroundColor: colors.background,
+          padding: 4,
+          borderRadius: 4,
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
+      >
         <Ionicons
           name="menu"
           size={24}
-          color={colors.white}
+          color={colors.lightPurple}
           style={styles.menuIcon}
         />
       </TouchableOpacity>
@@ -82,6 +91,7 @@ function MenuItem({ label, onPress }: MenuItemProps) {
 const styles = StyleSheet.create({
   menuIcon: {
     marginRight: 10,
+    color: colors.primaryPurple,
   },
   overlay: {
     flex: 1,
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   menu: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.lightPurple,
     borderRadius: 10,
     elevation: 5,
     width: 250,
@@ -105,11 +115,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: colors.primaryPurple,
+    color: colors.secondaryPurple,
     paddingHorizontal: 16,
     paddingVertical: 6,
     borderBottomWidth: 1,
-    borderBottomColor: colors.primaryPurple + '33',
+    borderBottomColor: colors.secondaryPurple + '33',
   },
   item: {
     paddingVertical: 12,
