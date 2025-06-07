@@ -49,16 +49,16 @@ export default function HeaderMenu() {
             <MenuItem label="Home" onPress={() => handleNavigate('Home')} />
 
             <Text style={styles.sectionTitle}>Personals</Text>
-            <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterStaff')} />
-            <MenuItem label="Editar Personal" onPress={() => handleNavigate('EditStaff')} />
-            <MenuItem label="Excluir Personal" onPress={() => handleNavigate('DeleteStaff')} />
-            <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewStaff')} />
+            <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />
+            <MenuItem label="Editar Personal" onPress={() => handleNavigate('EditPersonal')} />
+            <MenuItem label="Excluir Personal" onPress={() => handleNavigate('DeletePersonal')} />
+            <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewPersonal')} />
 
             <Text style={styles.sectionTitle}>Alunos</Text>
-            <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterStudent')} />
-            <MenuItem label="Editar Aluno" onPress={() => handleNavigate('EditStudent')} />
-            <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteStudent')} />
-            <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewStudent')} />
+            <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
+            <MenuItem label="Editar Aluno" onPress={() => handleNavigate('EditAluno')} />
+            <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteAluno')} />
+            <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
           </View>
         </Pressable>
       </Modal>

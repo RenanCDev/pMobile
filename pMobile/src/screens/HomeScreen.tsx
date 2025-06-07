@@ -18,44 +18,44 @@ export default function HomeScreen() {
       {/* Botões para Personal */}
       <CustomButton
         title="Cadastrar Personal"
-        onPress={() => navigation.navigate('RegisterStaff')}
+        onPress={() => navigation.navigate('RegisterPersonal')}
         type="primary"
       />
       <CustomButton
         title="Editar Personal"
-        onPress={() => navigation.navigate('EditStaff')}
+        onPress={() => navigation.navigate('EditPersonal')}
         type="primary"
       />
       <CustomButton
         title="Excluir Personal"
-        onPress={() => navigation.navigate('DeleteStaff')}
+        onPress={() => navigation.navigate('DeletePersonal')}
         type="primary"
       />
       <CustomButton
         title="Visualizar Personal"
-        onPress={() => navigation.navigate('ViewStaff')}
+        onPress={() => navigation.navigate('ViewPersonal')}
         type="primary"
       />
 
       {/* Botões para Aluno */}
       <CustomButton
         title="Cadastrar Aluno"
-        onPress={() => navigation.navigate('RegisterStudent')}
+        onPress={() => navigation.navigate('RegisterAluno')}
         type="secondary"
       />
       <CustomButton
         title="Editar Aluno"
-        onPress={() => navigation.navigate('EditStudent')}
+        onPress={() => navigation.navigate('EditAluno')}
         type="secondary"
       />
       <CustomButton
         title="Excluir Aluno"
-        onPress={() => navigation.navigate('DeleteStudent')}
+        onPress={() => navigation.navigate('DeleteAluno')}
         type="secondary"
       />
       <CustomButton
         title="Visualizar Aluno"
-        onPress={() => navigation.navigate('ViewStudent')}
+        onPress={() => navigation.navigate('ViewAluno')}
         type="secondary"
       />
     </View>

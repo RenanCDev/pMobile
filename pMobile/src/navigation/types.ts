@@ -1,13 +1,13 @@
 export type RootStackParamList = {
   Home: undefined;
-  RegisterStaff: undefined;
-  EditStaff: undefined;
-  DeleteStaff: undefined;
-  ViewStaff: undefined;
-  RegisterStudent: undefined;
-  EditStudent: undefined;
-  DeleteStudent: undefined;
-  ViewStudent: undefined;
-  Staff: undefined;
-  Student: undefined;
+  RegisterPersonal: undefined;
+  EditPersonal: undefined;
+  DeletePersonal: undefined;
+  ViewPersonal: undefined;
+  RegisterAluno: undefined;
+  EditAluno: undefined;
+  DeleteAluno: undefined;
+  ViewAluno: undefined;
+  Personal: undefined;
+  Aluno: undefined;
 };

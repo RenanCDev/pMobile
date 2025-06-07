@@ -2,15 +2,15 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 
-import RegisterStaff from '../screens/staff/RegisterStaff';
-import EditStaff from '../screens/staff/EditStaff';
-import DeleteStaff from '../screens/staff/DeleteStaff';
-import ViewStaff from '../screens/staff/ViewStaff';
+import RegisterPersonal from '../screens/personal/RegisterPersonal';
+import EditPersonal from '../screens/personal/EditPersonal';
+import DeletePersonal from '../screens/personal/DeletePersonal';
+import ViewPersonal from '../screens/personal/ViewPersonal';
 
-import RegisterStudent from '../screens/student/RegisterStudent';
-import EditStudent from '../screens/student/EditStudent';
-import DeleteStudent from '../screens/student/DeleteStudent';
-import ViewStudent from '../screens/student/ViewStudent';
+import RegisterAluno from '../screens/aluno/RegisterAluno';
+import EditAluno from '../screens/aluno/EditAluno';
+import DeleteAluno from '../screens/aluno/DeleteAluno';
+import ViewAluno from '../screens/aluno/ViewAluno';
 
 import HeaderMenu from '../components/HeaderMenu';
 import colors from '../constants/colors';
@@ -37,15 +37,15 @@ export default function StackNavigator() {
     >
       <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
 
-      <Stack.Screen name="RegisterStaff" component={RegisterStaff} options={{ title: 'Cadastrar Personal' }} />
-      <Stack.Screen name="EditStaff" component={EditStaff} options={{ title: 'Editar Personal' }} />
-      <Stack.Screen name="DeleteStaff" component={DeleteStaff} options={{ title: 'Excluir Personal' }} />
-      <Stack.Screen name="ViewStaff" component={ViewStaff} options={{ title: 'Visualizar Personais' }} />
+      <Stack.Screen name="RegisterPersonal" component={RegisterPersonal} options={{ title: 'Cadastrar Personal' }} />
+      <Stack.Screen name="EditPersonal" component={EditPersonal} options={{ title: 'Editar Personal' }} />
+      <Stack.Screen name="DeletePersonal" component={DeletePersonal} options={{ title: 'Excluir Personal' }} />
+      <Stack.Screen name="ViewPersonal" component={ViewPersonal} options={{ title: 'Visualizar Personais' }} />
 
-      <Stack.Screen name="RegisterStudent" component={RegisterStudent} options={{ title: 'Cadastrar Aluno' }} />
-      <Stack.Screen name="EditStudent" component={EditStudent} options={{ title: 'Editar Aluno' }} />
-      <Stack.Screen name="DeleteStudent" component={DeleteStudent} options={{ title: 'Excluir Aluno' }} />
-      <Stack.Screen name="ViewStudent" component={ViewStudent} options={{ title: 'Visualizar Alunos' }} />
+      <Stack.Screen name="RegisterAluno" component={RegisterAluno} options={{ title: 'Cadastrar Aluno' }} />
+      <Stack.Screen name="EditAluno" component={EditAluno} options={{ title: 'Editar Aluno' }} />
+      <Stack.Screen name="DeleteAluno" component={DeleteAluno} options={{ title: 'Excluir Aluno' }} />
+      <Stack.Screen name="ViewAluno" component={ViewAluno} options={{ title: 'Visualizar Alunos' }} />
     </Stack.Navigator>
   );
 }
