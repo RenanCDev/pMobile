@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { z } from "zod";
 import {
   ScrollView,
@@ -17,9 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
 
 import { CreatePersonal } from "../../schemas/CreatePersonal";
-import { createPersonal } from "../../api/personal/createPersonal";
-import { getAllPersonal } from "../../api/personal/getPersonal";
-import colors from "../../constants/colors"
+import colors from "../../constants/colors";
 import {
   formatCPF,
   removeCPFFormatting,
@@ -31,7 +31,7 @@ import {
 
 type PersonalFormData = z.infer<typeof CreatePersonal>;
 
-export  default function RegisterPersonal() {
+export default function RegisterPersonal() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -39,8 +39,8 @@ export  default function RegisterPersonal() {
   const {
     control,
     handleSubmit,
-    reset,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<PersonalFormData>({
     resolver: zodResolver(CreatePersonal),
@@ -56,6 +56,7 @@ export  default function RegisterPersonal() {
 
   const onSubmit = async (data: PersonalFormData) => {
     const cleanData = {
+      id: Date.now(), // usar como ID simples
       dados_bancarios: {
         numero_conta: data.numero_conta,
         agencia: data.agencia,
@@ -79,12 +80,15 @@ export  default function RegisterPersonal() {
 
     try {
       setIsLoading(true);
-      await createPersonal(cleanData);
-      Alert.alert("Sucesso", "Personal cadastrado com sucesso!");
+      const existing = await AsyncStorage.getItem("@personais");
+      const parsed = existing ? JSON.parse(existing) : [];
+      parsed.push(cleanData);
+      await AsyncStorage.setItem("@personais", JSON.stringify(parsed));
+      Alert.alert("Sucesso", "Personal cadastrado localmente!");
       reset();
     } catch (err) {
       console.error(err);
-      Alert.alert("Erro", "Falha ao cadastrar personal.");
+      Alert.alert("Erro", "Falha ao salvar localmente.");
     } finally {
       setIsLoading(false);
     }
@@ -93,12 +97,13 @@ export  default function RegisterPersonal() {
   async function getPersonais() {
     try {
       setIsLoading(true);
-      const dados = await getAllPersonal();
-      Alert.alert("Sucesso", "Personais carregados! Veja o console.");
-      console.log("Personais: ", dados);
+      const dados = await AsyncStorage.getItem("@personais");
+      const parsed = dados ? JSON.parse(dados) : [];
+      Alert.alert("Sucesso", "Dados carregados. Veja no console.");
+      console.log("Personais:", parsed);
     } catch (err) {
       console.error(err);
-      Alert.alert("Erro", "Falha ao carregar Personais.");
+      Alert.alert("Erro", "Falha ao carregar dados locais.");
     } finally {
       setIsLoading(false);
     }
@@ -237,28 +242,55 @@ export  default function RegisterPersonal() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Data de nascimento</Text>
-              <TouchableOpacity
-                style={[styles.input, errors.data_de_nascimento && styles.errorInput, { justifyContent: 'center' }]}
-                onPress={() => setShowDatePicker(true)}
-              >
-                <Text style={{ color: value ? "#000" : "#999" }}>
-                  {value || "Selecionar data"}
-                </Text>
-              </TouchableOpacity>
 
-              {showDatePicker && (
-                <DateTimePicker
-                  value={value ? new Date(value) : new Date()}
-                  mode="date"
-                  display="default"
-                  onChange={(event, selectedDate) => {
-                    setShowDatePicker(false);
-                    if (selectedDate) {
-                      const formattedDate = selectedDate.toISOString().split("T")[0]; // YYYY-MM-DD
-                      onChange(formattedDate);
-                    }
+              {Platform.OS === "web" ? (
+                <input
+                  type="date"
+                  value={value || ""}
+                  onChange={(e) => onChange(e.target.value)}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: errors.data_de_nascimento ? "red" : colors.secondaryPurple,
+                    borderRadius: 4,
+                    marginBottom: 8,
+                    height: 50,
+                    color: colors.textPurple,
+                    backgroundColor: colors.white,
+                    fontSize: 16,
+                    width: "100%",
+                    outlineStyle: "none",
                   }}
                 />
+              ) : (
+                <>
+                  <TouchableOpacity
+                    style={[
+                      styles.picker,
+                      errors.data_de_nascimento && styles.errorInput,
+                      { justifyContent: "center", paddingHorizontal: 10 },
+                    ]}
+                    onPress={() => setShowDatePicker(true)}
+                  >
+                    <Text style={{ color: value ? colors.textPurple : "#999" }}>
+                      {value || "Selecionar data"}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {showDatePicker && (
+                    <DateTimePicker
+                      value={value ? new Date(value) : new Date()}
+                      mode="date"
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowDatePicker(false);
+                        if (selectedDate) {
+                          const formattedDate = selectedDate.toISOString().split("T")[0];
+                          onChange(formattedDate);
+                        }
+                      }}
+                    />
+                  )}
+                </>
               )}
 
               {errors.data_de_nascimento && (
@@ -269,7 +301,6 @@ export  default function RegisterPersonal() {
             </>
           )}
         />
-
 
         <Controller
           control={control}
