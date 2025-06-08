@@ -56,7 +56,7 @@ export default function RegisterPersonal() {
 
   const onSubmit = async (data: PersonalFormData) => {
     const cleanData = {
-      id: Date.now(), // usar como ID simples
+      id: Date.now(),
       dados_bancarios: {
         numero_conta: data.numero_conta,
         agencia: data.agencia,
@@ -403,7 +403,7 @@ export default function RegisterPersonal() {
             <TextInput
               style={[styles.input, errors.agencia && styles.errorInput]}
               onChangeText={(text) => {
-                const numericValue = text.replace(/\D/g, ""); // remove tudo que não for número
+                const numericValue = text.replace(/\D/g, "");
                 onChange(numericValue ? Number(numericValue) : undefined);
               }}
               value={value !== undefined ? String(value) : ""}
@@ -516,7 +516,7 @@ export default function RegisterPersonal() {
                   errors.horarios_disponiveis && styles.errorInput,
                 ]}
                 onChangeText={(text) => {
-                  // Remove caracteres que não são números ou vírgula
+                
                   const onlyNumbersAndCommas = text.replace(/[^0-9,]/g, "");
                   onChange(onlyNumbersAndCommas);
                 }}

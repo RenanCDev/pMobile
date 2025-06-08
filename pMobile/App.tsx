@@ -1,15 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
-import { PersonalProvider } from './src/context/PersonalContext';
+import { DataProvider } from './src/context/DataContext';
 
 export default function App() {
   return (
-    <PersonalProvider>
+    <DataProvider>
       <NavigationContainer>
         <StackNavigator />
         <StatusBar style="auto" />
       </NavigationContainer>
-    </PersonalProvider>
+    </DataProvider>
   );
 }

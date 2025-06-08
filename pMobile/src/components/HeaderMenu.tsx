@@ -29,27 +29,29 @@ export default function HeaderMenu() {
 
       <Modal transparent animationType="fade" visible={isVisible} onRequestClose={closeMenu}>
         <Overlay onPress={closeMenu}>
-          <MenuContainer>
-            <MenuItem label="Home" onPress={() => handleNavigate('Home')} />
+          <CenteredView>
+            <MenuContainer>
+              <MenuItem label="Home" onPress={() => handleNavigate('Home')} isHome />
 
-            <SectionTitle>Personals</SectionTitle>
-            <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />
-            <MenuItem label="Editar Personal" onPress={() => handleNavigate('EditPersonal')} />
-            <MenuItem label="Excluir Personal" onPress={() => handleNavigate('DeletePersonal')} />
-            <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewPersonal')} />
+              <SectionTitle>Personals</SectionTitle>
+              <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />
+              <MenuItem label="Editar Personal" onPress={() => handleNavigate('EditPersonal')} />
+              <MenuItem label="Excluir Personal" onPress={() => handleNavigate('DeletePersonal')} />
+              <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewPersonal')} />
 
-            <SectionTitle>Alunos</SectionTitle>
-            <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
-            <MenuItem label="Editar Aluno" onPress={() => handleNavigate('EditAluno')} />
-            <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteAluno')} />
-            <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
+              <SectionTitle>Alunos</SectionTitle>
+              <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
+              <MenuItem label="Editar Aluno" onPress={() => handleNavigate('EditAluno')} />
+              <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteAluno')} />
+              <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
 
-            <SectionTitle>Serviços</SectionTitle>
-            <MenuItem label="Cadastrar Serviço" onPress={() => handleNavigate('RegisterServico')} />
-            <MenuItem label="Editar Serviço" onPress={() => handleNavigate('EditServico')} />
-            <MenuItem label="Excluir Serviço" onPress={() => handleNavigate('DeleteServico')} />
-            <MenuItem label="Visualizar Serviço" onPress={() => handleNavigate('ViewServico')} />
-          </MenuContainer>
+              <SectionTitle>Serviços</SectionTitle>
+              <MenuItem label="Cadastrar Serviço" onPress={() => handleNavigate('RegisterServico')} />
+              <MenuItem label="Editar Serviço" onPress={() => handleNavigate('EditServico')} />
+              <MenuItem label="Excluir Serviço" onPress={() => handleNavigate('DeleteServico')} />
+              <MenuItem label="Visualizar Serviço" onPress={() => handleNavigate('ViewServico')} />
+            </MenuContainer>
+          </CenteredView>
         </Overlay>
       </Modal>
     </Container>
@@ -59,17 +61,17 @@ export default function HeaderMenu() {
 type MenuItemProps = {
   label: string;
   onPress: () => void;
+  isHome?: boolean;
 };
 
-function MenuItem({ label, onPress }: MenuItemProps) {
+function MenuItem({ label, onPress, isHome = false }: MenuItemProps) {
   return (
-    <MenuItemButton onPress={onPress}>
-      <MenuItemText>{label}</MenuItemText>
+    <MenuItemButton onPress={onPress} isHome={isHome}>
+      <MenuItemText isHome={isHome}>{label}</MenuItemText>
     </MenuItemButton>
   );
 }
 
-// Styled Components
 const Container = styled.View``;
 
 const MenuButton = styled.TouchableOpacity`
@@ -83,40 +85,56 @@ const MenuButton = styled.TouchableOpacity`
 const Overlay = styled.Pressable`
   flex: 1;
   background-color: rgba(0, 0, 0, 0.2);
-  justify-content: flex-start;
-  align-items: flex-end;
-  padding-top: 50px;
-  padding-right: 10px;
+  justify-content: center;
+  align-items: center;
 `;
 
-const MenuContainer = styled.View({
-  backgroundColor: colors.white,
-  borderRadius: 10,
-  width: 250,
-  paddingTop: 10,
-  paddingBottom: 10,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.3,
-  shadowRadius: 5,
-  elevation: 5,
-});
+const CenteredView = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+const MenuContainer = styled.View`
+  background-color: ${colors.background};
+  border-radius: 12px;
+  width: 280px;
+  padding: 12px 0;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  ${() => ({
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  })}
+`;
+
 
 const SectionTitle = styled.Text`
   font-size: 14px;
   font-weight: bold;
-  color: ${colors.secondary.DEFAULT};
-  padding: 6px 16px;
+  color: ${colors.text.primary};
+  padding: 6px 0;
+  margin-top: 6px;
   border-bottom-width: 1px;
   border-bottom-color: ${colors.secondary.DEFAULT}33;
+  width: 80%;
+  text-align: center;
 `;
 
-const MenuItemButton = styled.TouchableOpacity`
-  padding: 12px 16px;
+const MenuItemButton = styled.TouchableOpacity<{ isHome?: boolean }>`
+  padding: 10px 16px;
+  margin: 4px 0;
+  width: 80%;
+  border-radius: 8px;
+  background-color: 'transparent';
+  align-items: center;
 `;
 
-const MenuItemText = styled.Text`
+const MenuItemText = styled.Text<{ isHome?: boolean }>`
   font-size: 16px;
-  color: ${colors.text.primary};
-  font-weight: 600;
+  color: ${({ isHome }) => (isHome ? '#000' : colors.text.muted)};
+  font-weight: ${({ isHome }) => (isHome ? 'bold' : '600')};
+  text-align: center;
 `;

@@ -6,6 +6,7 @@ import {
   GestureResponderEvent,
   ViewStyle,
   TextStyle,
+  Platform,
 } from 'react-native';
 
 type ButtonType = 'primary' | 'secondary' | 'outline' | 'danger';
@@ -15,8 +16,8 @@ interface CustomButtonProps {
   onPress: (event: GestureResponderEvent) => void;
   type?: ButtonType;
   disabled?: boolean;
-  backgroundColor?: string; // nova prop opcional
-  textColor?: string;       // nova prop opcional
+  backgroundColor?: string;
+  textColor?: string;
 }
 
 export default function CustomButton({
@@ -98,11 +99,18 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    elevation: 3, // Sombra no Android
+
+    ...(Platform.OS === 'ios' && {
+      shadowColor: '#000',
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      shadowOffset: { width: 0, height: 2 },
+    }),
+
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    }),
   },
   disabled: {
     opacity: 0.5,

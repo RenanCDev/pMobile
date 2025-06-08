@@ -388,7 +388,6 @@ export default function RegisterAluno() {
                 style={[styles.input, errors.altura && styles.errorInput]}
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
-                  // Permite ponto e vírgula como separador decimal
                   const normalizedText = text.replace(",", ".");
                   const numericValue = parseFloat(normalizedText);
 
@@ -399,7 +398,7 @@ export default function RegisterAluno() {
                   }
                 }}
                 placeholder="1.70"
-                keyboardType="default" // ou "numbers-and-punctuation"
+                keyboardType="default"
                 placeholderTextColor="#999"
               />
               {errors.altura && (
@@ -419,12 +418,10 @@ export default function RegisterAluno() {
                 style={[styles.input, errors.peso && styles.errorInput]}
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
-                  // aceita vírgula como separador decimal e troca para ponto
                   const numericValue = parseFloat(text.replace(",", "."));
                   if (!isNaN(numericValue)) {
                     onChange(numericValue);
                   } else {
-                    // se for vazio ou inválido, você pode passar undefined ou zero
                     onChange(undefined);
                   }
                 }}
@@ -467,15 +464,12 @@ export default function RegisterAluno() {
               <Text>IMC</Text>
               <TextInput
                 style={[styles.input, errors.imc && styles.errorInput]}
-                // Converte number para string, ou string vazia se undefined/null
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
-                  // Converte string para número (considera vírgula como decimal)
                   const numericValue = parseFloat(text.replace(",", "."));
                   if (!isNaN(numericValue)) {
                     onChange(numericValue);
                   } else {
-                    onChange(undefined); // Limpa campo se não for número válido
                   }
                 }}
                 placeholder="22.5"
