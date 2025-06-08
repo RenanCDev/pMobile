@@ -8,7 +8,7 @@ export default StyleSheet.create({
     backgroundColor: colors.background, // lilás claro
   },
   card: {
-    backgroundColor: colors.primaryPurple, // roxo principal
+    backgroundColor: colors.primary.DEFAULT, // roxo principal
     padding: 16,
     marginBottom: 12,
     borderRadius: 12,
@@ -34,12 +34,12 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   button: {
-    backgroundColor: colors.secondaryPurple, // lilás suave
+    backgroundColor: colors.background, // lilás suave
     padding: 8,
     borderRadius: 8,
   },
   deleteButton: {
-    backgroundColor: colors.deleteRed, // vermelho para delete
+    backgroundColor: colors.secondary.dark, // vermelho para delete
   },
   buttonText: {
     color: colors.white,
@@ -49,6 +49,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginTop: 40,
     fontSize: 16,
-    color: colors.textPurple, // roxo escuro para texto
+    color: colors.primary.DEFAULT, // roxo escuro para texto
   },
 });

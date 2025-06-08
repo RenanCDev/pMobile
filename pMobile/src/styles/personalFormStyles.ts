@@ -12,24 +12,24 @@ export default StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: colors.primaryPurple, // roxo principal
+    color: colors.primary.DEFAULT, // roxo principal
     marginBottom: 20,
     textAlign: 'center',
   },
   input: {
     width: '100%',
     height: 50,
-    borderColor: colors.primaryPurple,
+    borderColor: colors.primary.DEFAULT,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
     backgroundColor: colors.white,
     fontSize: 16,
-    color: colors.textPurple,
+    color: colors.primary.DEFAULT,
   },
   button: {
-    backgroundColor: colors.primaryPurple,
+    backgroundColor: colors.primary.DEFAULT,
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,

@@ -58,6 +58,28 @@ export default function HomeScreen() {
         onPress={() => navigation.navigate('ViewAluno')}
         type="secondary"
       />
+
+      {/* Botões para Serviço */}
+      <CustomButton
+        title="Cadastrar Serviço"
+        onPress={() => navigation.navigate('RegisterServico')}
+        type="primary"
+      />
+      <CustomButton
+        title="Editar Serviço"
+        onPress={() => navigation.navigate('EditServico')}
+        type="primary"
+      />
+      <CustomButton
+        title="Excluir Serviço"
+        onPress={() => navigation.navigate('DeleteServico')}
+        type="primary"
+      />
+      <CustomButton
+        title="Visualizar Serviço"
+        onPress={() => navigation.navigate('ViewServico')}
+        type="primary"
+      />
     </View>
   );
 }
@@ -74,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 30,
-    color: colors.primaryPurple,
+    color: colors.primary.DEFAULT,
     textAlign: 'center',
   },
 });

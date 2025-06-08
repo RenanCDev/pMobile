@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Modal,
-  Pressable,
-} from 'react-native';
+import { Modal, Pressable } from 'react-native';
+import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -28,50 +22,37 @@ export default function HeaderMenu() {
   };
 
   return (
-    <View>
-      <TouchableOpacity
-        onPress={openMenu}
-        style={{
-          backgroundColor: colors.background,
-          padding: 4,
-          borderRadius: 4,
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}
-      >
-        <Ionicons
-          name="menu"
-          size={24}
-          color={colors.lightPurple}
-          style={styles.menuIcon}
-        />
-      </TouchableOpacity>
+    <Container>
+      <MenuButton onPress={openMenu}>
+        <Ionicons name="menu" size={24} color={colors.primary.DEFAULT} />
+      </MenuButton>
 
-      <Modal
-        transparent
-        animationType="fade"
-        visible={isVisible}
-        onRequestClose={closeMenu}
-      >
-        <Pressable style={styles.overlay} onPress={closeMenu}>
-          <View style={styles.menu}>
+      <Modal transparent animationType="fade" visible={isVisible} onRequestClose={closeMenu}>
+        <Overlay onPress={closeMenu}>
+          <MenuContainer>
             <MenuItem label="Home" onPress={() => handleNavigate('Home')} />
 
-            <Text style={styles.sectionTitle}>Personals</Text>
+            <SectionTitle>Personals</SectionTitle>
             <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />
             <MenuItem label="Editar Personal" onPress={() => handleNavigate('EditPersonal')} />
             <MenuItem label="Excluir Personal" onPress={() => handleNavigate('DeletePersonal')} />
             <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewPersonal')} />
 
-            <Text style={styles.sectionTitle}>Alunos</Text>
+            <SectionTitle>Alunos</SectionTitle>
             <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
             <MenuItem label="Editar Aluno" onPress={() => handleNavigate('EditAluno')} />
             <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteAluno')} />
             <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
-          </View>
-        </Pressable>
+
+            <SectionTitle>Serviços</SectionTitle>
+            <MenuItem label="Cadastrar Serviço" onPress={() => handleNavigate('RegisterServico')} />
+            <MenuItem label="Editar Serviço" onPress={() => handleNavigate('EditServico')} />
+            <MenuItem label="Excluir Serviço" onPress={() => handleNavigate('DeleteServico')} />
+            <MenuItem label="Visualizar Serviço" onPress={() => handleNavigate('ViewServico')} />
+          </MenuContainer>
+        </Overlay>
       </Modal>
-    </View>
+    </Container>
   );
 }
 
@@ -82,52 +63,60 @@ type MenuItemProps = {
 
 function MenuItem({ label, onPress }: MenuItemProps) {
   return (
-    <TouchableOpacity style={styles.item} onPress={onPress}>
-      <Text style={styles.text}>{label}</Text>
-    </TouchableOpacity>
+    <MenuItemButton onPress={onPress}>
+      <MenuItemText>{label}</MenuItemText>
+    </MenuItemButton>
   );
 }
 
-const styles = StyleSheet.create({
-  menuIcon: {
-    marginRight: 10,
-    color: colors.primaryPurple,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    paddingTop: 50,
-    paddingRight: 10,
-  },
-  menu: {
-    backgroundColor: colors.lightPurple,
-    borderRadius: 10,
-    elevation: 5,
-    width: 250,
-    paddingVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: colors.secondaryPurple,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.secondaryPurple + '33',
-  },
-  item: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: colors.textPurple,
-    fontWeight: '600',
-  },
+// Styled Components
+const Container = styled.View``;
+
+const MenuButton = styled.TouchableOpacity`
+  background-color: ${colors.background};
+  padding: 4px;
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Overlay = styled.Pressable`
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.2);
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding-top: 50px;
+  padding-right: 10px;
+`;
+
+const MenuContainer = styled.View({
+  backgroundColor: colors.white,
+  borderRadius: 10,
+  width: 250,
+  paddingTop: 10,
+  paddingBottom: 10,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.3,
+  shadowRadius: 5,
+  elevation: 5,
 });
+
+const SectionTitle = styled.Text`
+  font-size: 14px;
+  font-weight: bold;
+  color: ${colors.secondary.DEFAULT};
+  padding: 6px 16px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${colors.secondary.DEFAULT}33;
+`;
+
+const MenuItemButton = styled.TouchableOpacity`
+  padding: 12px 16px;
+`;
+
+const MenuItemText = styled.Text`
+  font-size: 16px;
+  color: ${colors.text.primary};
+  font-weight: 600;
+`;

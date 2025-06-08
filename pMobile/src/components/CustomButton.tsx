@@ -15,6 +15,8 @@ interface CustomButtonProps {
   onPress: (event: GestureResponderEvent) => void;
   type?: ButtonType;
   disabled?: boolean;
+  backgroundColor?: string; // nova prop opcional
+  textColor?: string;       // nova prop opcional
 }
 
 export default function CustomButton({
@@ -22,10 +24,16 @@ export default function CustomButton({
   onPress,
   type = 'primary',
   disabled = false,
+  backgroundColor,
+  textColor,
 }: CustomButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   const getTypeStyle = (): ViewStyle => {
+    if (backgroundColor) {
+      return { backgroundColor };
+    }
+
     switch (type) {
       case 'secondary':
         return { backgroundColor: '#6c63ff' };
@@ -48,8 +56,13 @@ export default function CustomButton({
   };
 
   const getTextStyle = (): TextStyle => {
-    let color = '#fff';
-    if (type === 'outline') color = '#6c63ff';
+    let color = textColor;
+
+    if (!color) {
+      if (type === 'outline') color = '#6c63ff';
+      else color = '#fff';
+    }
+
     return {
       color,
       fontSize: 16,

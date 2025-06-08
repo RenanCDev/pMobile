@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 30,
-    color: colors.primaryPurple,            // Roxo principal
+    color: colors.primary.DEFAULT,            // Roxo principal
     textAlign: 'center',
   },
   button: {
-    backgroundColor: colors.primaryPurple,
+    backgroundColor: colors.primary.DEFAULT,
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 12,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   secondaryButton: {
-    backgroundColor: colors.secondaryPurple, // Lilás secundário
+    backgroundColor: colors.secondary.DEFAULT, // Lilás secundário
   },
   buttonText: {
     color: colors.white,

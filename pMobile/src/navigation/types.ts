@@ -8,6 +8,11 @@ export type RootStackParamList = {
   EditAluno: undefined;
   DeleteAluno: undefined;
   ViewAluno: undefined;
+  RegisterServico: undefined;
+  EditServico: undefined;
+  DeleteServico: undefined;
+  ViewServico: undefined;
   Personal: undefined;
   Aluno: undefined;
+  Servico: undefined;
 };

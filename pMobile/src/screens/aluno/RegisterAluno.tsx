@@ -255,11 +255,11 @@ export default function RegisterAluno() {
                   onChange={(e) => onChange(e.target.value)}
                   style={{
                     borderWidth: 1,
-                    borderColor: errors.data_de_nascimento ? "red" : colors.secondaryPurple,
+                    borderColor: errors.data_de_nascimento ? "red" : colors.secondary.DEFAULT,
                     borderRadius: 4,
                     marginBottom: 8,
                     height: 50,
-                    color: colors.textPurple,
+                    color: colors.text.primary,
                     backgroundColor: colors.white,
                     fontSize: 16,
                     width: "100%",
@@ -276,7 +276,7 @@ export default function RegisterAluno() {
                     ]}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <Text style={{ color: value ? colors.textPurple : "#999" }}>
+                    <Text style={{ color: value ? colors.text.primary : "#999" }}>
                       {value || "Selecionar data"}
                     </Text>
                   </TouchableOpacity>
@@ -501,11 +501,11 @@ export default function RegisterAluno() {
                   onChange={(e) => onChange(e.target.value)}
                   style={{
                     borderWidth: 1,
-                    borderColor: errors.data_do_exame ? "red" : colors.secondaryPurple,
+                    borderColor: errors.data_do_exame ? "red" : colors.secondary.DEFAULT,
                     borderRadius: 4,
                     marginBottom: 8,
                     height: 50,
-                    color: colors.textPurple,
+                    color: colors.text.primary,
                     backgroundColor: colors.white,
                     fontSize: 16,
                     width: "100%",
@@ -522,7 +522,7 @@ export default function RegisterAluno() {
                     ]}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <Text style={{ color: value ? colors.textPurple : "#999" }}>
+                    <Text style={{ color: value ? colors.text.primary : "#999" }}>
                       {value || "Selecionar data"}
                     </Text>
                   </TouchableOpacity>
@@ -565,11 +565,11 @@ export default function RegisterAluno() {
                   onChange={(e) => onChange(e.target.value)}
                   style={{
                     borderWidth: 1,
-                    borderColor: errors.hora_do_exame ? "red" : colors.secondaryPurple,
+                    borderColor: errors.hora_do_exame ? "red" : colors.secondary.DEFAULT,
                     borderRadius: 4,
                     marginBottom: 8,
                     height: 50,
-                    color: colors.textPurple,
+                    color: colors.text.primary,
                     backgroundColor: colors.white,
                     fontSize: 16,
                     width: "100%",
@@ -586,7 +586,7 @@ export default function RegisterAluno() {
                     ]}
                     onPress={() => setShowTimePicker(true)}
                   >
-                    <Text style={{ color: value ? colors.textPurple : "#999" }}>
+                    <Text style={{ color: value ? colors.text.primary : "#999" }}>
                       {value || "Selecionar hora"}
                     </Text>
                   </TouchableOpacity>
@@ -801,17 +801,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   loginBtnText: {
-    color: colors.primaryPurple,
+    color: colors.primary.DEFAULT,
     fontWeight: "bold",
   },
   title: {
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 16,
-    color: colors.textPurple,
+    color: colors.text.primary,
   },
   titleHighlight: {
-    color: colors.primaryPurple,
+    color: colors.primary.DEFAULT,
   },
   section: {
     marginBottom: 24,
@@ -820,34 +820,34 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 12,
-    color: colors.textPurple,
+    color: colors.text.primary,
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.secondaryPurple,
+    borderColor: colors.secondary.DEFAULT,
     borderRadius: 4,
     padding: 8,
     marginBottom: 8,
-    color: colors.textPurple,
+    color: colors.text.primary,
     backgroundColor: colors.white,
   },
   inputMultiline: {
     borderWidth: 1,
-    borderColor: colors.secondaryPurple,
+    borderColor: colors.secondary.DEFAULT,
     borderRadius: 4,
     padding: 8,
     marginBottom: 8,
     textAlignVertical: "top",
-    color: colors.textPurple,
+    color: colors.text.primary,
     backgroundColor: colors.white,
   },
   picker: {
     borderWidth: 1,
-    borderColor: colors.secondaryPurple,
+    borderColor: colors.secondary.DEFAULT,
     borderRadius: 4,
     marginBottom: 8,
     height: 50,
-    color: colors.textPurple,
+    color: colors.text.primary,
     backgroundColor: colors.white,
   },
   buttons: {
@@ -863,23 +863,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   submitButton: {
-    backgroundColor: colors.primaryPurple,
+    backgroundColor: colors.primary.DEFAULT,
   },
   getButton: {
-    backgroundColor: colors.secondaryPurple,
+    backgroundColor: colors.secondary.DEFAULT,
   },
   resetButton: {
-    backgroundColor: colors.deleteRed,
+    backgroundColor: colors.dark.background,
   },
   buttonText: {
     color: colors.white,
     fontWeight: "bold",
   },
   errorText: {
-    color: colors.deleteRed,
+    color: colors.dark.background,
     marginBottom: 8,
   },
   errorInput: {
-    borderColor: colors.deleteRed,
+    borderColor: colors.dark.background,
   },
 });
