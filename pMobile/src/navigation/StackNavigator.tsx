@@ -4,6 +4,9 @@ import { View } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 
+import LoginPersonal from '../screens/login/LoginPersonal';
+import LoginAluno from '../screens/login/LoginAluno';
+
 import RegisterPersonal from '../screens/personal/RegisterPersonal';
 import EditPersonal from '../screens/personal/EditPersonal';
 import DeletePersonal from '../screens/personal/DeletePersonal';
@@ -49,6 +52,9 @@ export default function StackNavigator() {
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
+
+      <Stack.Screen name="LoginPersonal" component={LoginPersonal} options={{ title: 'Login Personal' }} />
+      <Stack.Screen name="LoginAluno" component={LoginAluno} options={{ title: 'Login Aluno' }} />
 
       <Stack.Screen name="RegisterPersonal" component={RegisterPersonal} options={{ title: 'Cadastrar Personal' }} />
       <Stack.Screen name="EditPersonal" component={EditPersonal} options={{ title: 'Editar Personal' }} />

@@ -48,7 +48,7 @@ export default function RegisterAluno() {
   });
 
   function handleLoginClick() {
-    navigation.navigate("Login" as never);
+    navigation.navigate("LoginAluno" as never);
   }
 
   function resetForm() {
@@ -81,6 +81,7 @@ export default function RegisterAluno() {
       massa_muscular_esqueletica: data.massa_muscular_esqueletica,
       imc: data.imc,
       taxa_metabolica_basal: data.taxa_metabolica_basal,
+      senha: data.senha
     };
 
     try {
@@ -747,6 +748,37 @@ export default function RegisterAluno() {
               />
               {errors.minerais && <Text style={styles.errorText}>{errors.minerais.message}</Text>}
             </>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="senha"
+          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ marginBottom: 4, color: colors.text.primary }}>Senha</Text>
+              <TextInput
+                style={{
+                  backgroundColor: colors.white,
+                  borderColor: error ? colors.status.error : colors.border,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  padding: 12,
+                  color: colors.text.primary,
+                }}
+                placeholder="Digite sua senha"
+                placeholderTextColor={colors.text.muted}
+                secureTextEntry
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {error && (
+                <Text style={{ color: colors.status.error, marginTop: 4 }}>
+                  {error.message}
+                </Text>
+              )}
+            </View>
           )}
         />
 

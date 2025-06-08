@@ -1,7 +1,9 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { RootStackParamList } from '../navigation/types';
 import CustomButton from '../components/CustomButton';
 import colors from '../constants/colors';
@@ -22,24 +24,36 @@ export default function HomeScreen() {
     });
   }, [navigation]);
 
+  const handleClearData = async () => {
+    try {
+      await AsyncStorage.clear();
+      Alert.alert('Sucesso', 'Todos os dados foram apagados!');
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao apagar os dados.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Vai Começar a Resenhitxa</Text>
 
-      <CustomButton title="Cadastrar Personal" onPress={() => navigation.navigate('RegisterPersonal')} type="primary" />
-      <CustomButton title="Editar Personal" onPress={() => navigation.navigate('EditPersonal')} type="primary" />
-      <CustomButton title="Excluir Personal" onPress={() => navigation.navigate('DeletePersonal')} type="primary" />
-      <CustomButton title="Visualizar Personal" onPress={() => navigation.navigate('ViewPersonal')} type="primary" />
+      <CustomButton
+        title="Login Personal"
+        onPress={() => navigation.navigate('LoginPersonal')}
+        type="primary"
+      />
 
-      <CustomButton title="Cadastrar Aluno" onPress={() => navigation.navigate('RegisterAluno')} type="secondary" />
-      <CustomButton title="Editar Aluno" onPress={() => navigation.navigate('EditAluno')} type="secondary" />
-      <CustomButton title="Excluir Aluno" onPress={() => navigation.navigate('DeleteAluno')} type="secondary" />
-      <CustomButton title="Visualizar Aluno" onPress={() => navigation.navigate('ViewAluno')} type="secondary" />
+      <CustomButton
+        title="Login Aluno"
+        onPress={() => navigation.navigate('LoginAluno')}
+        type="secondary"
+      />
 
-      <CustomButton title="Cadastrar Serviço" onPress={() => navigation.navigate('RegisterServico')} type="primary" />
-      <CustomButton title="Editar Serviço" onPress={() => navigation.navigate('EditServico')} type="primary" />
-      <CustomButton title="Excluir Serviço" onPress={() => navigation.navigate('DeleteServico')} type="primary" />
-      <CustomButton title="Visualizar Serviço" onPress={() => navigation.navigate('ViewServico')} type="primary" />
+      <CustomButton
+        title="Limpar Dados"
+        onPress={handleClearData}
+        type="danger"
+      />
     </View>
   );
 }

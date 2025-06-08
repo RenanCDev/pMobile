@@ -47,7 +47,7 @@ export default function RegisterPersonal() {
   });
 
   function handleLoginClick() {
-    navigation.navigate("Login" as never);
+    navigation.navigate("LoginPersonal" as never);
   }
 
   function resetForm() {
@@ -76,6 +76,7 @@ export default function RegisterPersonal() {
       experiencia_profissional: data.experiencia_profissional,
       horarios_disponiveis: data.horarios_disponiveis,
       locais_disponiveis: data.locais_disponiveis,
+      senha: data.senha,
     };
 
     try {
@@ -83,11 +84,18 @@ export default function RegisterPersonal() {
       const existing = await AsyncStorage.getItem("@personais");
       const parsed = existing ? JSON.parse(existing) : [];
       parsed.push(cleanData);
+
+      console.log("Dados a salvar:", parsed);
+
       await AsyncStorage.setItem("@personais", JSON.stringify(parsed));
+
+      const check = await AsyncStorage.getItem("@personais");
+      console.log("Dados salvos:", check);
+
       Alert.alert("Sucesso", "Personal cadastrado localmente!");
       reset();
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao salvar:", err);
       Alert.alert("Erro", "Falha ao salvar localmente.");
     } finally {
       setIsLoading(false);
@@ -174,7 +182,7 @@ export default function RegisterPersonal() {
                 style={[styles.input, errors.cpf && styles.errorInput]}
                 onChangeText={(text) => {
                   const formatted = formatCPF(text);
-                  setValue("cpf", formatted);
+                  onChange(formatted);
                 }}
                 value={value}
                 placeholder="000.000.000-00"
@@ -563,6 +571,38 @@ export default function RegisterPersonal() {
             </>
           )}
         />
+
+        <Controller
+          control={control}
+          name="senha"
+          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ marginBottom: 4, color: colors.text.primary }}>Senha</Text>
+              <TextInput
+                style={{
+                  backgroundColor: colors.white,
+                  borderColor: error ? colors.status.error : colors.border,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  padding: 12,
+                  color: colors.text.primary,
+                }}
+                placeholder="Digite sua senha"
+                placeholderTextColor={colors.text.muted}
+                secureTextEntry
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {error && (
+                <Text style={{ color: colors.status.error, marginTop: 4 }}>
+                  {error.message}
+                </Text>
+              )}
+            </View>
+          )}
+          />
+
       </View>
 
       <View style={styles.buttons}>

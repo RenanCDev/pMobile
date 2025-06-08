@@ -67,4 +67,11 @@ export const CreatePersonal = z.object({
     .string()
     .min(5, "Informe ao menos um local disponível")
     .max(500, "Lista de locais muito longa"),
+
+  senha: z
+    .string()
+    .min(5, "A senha deve ter no mínimo 5 caracteres.")
+    .refine((val) => (val.match(/[^A-Za-z0-9]/g) || []).length >= 2, {
+      message: "A senha deve conter pelo menos 2 símbolos.",
+    }),
 });
