@@ -16,10 +16,11 @@ import ViewAluno from '../screens/aluno/ViewAluno';
 
 import RegisterServico from '../screens/servico/RegisterServico';
 import EditServico from '../screens/servico/EditServico';
-import DeleteServico from '../screens/servico/DeteleServico';
+import DeleteServico from '../screens/servico/DeleteServico';
 import ViewServico from '../screens/servico/ViewServico';
 
 import HeaderMenu from '../components/HeaderMenu';
+import HeaderHomeButton from '../components/HeaderHomeButton';
 import colors from '../constants/colors';
 import { RootStackParamList } from './types';
 
@@ -30,6 +31,12 @@ export default function StackNavigator() {
     <Stack.Navigator
       initialRouteName="Home"
       screenOptions={{
+        headerLeft: () => <HeaderHomeButton />,
+        headerRight: () => (
+          <View style={{ marginRight: 8 }}>
+            <HeaderMenu />
+          </View>
+        ),
         headerStyle: {
           backgroundColor: colors.primary.DEFAULT,
         },
@@ -39,26 +46,9 @@ export default function StackNavigator() {
           fontSize: 20,
         },
         headerTitleAlign: 'center',
-        headerRight: () => (
-          <View style={{ marginRight: 8 }}>
-            <HeaderMenu />
-          </View>
-        ),
       }}
     >
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: true,
-          title: 'Início',
-          headerRight: () => (
-            <View style={{ marginRight: 8 }}>
-              <HeaderMenu />
-            </View>
-          ),
-        }}
-      />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
 
       <Stack.Screen name="RegisterPersonal" component={RegisterPersonal} options={{ title: 'Cadastrar Personal' }} />
       <Stack.Screen name="EditPersonal" component={EditPersonal} options={{ title: 'Editar Personal' }} />
