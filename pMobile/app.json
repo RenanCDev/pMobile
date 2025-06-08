@@ -24,7 +24,7 @@
       "package": "com.anonymous.pMobile"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icons/muscle.png"
     }
   }
 }
