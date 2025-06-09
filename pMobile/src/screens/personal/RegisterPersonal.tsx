@@ -62,7 +62,7 @@ export default function RegisterPersonal() {
       reset();
     } catch (err) {
       console.error("Erro ao salvar:", err);
-      Alert.alert("Erro", "Falha ao salvar localmente.");
+      Alert.alert("Erro", "CPF já cadastrado");
     } finally {
       setIsLoading(false);
     }
