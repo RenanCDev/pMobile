@@ -36,7 +36,7 @@ export default function LoginPersonal() {
     setPersonalLogado(personal);
 
     Alert.alert("Login realizado", `Bem-vindo(a), ${personal.nome}`);
-    navigation.navigate("ViewPersonal");
+    navigation.navigate("HomeScreen");
   };
 
   return (

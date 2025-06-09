@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -14,7 +14,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'HomeScreen'
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { personalLogado, alunoLogado } = useDataContext();
+  const { personalLogado, alunoLogado, setPersonalLogado, setAlunoLogado } = useDataContext();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -27,6 +27,26 @@ export default function HomeScreen() {
   }, [navigation]);
 
   const nome = personalLogado?.nome ?? alunoLogado?.nome ?? '';
+  const tipoLogado = personalLogado ? 'personal' : alunoLogado ? 'aluno' : null;
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Deseja realmente sair do app?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Sair',
+          style: 'destructive',
+          onPress: () => {
+            setPersonalLogado(null);
+            setAlunoLogado(null);
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   return (
     <S.Container>
@@ -34,17 +54,41 @@ export default function HomeScreen() {
         {nome ? `Faça bom uso do app, ${nome}` : 'Bem-vindo!'}
       </S.Title>
 
-      <CustomButton
-        title="Login Personal"
-        onPress={() => navigation.navigate('LoginPersonal')}
-        type="primary"
-      />
+      {tipoLogado ? (
+        <>
+          <CustomButton
+            title="Visualizar Perfil"
+            onPress={() =>
+              navigation.navigate(
+                tipoLogado === 'personal' ? 'ViewPersonal' : 'ViewAluno'
+              )
+            }
+            type="primary"
+          />
 
-      <CustomButton
-        title="Login Aluno"
-        onPress={() => navigation.navigate('LoginAluno')}
-        type="secondary"
-      />
+          <CustomButton
+            title="Visualizar Serviços"
+            onPress={() => navigation.navigate('ViewServico')}
+            type="primary"
+          />
+
+          <CustomButton title="Logout" onPress={handleLogout} type="secondary" />
+        </>
+      ) : (
+        <>
+          <CustomButton
+            title="Login Personal"
+            onPress={() => navigation.navigate('LoginPersonal')}
+            type="primary"
+          />
+
+          <CustomButton
+            title="Login Aluno"
+            onPress={() => navigation.navigate('LoginAluno')}
+            type="secondary"
+          />
+        </>
+      )}
     </S.Container>
   );
 }

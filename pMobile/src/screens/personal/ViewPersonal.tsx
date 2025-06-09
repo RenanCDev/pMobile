@@ -5,10 +5,12 @@ import { formatCPF } from "../../utils/cpf/format";
 import { formatPhoneNumber } from "../../utils/celular/format";
 import { useNavigation } from "@react-navigation/native";
 import { useDataContext } from "../../context/DataContext";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/types";
 
 export default function ViewPersonal() {
-  const { personalLogado, deletePersonal, reloadData } = useDataContext();
-  const navigation = useNavigation();
+  const { personalLogado, deletePersonal, reloadData, setPersonalLogado } = useDataContext();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const [loading, setLoading] = useState(false);
 
   if (!personalLogado) {
@@ -34,9 +36,10 @@ export default function ViewPersonal() {
             setLoading(true);
             try {
               await deletePersonal(personalLogado.cpf);
-              reloadData();
+              setPersonalLogado(null)
+              await reloadData();
               Alert.alert("Sucesso", "Personal excluído com sucesso!");
-              navigation.goBack();
+              navigation.navigate("HomeScreen");
             } catch (error) {
               Alert.alert("Erro", "Não foi possível excluir o personal.");
               console.error(error);
