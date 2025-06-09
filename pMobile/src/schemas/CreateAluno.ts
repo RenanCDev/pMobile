@@ -35,9 +35,7 @@ export const CreateAluno = z.object({
 
   estado_civil: z.string(),
 
-  bioimpedancia: z
-  .number({ invalid_type_error: "Informe um valor numérico válido" })
-  .min(0, "Valor mínimo é 0"),
+  bioimpedancia: z.string(),
 
   data_do_exame: z.string().refine(
     (val) => {
@@ -50,49 +48,23 @@ export const CreateAluno = z.object({
 
   hora_do_exame: z.string().min(1, "Hora do exame é obrigatória"),
 
-  altura: z.coerce
-    .number({ invalid_type_error: "Digite no padrao 1.70" })
-    .nonnegative("Altura inválida")
-    .min(0.5, "Altura é obrigatória")
-    .max(3, "Altura inválida"),
+  altura: z.string(),
 
-  agua_corporal_total: z.coerce
-    .number()
-    .nonnegative("Água corporal inválida")
-    .max(80, "Água corporal inválida"),
+  agua_corporal_total: z.string(),
 
-  proteinas: z.coerce
-    .number()
-    .nonnegative("Proteinas inválidas")
-    .max(50, "Proteinas inválidas"),
+  proteinas: z.string(),
 
-  minerais: z.coerce
-    .number()
-    .nonnegative("Minerais inválidos")
-    .max(10, "Minerais inválidos"),
+  minerais: z.string(),
 
-  gordura_corporal: z.coerce
-    .number()
-    .nonnegative("Gordura corporal inválida")
-    .max(100, "Gordura corporal inválida"),
+  gordura_corporal: z.string(),
 
-  peso: z.coerce
-    .number({ invalid_type_error: "Digite no padrao 100.500" })
-    .nonnegative("Peso inválido")
-    .min(20, "Peso é obrigatório")
-    .max(400, "Peso inválido"),
+  peso: z.string(),
 
-  massa_muscular_esqueletica: z.coerce
-    .number()
-    .nonnegative("Massa muscular esqueletica inválida")
-    .max(70, "Massa muscular esqueletica inválida"),
+  massa_muscular_esqueletica: z.string(),
 
-  imc: z.coerce.number().nonnegative("IMC inválida").max(150, "IMC inválido"),
+  imc: z.string(),
 
-  taxa_metabolica_basal: z.coerce
-    .number()
-    .nonnegative("Taxa metabolica basal inválida")
-    .max(15000, "Taxa metabolica basal inválida "),
+  taxa_metabolica_basal: z.string(),
   
   senha: z
     .string()
