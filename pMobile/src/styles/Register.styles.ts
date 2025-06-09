@@ -133,3 +133,29 @@ export const ErrorText = styled.Text`
   margin-bottom: 12px;
   font-size: 12px;
 `;
+
+export const Text = styled.Text`
+  font-size: 16px;
+  color: ${colors.text.inverted};
+  margin-bottom: 8px;
+`;
+
+export const Box = styled.View`
+  background-color: ${colors.dark.surface};
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-width: 1px;
+  border-color: ${colors.border};
+`;
+
+export const BoxLabel = styled.Text`
+  font-weight: 600;
+  color: ${colors.primary.DEFAULT};
+  margin-bottom: 6px;
+`;
+
+export const BoxValue = styled.Text`
+  color: ${colors.text.inverted};
+  font-size: 16px;
+`;

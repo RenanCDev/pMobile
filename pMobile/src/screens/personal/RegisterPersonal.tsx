@@ -2,32 +2,15 @@ import React, { useState } from "react";
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Platform } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { z } from "zod";
-import {
-  ScrollView,
-  View,
-  Text,
-  TextInput,
-  Alert,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
+import { Alert, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
-
 import { CreatePersonal } from "../../schemas/CreatePersonal";
 import colors from "../../constants/colors";
-import {
-  formatCPF,
-  removeCPFFormatting,
-} from "../../utils/cpf/format";
-import {
-  formatPhoneNumber,
-  unformatPhoneNumber,
-} from "../../utils/celular/format";
+import { formatCPF, removeCPFFormatting } from "../../utils/cpf/format";
+import { formatPhoneNumber, unformatPhoneNumber } from "../../utils/celular/format";
 import * as S from "../../styles/Register.styles";
 import { savePersonal , getPersonals } from '../../services/storageService';
 
@@ -173,7 +156,7 @@ export default function RegisterPersonal() {
                 placeholder="000.000.000-00"
                 keyboardType="numeric"
                 placeholderTextColor="#999"
-                hasError={!!errors.cpf}  // aqui a prop para borda vermelha
+                hasError={!!errors.cpf}
               />
               {errors.cpf && <S.ErrorText>{errors.cpf.message}</S.ErrorText>}
             </S.Section>
@@ -293,7 +276,7 @@ export default function RegisterPersonal() {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 placeholderTextColor="#999"
-                hasError={!!errors.email} // borda vermelha se erro
+                hasError={!!errors.email}
               />
               {errors.email && <S.ErrorText>{errors.email.message}</S.ErrorText>}
             </S.Section>
@@ -335,7 +318,7 @@ export default function RegisterPersonal() {
                   selectedValue={value}
                   onValueChange={onChange}
                   mode="dropdown"
-                  // adicione props extras se precisar
+                
                 >
                   <Picker.Item label="Não informado" value="nao_informado" />
                   <Picker.Item label="Casado" value="casado" />

@@ -32,7 +32,7 @@ export default function LoginPersonal() {
   }
 
   Alert.alert("Login realizado", `Bem-vindo(a), ${personal.nome}`);
-  navigation.navigate("HomeScreen");
+  navigation.navigate("ViewPersonal");
 };
 
   return (
