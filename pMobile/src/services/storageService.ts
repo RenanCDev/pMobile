@@ -1,3 +1,4 @@
+import { removeCPFFormatting } from "../utils/cpf/format";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Personal {
@@ -102,4 +103,23 @@ export async function deleteServico(id: number) {
   const servicos = await getServicos();
   const filtered = servicos.filter(s => s.id !== id);
   await AsyncStorage.setItem('@servicos', JSON.stringify(filtered));
+}
+
+export async function loginPersonal(cpf: string, senha: string) {
+  try {
+    const response = await AsyncStorage.getItem('@personais');
+    if (!response) return null;
+
+    const personals: Personal[] = JSON.parse(response);
+
+    const personalEncontrado = personals.find(
+      (p: any) => removeCPFFormatting(p.cpf) === cpf && p.senha === senha
+    );
+
+
+    return personalEncontrado || null;
+  } catch (error) {
+    console.error('Erro ao buscar personal:', error);
+    return null;
+  }
 }

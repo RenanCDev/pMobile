@@ -9,6 +9,8 @@ import { RootStackParamList } from "../../navigation/types";
 import { formatCPF } from "../../utils/cpf/format";
 import { loginSchema, LoginFormData } from "../../schemas/Login";
 import * as S from "../../styles/Auth.styles";
+import { loginPersonal } from "../../services/storageService";
+import { removeCPFFormatting } from "../../utils/cpf/format";
 
 export default function LoginPersonal() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -20,10 +22,18 @@ export default function LoginPersonal() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    Alert.alert("Login Personal", `CPF: ${data.cpf}\nSenha: ${data.senha}`);
-    navigation.navigate("HomeScreen");
-  };
+  const onSubmit = async (data: LoginFormData) => {
+  const cpfSemFormatacao = removeCPFFormatting(data.cpf);
+  const personal = await loginPersonal(cpfSemFormatacao, data.senha);
+
+  if (!personal) {
+    Alert.alert("Erro", "CPF ou senha inválidos.");
+    return;
+  }
+
+  Alert.alert("Login realizado", `Bem-vindo(a), ${personal.nome}`);
+  navigation.navigate("HomeScreen");
+};
 
   return (
     <S.Container>
