@@ -154,7 +154,7 @@ export default function ViewPersonal() {
         </S.Section>
 
         <S.Buttons>
-          <S.SubmitButton onPress={() => navigation.navigate("EditPersonal")}>
+          <S.SubmitButton onPress={() => navigation.navigate("EditPersonal", { cpf: personalLogado.cpf })}>
             <S.ButtonText>Editar</S.ButtonText>
           </S.SubmitButton>
 

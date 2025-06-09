@@ -252,5 +252,3 @@ export async function loginPersonal(cpf: string, senha: string): Promise<Persona
 export async function clearAllData() {
   await AsyncStorage.multiRemove(['@personais', '@alunos', '@servicos']);
 }
-
-

@@ -43,7 +43,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [personais, setPersonais] = useState<any[]>([]);
   const [servicos, setServicos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const [personalLogado, setPersonalLogadoState] = useState<any | null>(null);
   const [alunoLogado, setAlunoLogadoState] = useState<any | null>(null);
 
@@ -124,14 +124,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const editPersonal = async (cpf: string, novoPersonal: any) => {
+  const editPersonal = async (cpf: string, updatedData: any) => {
     try {
-      const updated = personais.map((p) => p.cpf === cpf ? novoPersonal : p);
-      setPersonais(updated);
-      await AsyncStorage.setItem("@personais", JSON.stringify(updated));
-    } catch (err) {
-      console.error("Erro ao editar personal:", err);
+      const updatedPersonais = personais.map((p) =>
+        p.cpf === cpf ? { ...p, ...updatedData } : p
+      );
+      setPersonais(updatedPersonais);
+      await AsyncStorage.setItem("@personais", JSON.stringify(updatedPersonais));
+
+      // Atualiza o personal logado se for ele
+      if (personalLogado?.cpf === cpf) {
+        setPersonalLogadoState({ ...personalLogado, ...updatedData });
+      }
+
+    } catch (error) {
+      console.error("Erro ao editar personal:", error);
       Alert.alert("Erro", "Falha ao editar personal.");
+      throw error;
     }
   };
 

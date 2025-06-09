@@ -8,7 +8,7 @@ import LoginPersonal from '../screens/login/LoginPersonal';
 import LoginAluno from '../screens/login/LoginAluno';
 
 import RegisterPersonal from '../screens/personal/RegisterPersonal';
-import EditPersonal from '../screens/personal/EditPersonal';
+import { EditPersonal } from '../screens/personal/EditPersonal';
 import DeletePersonal from '../screens/personal/DeletePersonal';
 import ViewPersonal from '../screens/personal/ViewPersonal';
 
