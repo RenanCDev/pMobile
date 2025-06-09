@@ -6,14 +6,16 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "../../navigation/types";
-import { formatCPF } from "../../utils/cpf/format";
+import { formatCPF, removeCPFFormatting } from "../../utils/cpf/format";
 import { loginSchema, LoginFormData } from "../../schemas/Login";
 import * as S from "../../styles/Auth.styles";
 import { loginPersonal } from "../../services/storageService";
-import { removeCPFFormatting } from "../../utils/cpf/format";
+import { useDataContext } from "../../context/DataContext"; // <-- importar aqui
 
 export default function LoginPersonal() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { setPersonalLogado } = useDataContext(); // <-- pegar o setter do contexto
+
   const {
     control,
     handleSubmit,
@@ -23,17 +25,19 @@ export default function LoginPersonal() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-  const cpfSemFormatacao = removeCPFFormatting(data.cpf);
-  const personal = await loginPersonal(cpfSemFormatacao, data.senha);
+    const cpfSemFormatacao = removeCPFFormatting(data.cpf);
+    const personal = await loginPersonal(cpfSemFormatacao, data.senha);
 
-  if (!personal) {
-    Alert.alert("Erro", "CPF ou senha inválidos.");
-    return;
-  }
+    if (!personal) {
+      Alert.alert("Erro", "CPF ou senha inválidos.");
+      return;
+    }
 
-  Alert.alert("Login realizado", `Bem-vindo(a), ${personal.nome}`);
-  navigation.navigate("ViewPersonal");
-};
+    setPersonalLogado(personal); // <-- salva o personal no contexto
+
+    Alert.alert("Login realizado", `Bem-vindo(a), ${personal.nome}`);
+    navigation.navigate("ViewPersonal");
+  };
 
   return (
     <S.Container>

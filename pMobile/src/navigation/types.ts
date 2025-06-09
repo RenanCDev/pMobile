@@ -11,7 +11,7 @@ export type RootStackParamList = {
   DeleteAluno: undefined;
   ViewAluno: undefined;
   RegisterServico: undefined;
-  EditServico: undefined;
+  EditServico: { servicoId: number };
   DeleteServico: undefined;
   ViewServico: undefined;
   Personal: undefined;

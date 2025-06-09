@@ -8,6 +8,8 @@ type DataContextType = {
   servicos: any[];
   isLoading: boolean;
   reloadData: () => Promise<void>;
+  personalLogado: any | null;
+  setPersonalLogado: (personal: any) => void;
 };
 
 const DataContext = createContext<DataContextType>({
@@ -16,6 +18,8 @@ const DataContext = createContext<DataContextType>({
   servicos: [],
   isLoading: false,
   reloadData: async () => {},
+  personalLogado: null,
+  setPersonalLogado: () => {},
 });
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -23,6 +27,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [personais, setPersonais] = useState<any[]>([]);
   const [servicos, setServicos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [personalLogado, setPersonalLogado] = useState<any | null>(null);
 
   const loadAllData = async () => {
     try {
@@ -55,7 +60,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <DataContext.Provider value={{ alunos, personais, servicos, isLoading, reloadData: loadAllData }}>
+    <DataContext.Provider
+      value={{
+        alunos,
+        personais,
+        servicos,
+        isLoading,
+        reloadData: loadAllData,
+        personalLogado,
+        setPersonalLogado,
+      }}
+    >
       {children}
     </DataContext.Provider>
   );

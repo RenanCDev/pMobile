@@ -15,8 +15,10 @@ import {
   ErrorText,
   ButtonRow,
 } from '../../styles/RegisterServico.styles';
-
 import { saveServico, getServicos } from '../../services/storageService';
+import { useDataContext } from '../../context/DataContext';
+
+
 
 type FormData = {
   tipo: string;
@@ -27,6 +29,7 @@ type FormData = {
 export default function RegisterServico() {
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
+  const { personalLogado, reloadData } = useDataContext();
 
   const {
     control,
@@ -42,19 +45,26 @@ export default function RegisterServico() {
     },
   });
 
-  const onSubmit = async (data: FormData) => {
-    try {
-      setIsLoading(true);
-      await saveServico(data);
-      Alert.alert('Sucesso', 'Serviço salvo localmente!');
-      reset();
-    } catch (err) {
-      console.error(err);
-      Alert.alert('Erro', 'Falha ao salvar localmente.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
+const onSubmit = async (data: FormData) => {
+  if (!personalLogado) {
+    Alert.alert('Erro', 'Nenhum personal está logado.');
+    return;
+  }
+
+  try {
+    setIsLoading(true);
+    await saveServico(data, personalLogado.nome); // o id será gerado dentro
+    await reloadData();
+    Alert.alert('Sucesso', 'Serviço salvo com sucesso!');
+    reset();
+  } catch (err) {
+    console.error(err);
+    Alert.alert('Erro', 'Falha ao salvar localmente.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const carregarServicos = async () => {
     try {

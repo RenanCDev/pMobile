@@ -45,8 +45,6 @@ export default function HeaderMenu() {
 
               <SectionTitle>Personals</SectionTitle>
               <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />
-              <MenuItem label="Editar Personal" onPress={() => handleNavigate('EditPersonal')} />
-              <MenuItem label="Excluir Personal" onPress={() => handleNavigate('DeletePersonal')} />
               <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewPersonal')} />
 
               <SectionTitle>Alunos</SectionTitle>
@@ -57,8 +55,6 @@ export default function HeaderMenu() {
 
               <SectionTitle>Serviços</SectionTitle>
               <MenuItem label="Cadastrar Serviço" onPress={() => handleNavigate('RegisterServico')} />
-              <MenuItem label="Editar Serviço" onPress={() => handleNavigate('EditServico')} />
-              <MenuItem label="Excluir Serviço" onPress={() => handleNavigate('DeleteServico')} />
               <MenuItem label="Visualizar Serviço" onPress={() => handleNavigate('ViewServico')} />
             </MenuContainer>
           </CenteredView>

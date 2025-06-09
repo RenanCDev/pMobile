@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeCPFFormatting } from '../utils/cpf/format';
 import { unformatPhoneNumber } from '../utils/celular/format';
 
+// -------------------- TYPES --------------------
+
 export interface Personal {
   id: number;
   dados_bancarios: {
@@ -60,6 +62,7 @@ export interface Servico {
   tipo: string;
   descricao: string;
   valor: string;
+  cadastrado_por: string;
 }
 
 // -------------------- PERSONAL --------------------
@@ -168,15 +171,25 @@ export async function deleteAluno(cpf: string) {
 
 // -------------------- SERVICO --------------------
 
-export async function saveServico(servicoData: Omit<Servico, 'id'>) {
-  const existing = await AsyncStorage.getItem('@servicos');
-  const parsed: Servico[] = existing ? JSON.parse(existing) : [];
+export async function saveServico(servicoData: Omit<Servico, 'id' | 'cadastrado_por'>, nomePersonal: string) {
+  try {
+    const existing = await AsyncStorage.getItem('@servicos');
+    const parsed: Servico[] = existing ? JSON.parse(existing) : [];
 
-  const lastId = parsed.length > 0 ? parsed[parsed.length - 1].id : 0;
-  const newServico: Servico = { id: lastId + 1, ...servicoData };
+    const lastId = parsed.length > 0 ? parsed[parsed.length - 1].id : 0;
 
-  parsed.push(newServico);
-  await AsyncStorage.setItem('@servicos', JSON.stringify(parsed));
+    const newServico: Servico = {
+      id: lastId + 1,
+      ...servicoData,
+      cadastrado_por: nomePersonal,
+    };
+
+    parsed.push(newServico);
+    await AsyncStorage.setItem('@servicos', JSON.stringify(parsed));
+  } catch (error) {
+    console.error('Erro ao salvar serviço:', error);
+    throw error;
+  }
 }
 
 export async function getServicos(): Promise<Servico[]> {
@@ -189,12 +202,35 @@ export async function getServicos(): Promise<Servico[]> {
   }
 }
 
-export async function updateServico(updatedServico: Servico) {
-  const servicos = await getServicos();
-  const index = servicos.findIndex(s => s.id === updatedServico.id);
-  if (index > -1) {
-    servicos[index] = updatedServico;
+export async function getServicoById(id: number): Promise<Servico | null> {
+  try {
+    const servicos = await getServicos();
+    const servico = servicos.find(s => s.id === id);
+    return servico || null;
+  } catch (error) {
+    console.error('Erro ao buscar serviço por ID:', error);
+    return null;
+  }
+}
+
+export async function updateServico(id: number, updatedData: Omit<Servico, 'id' | 'cadastrado_por'>) {
+  try {
+    const servicos = await getServicos();
+    const index = servicos.findIndex(s => s.id === id);
+
+    if (index === -1) throw new Error('Serviço não encontrado');
+
+    const servicoAnterior = servicos[index];
+    const servicoAtualizado: Servico = {
+      ...servicoAnterior,
+      ...updatedData,
+    };
+
+    servicos[index] = servicoAtualizado;
     await AsyncStorage.setItem('@servicos', JSON.stringify(servicos));
+  } catch (error) {
+    console.error('Erro ao atualizar serviço:', error);
+    throw error;
   }
 }
 
@@ -206,7 +242,7 @@ export async function deleteServico(id: number) {
 
 // -------------------- LOGIN --------------------
 
-export async function loginPersonal(cpf: string, senha: string) {
+export async function loginPersonal(cpf: string, senha: string): Promise<Personal | null> {
   try {
     const data = await AsyncStorage.getItem('@personais');
     if (!data) return null;
@@ -228,3 +264,6 @@ export async function loginPersonal(cpf: string, senha: string) {
 export async function clearAllData() {
   await AsyncStorage.multiRemove(['@personais', '@alunos', '@servicos']);
 }
+
+// -------------------- SERVICO UTILS --------------------
+
