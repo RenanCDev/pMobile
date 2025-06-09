@@ -29,6 +29,7 @@ import {
   unformatPhoneNumber,
 } from "../../utils/celular/format";
 import * as S from "../../styles/Register.styles";
+import { savePersonal , getPersonals } from '../../services/storageService';
 
 type PersonalFormData = z.infer<typeof CreatePersonal>;
 
@@ -40,21 +41,12 @@ export default function RegisterPersonal() {
   const {
     control,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<PersonalFormData>({
     resolver: zodResolver(CreatePersonal),
   });
-
-  function handleLoginClick() {
-    navigation.navigate("LoginPersonal" as never);
-  }
-
-  function resetForm() {
-    reset();
-  }
-
+  
   const onSubmit = async (data: PersonalFormData) => {
     const cleanData = {
       id: Date.now(),
@@ -82,17 +74,7 @@ export default function RegisterPersonal() {
 
     try {
       setIsLoading(true);
-      const existing = await AsyncStorage.getItem("@personais");
-      const parsed = existing ? JSON.parse(existing) : [];
-      parsed.push(cleanData);
-
-      console.log("Dados a salvar:", parsed);
-
-      await AsyncStorage.setItem("@personais", JSON.stringify(parsed));
-
-      const check = await AsyncStorage.getItem("@personais");
-      console.log("Dados salvos:", check);
-
+      await savePersonal(cleanData);
       Alert.alert("Sucesso", "Personal cadastrado localmente!");
       reset();
     } catch (err) {
@@ -103,19 +85,26 @@ export default function RegisterPersonal() {
     }
   };
 
-  async function getPersonais() {
+  async function loadPersonals() {
     try {
       setIsLoading(true);
-      const dados = await AsyncStorage.getItem("@personais");
-      const parsed = dados ? JSON.parse(dados) : [];
+      const personals = await getPersonals();
       Alert.alert("Sucesso", "Dados carregados. Veja no console.");
-      console.log("Personais:", parsed);
+      console.log("Personais:", personals);
     } catch (err) {
       console.error(err);
       Alert.alert("Erro", "Falha ao carregar dados locais.");
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleLoginClick() {
+    navigation.navigate("LoginPersonal" as never);
+  }
+
+  function resetForm() {
+    reset();
   }
 
   return (
@@ -162,7 +151,7 @@ export default function RegisterPersonal() {
                 value={value}
                 placeholder="Nome Social"
                 placeholderTextColor="#999"
-                hasError={!!errors.nome_social}  // aqui passa a prop hasError
+                hasError={!!errors.nome_social}
               />
               {errors.nome_social && <S.ErrorText>{errors.nome_social.message}</S.ErrorText>}
             </S.Section>
@@ -563,7 +552,7 @@ export default function RegisterPersonal() {
           )}
         </S.SubmitButton>
 
-        <S.GetButton onPress={getPersonais} disabled={isLoading}>
+        <S.GetButton onPress={loadPersonals} disabled={isLoading}>
           <S.ButtonText>Carregar Personais</S.ButtonText>
         </S.GetButton>
 

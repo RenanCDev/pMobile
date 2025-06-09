@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CustomButton from '../../components/CustomButton';
 import colors from '../../constants/colors';
@@ -16,6 +15,8 @@ import {
   ErrorText,
   ButtonRow,
 } from '../../styles/RegisterServico.styles';
+
+import { saveServico, getServicos } from '../../services/storageService';
 
 type FormData = {
   tipo: string;
@@ -44,10 +45,7 @@ export default function RegisterServico() {
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
-      const existing = await AsyncStorage.getItem('@servicos');
-      const parsed = existing ? JSON.parse(existing) : [];
-      parsed.push(data);
-      await AsyncStorage.setItem('@servicos', JSON.stringify(parsed));
+      await saveServico(data);
       Alert.alert('Sucesso', 'Serviço salvo localmente!');
       reset();
     } catch (err) {
@@ -61,10 +59,9 @@ export default function RegisterServico() {
   const carregarServicos = async () => {
     try {
       setIsLoading(true);
-      const dados = await AsyncStorage.getItem('@servicos');
-      const parsed = dados ? JSON.parse(dados) : [];
+      const servicos = await getServicos();
       Alert.alert('Sucesso', 'Serviços carregados. Veja no console.');
-      console.log('Serviços:', parsed);
+      console.log('Serviços:', servicos);
     } catch (err) {
       console.error(err);
       Alert.alert('Erro', 'Falha ao carregar dados locais.');

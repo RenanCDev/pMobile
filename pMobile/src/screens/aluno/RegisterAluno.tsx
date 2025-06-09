@@ -24,6 +24,7 @@ import {
   unformatPhoneNumber,
 } from "../../utils/celular/format";
 import * as S from "../../styles/Register.styles";
+import { saveAluno , getAlunos } from '../../services/storageService';
 
 type AlunoFormData = z.infer<typeof CreateAluno>;
 
@@ -32,12 +33,22 @@ export default function RegisterAluno() {
   const [isLoading, setIsLoading] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [textValueAltura, setTextValueAltura] = React.useState("");
+  const [textValuePeso, setTextValuePeso] = React.useState("");
+  const [textValueBio, setTextValueBio] = React.useState("");
+  const [textValueImc, setTextValueImc] = React.useState("");
+  const [textValueAguaCorporalTotal, setTextValueAguaCorporalTotal] = React.useState("");
+  const [textValueGorduraCorporal, setTextValueGorduraCorporal] = React.useState("");
+  const [textValueMassaMuscularEsqueletica, setTextValueMassaMuscularEsqueletica] = React.useState("");
+  const [textValueTaxaMetabolicaBasal, setTextValueTaxaMetabolicaBasal] = React.useState("");
+  const [textValueProteinas, setTextValueProteinas] = React.useState("");
+  const [textValueMinerais, setTextValueMinerais] = React.useState("");
 
   const {
     control,
     handleSubmit,
-    setValue,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<AlunoFormData>({
     resolver: zodResolver(CreateAluno),
@@ -69,15 +80,12 @@ export default function RegisterAluno() {
       massa_muscular_esqueletica: data.massa_muscular_esqueletica,
       imc: data.imc,
       taxa_metabolica_basal: data.taxa_metabolica_basal,
-      senha: data.senha
+      senha: data.senha,
     };
 
     try {
       setIsLoading(true);
-      const existing = await AsyncStorage.getItem("@alunos");
-      const parsed = existing ? JSON.parse(existing) : [];
-      parsed.push(cleanData);
-      await AsyncStorage.setItem("@alunos", JSON.stringify(parsed));
+      await saveAluno(cleanData);
       Alert.alert("Sucesso", "Aluno cadastrado localmente!");
       reset();
     } catch (err) {
@@ -88,21 +96,12 @@ export default function RegisterAluno() {
     }
   };
   
-  function handleLoginClick() {
-    navigation.navigate("LoginAluno" as never);
-  }
-
-  function resetForm() {
-    reset();
-  }
-
-  async function getAlunos() {
+  async function handleGetAlunos() {
     try {
       setIsLoading(true);
-      const dados = await AsyncStorage.getItem("@alunos");
-      const parsed = dados ? JSON.parse(dados) : [];
+      const alunos = await getAlunos();
       Alert.alert("Sucesso", "Dados carregados. Veja no console.");
-      console.log("Alunos:", parsed);
+      console.log("Alunos:", alunos);
     } catch (err) {
       console.error(err);
       Alert.alert("Erro", "Falha ao carregar dados locais.");
@@ -110,7 +109,15 @@ export default function RegisterAluno() {
       setIsLoading(false);
     }
   }
+  
+  function handleLoginClick() {
+    navigation.navigate("LoginAluno" as never);
+  }
 
+  function resetForm() {
+    reset();
+  }
+  
   return (
     <S.Container contentContainerStyle={{ paddingBottom: 16 }}>
       <S.LoginButton onPress={handleLoginClick}>
@@ -363,18 +370,19 @@ export default function RegisterAluno() {
               <S.Label>Altura</S.Label>
               <S.Input
                 hasError={!!errors.altura}
-                value={value !== undefined && value !== null ? String(value) : ""}
+                value={textValueAltura}
                 onChangeText={(text) => {
-                  const normalizedText = text.replace(",", ".");
-                  const numericValue = parseFloat(normalizedText);
-                  if (!isNaN(numericValue)) {
-                    onChange(numericValue);
-                  } else {
-                    onChange(undefined);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueAltura(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
                   }
                 }}
                 placeholder="1.70"
-                keyboardType="default"
+                keyboardType="decimal-pad"
                 placeholderTextColor="#999"
               />
               {errors.altura && <S.ErrorText>{errors.altura.message}</S.ErrorText>}
@@ -390,17 +398,19 @@ export default function RegisterAluno() {
               <S.Label>Peso</S.Label>
               <S.Input
                 hasError={!!errors.peso}
-                value={value !== undefined && value !== null ? String(value) : ""}
+                value={textValuePeso}
                 onChangeText={(text) => {
-                  const numericValue = parseFloat(text.replace(",", "."));
-                  if (!isNaN(numericValue)) {
-                    onChange(numericValue);
-                  } else {
-                    onChange(undefined);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValuePeso(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
                   }
                 }}
                 placeholder="70.50"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholderTextColor="#999"
               />
               {errors.peso && <S.ErrorText>{errors.peso.message}</S.ErrorText>}
@@ -416,13 +426,19 @@ export default function RegisterAluno() {
               <S.Label>Bioimpedância (%)</S.Label>
               <S.Input
                 hasError={!!errors.bioimpedancia}
+                value={textValueBio}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
-                  onChange(numeric);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueBio(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
+                  }
                 }}
-                value={value}
                 placeholder="Ex: 15.2"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholderTextColor="#999"
               />
               {errors.bioimpedancia && (
@@ -432,6 +448,7 @@ export default function RegisterAluno() {
           )}
         />
 
+        {/* IMC */}
         <Controller
           control={control}
           name="imc"
@@ -440,15 +457,19 @@ export default function RegisterAluno() {
               <S.Label>IMC</S.Label>
               <S.Input
                 hasError={!!errors.imc}
-                value={value !== undefined && value !== null ? String(value) : ""}
+                value={textValueImc}
                 onChangeText={(text) => {
-                  const numericValue = parseFloat(text.replace(",", "."));
-                  if (!isNaN(numericValue)) {
-                    onChange(numericValue);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueImc(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
                   }
                 }}
                 placeholder="22.5"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholderTextColor="#999"
               />
               {errors.imc && <S.ErrorText>{errors.imc.message}</S.ErrorText>}
@@ -575,18 +596,24 @@ export default function RegisterAluno() {
         <Controller
           control={control}
           name="agua_corporal_total"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <>
               <S.Label>Água Corporal Total (%)</S.Label>
               <S.Input
                 hasError={!!errors.agua_corporal_total}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholder="Ex: 55.3"
                 placeholderTextColor="#999"
-                value={value?.toString() ?? ""}
+                value={textValueAguaCorporalTotal}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
-                  onChange(numeric);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueAguaCorporalTotal(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
+                  }
                 }}
               />
               {errors.agua_corporal_total && (
@@ -599,18 +626,24 @@ export default function RegisterAluno() {
         <Controller
           control={control}
           name="gordura_corporal"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <>
               <S.Label>Gordura Corporal (%)</S.Label>
               <S.Input
                 hasError={!!errors.gordura_corporal}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholder="Ex: 18.2"
                 placeholderTextColor="#999"
-                value={value?.toString() ?? ""}
+                value={textValueGorduraCorporal}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
-                  onChange(numeric);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueGorduraCorporal(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
+                  }
                 }}
               />
               {errors.gordura_corporal && (
@@ -623,18 +656,24 @@ export default function RegisterAluno() {
         <Controller
           control={control}
           name="massa_muscular_esqueletica"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <>
               <S.Label>Massa Muscular Esquelética (%)</S.Label>
               <S.Input
                 hasError={!!errors.massa_muscular_esqueletica}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholder="Ex: 40.0"
                 placeholderTextColor="#999"
-                value={value?.toString() ?? ""}
+                value={textValueMassaMuscularEsqueletica}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
-                  onChange(numeric);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueMassaMuscularEsqueletica(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
+                  }
                 }}
               />
               {errors.massa_muscular_esqueletica && (
@@ -647,7 +686,7 @@ export default function RegisterAluno() {
         <Controller
           control={control}
           name="taxa_metabolica_basal"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <>
               <S.Label>Taxa Metabólica Basal (kcal)</S.Label>
               <S.Input
@@ -655,10 +694,11 @@ export default function RegisterAluno() {
                 keyboardType="numeric"
                 placeholder="Ex: 1500"
                 placeholderTextColor="#999"
-                value={value?.toString() ?? ""}
+                value={textValueTaxaMetabolicaBasal}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9]/g, "");
-                  onChange(numeric);
+                  const onlyNumbers = text.replace(/[^0-9]/g, "");
+                  setTextValueTaxaMetabolicaBasal(onlyNumbers);
+                  onChange(onlyNumbers === "" ? undefined : parseInt(onlyNumbers, 10));
                 }}
               />
               {errors.taxa_metabolica_basal && (
@@ -671,21 +711,29 @@ export default function RegisterAluno() {
         <Controller
           control={control}
           name="proteinas"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <>
               <S.Label>Proteína (%)</S.Label>
               <S.Input
                 hasError={!!errors.proteinas}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholder="Ex: 15.0"
                 placeholderTextColor="#999"
-                value={value?.toString() ?? ""}
+                value={textValueProteinas}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
-                  onChange(numeric);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueProteinas(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
+                  }
                 }}
               />
-              {errors.proteinas && <S.ErrorText>{errors.proteinas.message}</S.ErrorText>}
+              {errors.proteinas && (
+                <S.ErrorText>{errors.proteinas.message}</S.ErrorText>
+              )}
             </>
           )}
         />
@@ -693,26 +741,34 @@ export default function RegisterAluno() {
         <Controller
           control={control}
           name="minerais"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange } }) => (
             <>
               <S.Label>Minerais (%)</S.Label>
               <S.Input
                 hasError={!!errors.minerais}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 placeholder="Ex: 5.0"
                 placeholderTextColor="#999"
-                value={value?.toString() ?? ""}
+                value={textValueMinerais}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
-                  onChange(numeric);
+                  if (/^\d*\.?\d*$/.test(text)) {
+                    setTextValueMinerais(text);
+                    if (text === "" || text === ".") {
+                      onChange(undefined);
+                    } else {
+                      onChange(parseFloat(text));
+                    }
+                  }
                 }}
               />
-              {errors.minerais && <S.ErrorText>{errors.minerais.message}</S.ErrorText>}
+              {errors.minerais && (
+                <S.ErrorText>{errors.minerais.message}</S.ErrorText>
+              )}
             </>
           )}
         />
       </S.Section>
-
+      
       <S.Buttons>
         <S.SubmitButton onPress={handleSubmit(onSubmit)} disabled={isLoading}>
           {isLoading ? (
@@ -722,7 +778,7 @@ export default function RegisterAluno() {
           )}
         </S.SubmitButton>
 
-        <S.GetButton onPress={getAlunos} disabled={isLoading}>
+        <S.GetButton onPress={handleGetAlunos} disabled={isLoading}>
           <S.ButtonText>Carregar Alunos</S.ButtonText>
         </S.GetButton>
 

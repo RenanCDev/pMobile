@@ -35,7 +35,9 @@ export const CreateAluno = z.object({
 
   estado_civil: z.string(),
 
-  bioimpedancia: z.string(),
+  bioimpedancia: z
+  .number({ invalid_type_error: "Informe um valor numérico válido" })
+  .min(0, "Valor mínimo é 0"),
 
   data_do_exame: z.string().refine(
     (val) => {
