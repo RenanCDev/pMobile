@@ -6,29 +6,29 @@ export const Container = styled.View`
   flex: 1;
   justify-content: center;
   padding: 24px;
-  background-color: ${colors.background};
+  background-color: ${colors.dark.background};
 `;
 
 export const Title = styled.Text`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 24px;
-  color: ${colors.text.primary};
+  color: ${colors.text.inverted};
   text-align: center;
 `;
 
 export const Label = styled.Text`
-  color: ${colors.text.primary};
+  color: ${colors.text.inverted};
   margin-bottom: 4px;
 `;
 
 export const Input = styled.TextInput`
-  background-color: ${colors.white};
-  color: ${colors.text.primary};
+  background-color: ${colors.dark.card};
+  color: ${colors.text.inverted};
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 12px;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${colors.secondary.DEFAULT};
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -40,7 +40,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  color: ${colors.text.inverted};
+  color: ${colors.white};
   font-weight: bold;
 `;
 
@@ -50,7 +50,7 @@ export const Link = styled.TouchableOpacity`
 `;
 
 export const LinkText = styled.Text`
-  color: ${colors.text.secondary};
+  color: ${colors.text.inverted};
   font-size: 14px;
   text-decoration: underline;
 `;

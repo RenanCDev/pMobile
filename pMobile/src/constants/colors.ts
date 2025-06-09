@@ -45,6 +45,7 @@ const colors = {
     background: '#1E1B2E',
     surface: '#2A2139',
     text: '#E0D4FF',
+    card: '#342E4A',
   }
 };
 

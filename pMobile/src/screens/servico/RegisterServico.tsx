@@ -1,61 +1,21 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextInput, ScrollView, Text, Alert } from 'react-native';
-import styled from 'styled-components/native';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CustomButton from '../../components/CustomButton';
 import colors from '../../constants/colors';
 import { CreateServico } from '../../schemas/CreateServico';
-
-const Container = styled(ScrollView)`
-  flex: 1;
-  padding: 24px;
-  background-color: ${colors.dark.background};
-`;
-
-const Title = styled.Text`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${colors.text.inverted};
-  margin-bottom: 24px;
-`;
-
-const Label = styled.Text`
-  color: ${colors.dark.text};
-  font-size: 16px;
-  margin-bottom: 8px;
-`;
-
-const Input = styled(TextInput)`
-  height: 44px;
-  background-color: ${colors.dark.surface};
-  border-radius: 12px;
-  padding: 10px;
-  color: ${colors.text.inverted};
-  margin-bottom: 4px;
-`;
-
-const TextArea = styled(TextInput)`
-  height: 120px;
-  background-color: ${colors.dark.surface};
-  border-radius: 12px;
-  padding: 10px;
-  color: ${colors.text.inverted};
-  margin-bottom: 4px;
-`;
-
-const ErrorText = styled.Text`
-  color: red;
-  margin-bottom: 12px;
-`;
-
-const ButtonRow = styled.View`
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 24px;
-`;
+import {
+  Container,
+  Title,
+  Label,
+  Input,
+  TextArea,
+  ErrorText,
+  ButtonRow,
+} from '../../styles/RegisterServico.styles';
 
 type FormData = {
   tipo: string;
@@ -98,7 +58,7 @@ export default function RegisterServico() {
     }
   };
 
-  async function carregarServicos() {
+  const carregarServicos = async () => {
     try {
       setIsLoading(true);
       const dados = await AsyncStorage.getItem('@servicos');
@@ -111,7 +71,7 @@ export default function RegisterServico() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Container keyboardShouldPersistTaps="handled">

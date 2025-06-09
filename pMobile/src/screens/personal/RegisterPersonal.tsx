@@ -157,21 +157,13 @@ export default function RegisterPersonal() {
           render={({ field: { onChange, value } }) => (
             <S.Section>
               <S.TitleHighlight>Nome Social</S.TitleHighlight>
-              {errors.nome_social ? (
-                <S.ErrorInput
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="Nome Social"
-                  placeholderTextColor="#999"
-                />
-              ) : (
-                <S.Input
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="Nome Social"
-                  placeholderTextColor="#999"
-                />
-              )}
+              <S.Input
+                onChangeText={onChange}
+                value={value}
+                placeholder="Nome Social"
+                placeholderTextColor="#999"
+                hasError={!!errors.nome_social}  // aqui passa a prop hasError
+              />
               {errors.nome_social && <S.ErrorText>{errors.nome_social.message}</S.ErrorText>}
             </S.Section>
           )}
@@ -183,29 +175,17 @@ export default function RegisterPersonal() {
           render={({ field: { onChange, value } }) => (
             <S.Section>
               <S.TitleHighlight>CPF</S.TitleHighlight>
-              {errors.cpf ? (
-                <S.ErrorInput
-                  onChangeText={(text) => {
-                    const formatted = formatCPF(text);
-                    onChange(formatted);
-                  }}
-                  value={value}
-                  placeholder="000.000.000-00"
-                  keyboardType="numeric"
-                  placeholderTextColor="#999"
-                />
-              ) : (
-                <S.Input
-                  onChangeText={(text) => {
-                    const formatted = formatCPF(text);
-                    onChange(formatted);
-                  }}
-                  value={value}
-                  placeholder="000.000.000-00"
-                  keyboardType="numeric"
-                  placeholderTextColor="#999"
-                />
-              )}
+              <S.Input
+                onChangeText={(text) => {
+                  const formatted = formatCPF(text);
+                  onChange(formatted);
+                }}
+                value={value}
+                placeholder="000.000.000-00"
+                keyboardType="numeric"
+                placeholderTextColor="#999"
+                hasError={!!errors.cpf}  // aqui a prop para borda vermelha
+              />
               {errors.cpf && <S.ErrorText>{errors.cpf.message}</S.ErrorText>}
             </S.Section>
           )}
@@ -317,25 +297,15 @@ export default function RegisterPersonal() {
           render={({ field: { onChange, value } }) => (
             <S.Section>
               <S.TitleHighlight>E-mail</S.TitleHighlight>
-              {errors.email ? (
-                <S.ErrorInput
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="email@example.com"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  placeholderTextColor="#999"
-                />
-              ) : (
-                <S.Input
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="email@example.com"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  placeholderTextColor="#999"
-                />
-              )}
+              <S.Input
+                onChangeText={onChange}
+                value={value}
+                placeholder="email@example.com"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                placeholderTextColor="#999"
+                hasError={!!errors.email} // borda vermelha se erro
+              />
               {errors.email && <S.ErrorText>{errors.email.message}</S.ErrorText>}
             </S.Section>
           )}
@@ -347,30 +317,20 @@ export default function RegisterPersonal() {
           render={({ field: { onChange, value } }) => (
             <S.Section>
               <S.TitleHighlight>Celular</S.TitleHighlight>
-              {errors.numero_de_celular ? (
-                <S.ErrorInput
-                  onChangeText={(text) => {
-                    const formatted = formatPhoneNumber(text);
-                    setValue("numero_de_celular", formatted);
-                  }}
-                  value={value}
-                  keyboardType="phone-pad"
-                  placeholder="(00) 00000-0000"
-                  placeholderTextColor="#999"
-                />
-              ) : (
-                <S.Input
-                  onChangeText={(text) => {
-                    const formatted = formatPhoneNumber(text);
-                    setValue("numero_de_celular", formatted);
-                  }}
-                  value={value}
-                  keyboardType="phone-pad"
-                  placeholder="(00) 00000-0000"
-                  placeholderTextColor="#999"
-                />
+              <S.Input
+                onChangeText={(text) => {
+                  const formatted = formatPhoneNumber(text);
+                  onChange(formatted);
+                }}
+                value={value}
+                keyboardType="phone-pad"
+                placeholder="(00) 00000-0000"
+                placeholderTextColor="#999"
+                hasError={!!errors.numero_de_celular}
+              />
+              {errors.numero_de_celular && (
+                <S.ErrorText>{errors.numero_de_celular.message}</S.ErrorText>
               )}
-              {errors.numero_de_celular && <S.ErrorText>{errors.numero_de_celular.message}</S.ErrorText>}
             </S.Section>
           )}
         />
@@ -556,21 +516,19 @@ export default function RegisterPersonal() {
         <Controller
           control={control}
           name="locais_disponiveis"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Locais disponíveis</Text>
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <S.Section>
+              <S.Label>Locais disponíveis</S.Label>
               <S.InputMultiline
-                hasError={!!errors.locais_disponiveis}
+                hasError={!!error}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Ex: Academia X, Parque Y"
                 placeholderTextColor="#999"
                 numberOfLines={2}
               />
-              {errors.locais_disponiveis && (
-                <S.ErrorText>{errors.locais_disponiveis.message}</S.ErrorText>
-              )}
-            </>
+              {error && <S.ErrorText>{error.message}</S.ErrorText>}
+            </S.Section>
           )}
         />
 
@@ -578,12 +536,12 @@ export default function RegisterPersonal() {
           control={control}
           name="senha"
           render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <S.Section style={{ marginBottom: 16 }}>
-              <Text style={{ marginBottom: 4, color: colors.text.primary }}>Senha</Text>
+            <S.Section>
+              <S.Label>Senha</S.Label>
               <S.Input
                 hasError={!!error}
                 placeholder="Digite sua senha"
-                placeholderTextColor={colors.text.muted}
+                placeholderTextColor="#999"
                 secureTextEntry
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -593,6 +551,7 @@ export default function RegisterPersonal() {
             </S.Section>
           )}
         />
+
       </S.Section>
 
       <S.Buttons>

@@ -5,14 +5,9 @@ import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { z } from "zod";
 import {
-  ScrollView,
-  View,
   Text,
-  TextInput,
   Alert,
-  TouchableOpacity,
   ActivityIndicator,
-  StyleSheet,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,14 +42,6 @@ export default function RegisterAluno() {
   } = useForm<AlunoFormData>({
     resolver: zodResolver(CreateAluno),
   });
-
-  function handleLoginClick() {
-    navigation.navigate("LoginAluno" as never);
-  }
-
-  function resetForm() {
-    reset();
-  }
 
   const onSubmit = async (data: AlunoFormData) => {
     const cleanData = {
@@ -100,6 +87,14 @@ export default function RegisterAluno() {
       setIsLoading(false);
     }
   };
+  
+  function handleLoginClick() {
+    navigation.navigate("LoginAluno" as never);
+  }
+
+  function resetForm() {
+    reset();
+  }
 
   async function getAlunos() {
     try {
@@ -135,8 +130,8 @@ export default function RegisterAluno() {
           control={control}
           name="nome"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Nome completo</Text>
+            <S.Section>
+              <S.Label>Nome completo</S.Label>
               <S.Input
                 hasError={!!errors.nome}
                 onChangeText={onChange}
@@ -145,7 +140,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.nome && <S.ErrorText>{errors.nome.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -153,8 +148,8 @@ export default function RegisterAluno() {
           control={control}
           name="nome_social"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Nome Social</Text>
+            <S.Section>
+              <S.Label>Nome Social</S.Label>
               <S.Input
                 hasError={!!errors.nome_social}
                 onChangeText={onChange}
@@ -165,7 +160,7 @@ export default function RegisterAluno() {
               {errors.nome_social && (
                 <S.ErrorText>{errors.nome_social.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
 
@@ -173,8 +168,8 @@ export default function RegisterAluno() {
           control={control}
           name="cpf"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>CPF</Text>
+            <S.Section>
+              <S.Label>CPF</S.Label>
               <S.Input
                 hasError={!!errors.cpf}
                 onChangeText={(text) => {
@@ -187,7 +182,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.cpf && <S.ErrorText>{errors.cpf.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -195,8 +190,8 @@ export default function RegisterAluno() {
           control={control}
           name="etnia"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Etnia</Text>
+            <S.Section>
+              <S.Label>Etnia</S.Label>
               <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="nao_informado" />
                 <Picker.Item label="Amarela" value="amarela" />
@@ -206,7 +201,7 @@ export default function RegisterAluno() {
                 <Picker.Item label="Preta" value="preta" />
               </S.StyledPicker>
               {errors.etnia && <S.ErrorText>{errors.etnia.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -214,8 +209,8 @@ export default function RegisterAluno() {
           control={control}
           name="sexo"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Sexo</Text>
+            <S.Section>
+              <S.Label>Sexo</S.Label>
               <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="N" />
                 <Picker.Item label="Feminino" value="F" />
@@ -223,7 +218,7 @@ export default function RegisterAluno() {
                 <Picker.Item label="Outro" value="O" />
               </S.StyledPicker>
               {errors.sexo && <S.ErrorText>{errors.sexo.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -231,9 +226,8 @@ export default function RegisterAluno() {
           control={control}
           name="data_de_nascimento"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Data de nascimento</Text>
-
+            <S.Section>
+              <S.Label>Data de nascimento</S.Label>
               {Platform.OS === "web" ? (
                 <input
                   type="date"
@@ -260,8 +254,8 @@ export default function RegisterAluno() {
                     hasError={!!errors.data_de_nascimento}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <Text style={{ color: value ? colors.text.primary : '#999' }}>
-                      {value || 'Selecionar data'}
+                    <Text style={{ color: value ? colors.text.primary : "#999" }}>
+                      {value || "Selecionar data"}
                     </Text>
                   </S.DatePickerButton>
 
@@ -283,11 +277,10 @@ export default function RegisterAluno() {
                   )}
                 </>
               )}
-
               {errors.data_de_nascimento && (
                 <S.ErrorText>{errors.data_de_nascimento.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
 
@@ -295,8 +288,8 @@ export default function RegisterAluno() {
           control={control}
           name="email"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>E-mail</Text>
+            <S.Section>
+              <S.Label>E-mail</S.Label>
               <S.Input
                 hasError={!!errors.email}
                 onChangeText={onChange}
@@ -307,7 +300,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.email && <S.ErrorText>{errors.email.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -315,8 +308,8 @@ export default function RegisterAluno() {
           control={control}
           name="numero_de_celular"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Celular</Text>
+            <S.Section>
+              <S.Label>Celular</S.Label>
               <S.Input
                 hasError={!!errors.numero_de_celular}
                 onChangeText={(text) => {
@@ -331,7 +324,7 @@ export default function RegisterAluno() {
               {errors.numero_de_celular && (
                 <S.ErrorText>{errors.numero_de_celular.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
 
@@ -339,8 +332,8 @@ export default function RegisterAluno() {
           control={control}
           name="estado_civil"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Estado Civil</Text>
+            <S.Section>
+              <S.Label>Estado Civil</S.Label>
               <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="nao_informado" />
                 <Picker.Item label="Casado" value="casado" />
@@ -352,23 +345,28 @@ export default function RegisterAluno() {
               {errors.estado_civil && (
                 <S.ErrorText>{errors.estado_civil.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
+      </S.Section>
+
+      <S.Section>
+        <S.SectionTitle>
+          Dados de <S.TitleHighlight>Saúde</S.TitleHighlight>
+        </S.SectionTitle>
 
         <Controller
           control={control}
           name="altura"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Altura</Text>
+            <S.Section>
+              <S.Label>Altura</S.Label>
               <S.Input
                 hasError={!!errors.altura}
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
                   const normalizedText = text.replace(",", ".");
                   const numericValue = parseFloat(normalizedText);
-
                   if (!isNaN(numericValue)) {
                     onChange(numericValue);
                   } else {
@@ -380,7 +378,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.altura && <S.ErrorText>{errors.altura.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -388,8 +386,8 @@ export default function RegisterAluno() {
           control={control}
           name="peso"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Peso</Text>
+            <S.Section>
+              <S.Label>Peso</S.Label>
               <S.Input
                 hasError={!!errors.peso}
                 value={value !== undefined && value !== null ? String(value) : ""}
@@ -406,7 +404,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.peso && <S.ErrorText>{errors.peso.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -414,8 +412,8 @@ export default function RegisterAluno() {
           control={control}
           name="bioimpedancia"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Bioimpedância (%)</Text>
+            <S.Section>
+              <S.Label>Bioimpedância (%)</S.Label>
               <S.Input
                 hasError={!!errors.bioimpedancia}
                 onChangeText={(text) => {
@@ -430,7 +428,7 @@ export default function RegisterAluno() {
               {errors.bioimpedancia && (
                 <S.ErrorText>{errors.bioimpedancia.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
 
@@ -438,8 +436,8 @@ export default function RegisterAluno() {
           control={control}
           name="imc"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>IMC</Text>
+            <S.Section>
+              <S.Label>IMC</S.Label>
               <S.Input
                 hasError={!!errors.imc}
                 value={value !== undefined && value !== null ? String(value) : ""}
@@ -454,7 +452,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.imc && <S.ErrorText>{errors.imc.message}</S.ErrorText>}
-            </>
+            </S.Section>
           )}
         />
 
@@ -462,9 +460,8 @@ export default function RegisterAluno() {
           control={control}
           name="data_do_exame"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Data do exame</Text>
-
+            <S.Section>
+              <S.Label>Data do exame</S.Label>
               {Platform.OS === "web" ? (
                 <input
                   type="date"
@@ -485,12 +482,14 @@ export default function RegisterAluno() {
                 />
               ) : (
                 <>
-                  <S.PickerWrapper hasError={!!errors.data_do_exame} onPress={() => setShowDatePicker(true)}>
+                  <S.PickerWrapper
+                    hasError={!!errors.data_do_exame}
+                    onPress={() => setShowDatePicker(true)}
+                  >
                     <Text style={{ color: value ? colors.text.primary : "#999" }}>
                       {value || "Selecionar data"}
                     </Text>
                   </S.PickerWrapper>
-
                   {showDatePicker && (
                     <DateTimePicker
                       value={value ? new Date(value) : new Date()}
@@ -507,11 +506,10 @@ export default function RegisterAluno() {
                   )}
                 </>
               )}
-
               {errors.data_do_exame && (
                 <S.ErrorText>{errors.data_do_exame.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
 
@@ -519,9 +517,8 @@ export default function RegisterAluno() {
           control={control}
           name="hora_do_exame"
           render={({ field: { onChange, value } }) => (
-            <>
-              <Text>Hora do exame</Text>
-
+            <S.Section>
+              <S.Label>Hora do exame</S.Label>
               {Platform.OS === "web" ? (
                 <input
                   type="time"
@@ -550,7 +547,6 @@ export default function RegisterAluno() {
                       {value || "Selecionar hora"}
                     </Text>
                   </S.DatePickerButton>
-
                   {showTimePicker && (
                     <DateTimePicker
                       value={value ? new Date(`1970-01-01T${value}:00`) : new Date()}
@@ -569,11 +565,10 @@ export default function RegisterAluno() {
                   )}
                 </>
               )}
-
               {errors.hora_do_exame && (
                 <S.ErrorText>{errors.hora_do_exame.message}</S.ErrorText>
               )}
-            </>
+            </S.Section>
           )}
         />
 
