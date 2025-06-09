@@ -32,7 +32,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function StackNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeScreen"
       screenOptions={{
         headerLeft: () => <HeaderHomeButton />,
         headerRight: () => (
@@ -51,7 +51,7 @@ export default function StackNavigator() {
         headerTitleAlign: 'center',
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Início' }} />
 
       <Stack.Screen name="LoginPersonal" component={LoginPersonal} options={{ title: 'Login Personal' }} />
       <Stack.Screen name="LoginAluno" component={LoginAluno} options={{ title: 'Login Aluno' }} />

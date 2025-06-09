@@ -31,7 +31,7 @@ export default function HeaderMenu() {
         <Overlay onPress={closeMenu}>
           <CenteredView>
             <MenuContainer>
-              <MenuItem label="Home" onPress={() => handleNavigate('Home')} isHome />
+              <MenuItem label="Home" onPress={() => handleNavigate('HomeScreen')} isHome />
 
               <SectionTitle>Personals</SectionTitle>
               <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />

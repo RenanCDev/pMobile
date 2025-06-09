@@ -28,6 +28,7 @@ import {
   formatPhoneNumber,
   unformatPhoneNumber,
 } from "../../utils/celular/format";
+import * as S from "../../styles/Register.styles";
 
 type AlunoFormData = z.infer<typeof CreateAluno>;
 
@@ -116,19 +117,19 @@ export default function RegisterAluno() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity style={styles.loginBtn} onPress={handleLoginClick}>
-        <Text style={styles.loginBtnText}>Login</Text>
-      </TouchableOpacity>
+    <S.Container contentContainerStyle={{ paddingBottom: 16 }}>
+      <S.LoginButton onPress={handleLoginClick}>
+        <S.LoginButtonText>Login</S.LoginButtonText>
+      </S.LoginButton>
 
-      <Text style={styles.title}>
-        Cadastro de <Text style={styles.titleHighlight}>Aluno</Text>
-      </Text>
+      <S.Title>
+        Cadastro de <S.TitleHighlight>Aluno</S.TitleHighlight>
+      </S.Title>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
-          Dados <Text style={styles.titleHighlight}>Pessoais</Text>
-        </Text>
+      <S.Section>
+        <S.SectionTitle>
+          Dados <S.TitleHighlight>Pessoais</S.TitleHighlight>
+        </S.SectionTitle>
 
         <Controller
           control={control}
@@ -136,16 +137,14 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Nome completo</Text>
-              <TextInput
-                style={[styles.input, errors.nome && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.nome}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Nome completo"
                 placeholderTextColor="#999"
               />
-              {errors.nome && (
-                <Text style={styles.errorText}>{errors.nome.message}</Text>
-              )}
+              {errors.nome && <S.ErrorText>{errors.nome.message}</S.ErrorText>}
             </>
           )}
         />
@@ -156,15 +155,15 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Nome Social</Text>
-              <TextInput
-                style={[styles.input, errors.nome_social && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.nome_social}
                 onChangeText={onChange}
                 value={value}
                 placeholder="Nome Social"
                 placeholderTextColor="#999"
               />
               {errors.nome_social && (
-                <Text style={styles.errorText}>{errors.nome_social.message}</Text>
+                <S.ErrorText>{errors.nome_social.message}</S.ErrorText>
               )}
             </>
           )}
@@ -176,8 +175,8 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>CPF</Text>
-              <TextInput
-                style={[styles.input, errors.cpf && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.cpf}
                 onChangeText={(text) => {
                   const formatted = formatCPF(text);
                   setValue("cpf", formatted);
@@ -187,9 +186,7 @@ export default function RegisterAluno() {
                 keyboardType="numeric"
                 placeholderTextColor="#999"
               />
-              {errors.cpf && (
-                <Text style={styles.errorText}>{errors.cpf.message}</Text>
-              )}
+              {errors.cpf && <S.ErrorText>{errors.cpf.message}</S.ErrorText>}
             </>
           )}
         />
@@ -200,21 +197,15 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Etnia</Text>
-              <Picker
-                selectedValue={value}
-                onValueChange={onChange}
-                style={styles.picker}
-              >
+              <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="nao_informado" />
                 <Picker.Item label="Amarela" value="amarela" />
                 <Picker.Item label="Branca" value="branca" />
                 <Picker.Item label="Indígena" value="indigena" />
                 <Picker.Item label="Parda" value="parda" />
                 <Picker.Item label="Preta" value="preta" />
-              </Picker>
-              {errors.etnia && (
-                <Text style={styles.errorText}>{errors.etnia.message}</Text>
-              )}
+              </S.StyledPicker>
+              {errors.etnia && <S.ErrorText>{errors.etnia.message}</S.ErrorText>}
             </>
           )}
         />
@@ -225,19 +216,13 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Sexo</Text>
-              <Picker
-                selectedValue={value}
-                onValueChange={onChange}
-                style={styles.picker}
-              >
+              <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="N" />
                 <Picker.Item label="Feminino" value="F" />
                 <Picker.Item label="Masculino" value="M" />
                 <Picker.Item label="Outro" value="O" />
-              </Picker>
-              {errors.sexo && (
-                <Text style={styles.errorText}>{errors.sexo.message}</Text>
-              )}
+              </S.StyledPicker>
+              {errors.sexo && <S.ErrorText>{errors.sexo.message}</S.ErrorText>}
             </>
           )}
         />
@@ -256,7 +241,9 @@ export default function RegisterAluno() {
                   onChange={(e) => onChange(e.target.value)}
                   style={{
                     borderWidth: 1,
-                    borderColor: errors.data_de_nascimento ? "red" : colors.secondary.DEFAULT,
+                    borderColor: errors.data_de_nascimento
+                      ? "red"
+                      : colors.secondary.DEFAULT,
                     borderRadius: 4,
                     marginBottom: 8,
                     height: 50,
@@ -269,18 +256,14 @@ export default function RegisterAluno() {
                 />
               ) : (
                 <>
-                  <TouchableOpacity
-                    style={[
-                      styles.picker,
-                      errors.data_de_nascimento && styles.errorInput,
-                      { justifyContent: "center", paddingHorizontal: 10 },
-                    ]}
+                  <S.DatePickerButton
+                    hasError={!!errors.data_de_nascimento}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <Text style={{ color: value ? colors.text.primary : "#999" }}>
-                      {value || "Selecionar data"}
+                    <Text style={{ color: value ? colors.text.primary : '#999' }}>
+                      {value || 'Selecionar data'}
                     </Text>
-                  </TouchableOpacity>
+                  </S.DatePickerButton>
 
                   {showDatePicker && (
                     <DateTimePicker
@@ -290,7 +273,9 @@ export default function RegisterAluno() {
                       onChange={(event, selectedDate) => {
                         setShowDatePicker(false);
                         if (selectedDate) {
-                          const formattedDate = selectedDate.toISOString().split("T")[0];
+                          const formattedDate = selectedDate
+                            .toISOString()
+                            .split("T")[0];
                           onChange(formattedDate);
                         }
                       }}
@@ -300,9 +285,7 @@ export default function RegisterAluno() {
               )}
 
               {errors.data_de_nascimento && (
-                <Text style={styles.errorText}>
-                  {errors.data_de_nascimento.message}
-                </Text>
+                <S.ErrorText>{errors.data_de_nascimento.message}</S.ErrorText>
               )}
             </>
           )}
@@ -314,8 +297,8 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>E-mail</Text>
-              <TextInput
-                style={[styles.input, errors.email && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.email}
                 onChangeText={onChange}
                 value={value}
                 placeholder="email@example.com"
@@ -323,9 +306,7 @@ export default function RegisterAluno() {
                 autoCapitalize="none"
                 placeholderTextColor="#999"
               />
-              {errors.email && (
-                <Text style={styles.errorText}>{errors.email.message}</Text>
-              )}
+              {errors.email && <S.ErrorText>{errors.email.message}</S.ErrorText>}
             </>
           )}
         />
@@ -336,8 +317,8 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Celular</Text>
-              <TextInput
-                style={[styles.input, errors.numero_de_celular && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.numero_de_celular}
                 onChangeText={(text) => {
                   const formatted = formatPhoneNumber(text);
                   setValue("numero_de_celular", formatted);
@@ -348,7 +329,7 @@ export default function RegisterAluno() {
                 placeholderTextColor="#999"
               />
               {errors.numero_de_celular && (
-                <Text style={styles.errorText}>{errors.numero_de_celular.message}</Text>
+                <S.ErrorText>{errors.numero_de_celular.message}</S.ErrorText>
               )}
             </>
           )}
@@ -360,20 +341,16 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Estado Civil</Text>
-              <Picker
-                selectedValue={value}
-                onValueChange={onChange}
-                style={styles.picker}
-              >
+              <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="nao_informado" />
                 <Picker.Item label="Casado" value="casado" />
                 <Picker.Item label="Divorciado" value="divorciado" />
                 <Picker.Item label="Solteiro" value="solteiro" />
                 <Picker.Item label="União estável" value="uniao_estavel" />
                 <Picker.Item label="Viúvo" value="viuvo" />
-              </Picker>
+              </S.StyledPicker>
               {errors.estado_civil && (
-                <Text style={styles.errorText}>{errors.estado_civil.message}</Text>
+                <S.ErrorText>{errors.estado_civil.message}</S.ErrorText>
               )}
             </>
           )}
@@ -385,8 +362,8 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Altura</Text>
-              <TextInput
-                style={[styles.input, errors.altura && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.altura}
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
                   const normalizedText = text.replace(",", ".");
@@ -402,9 +379,7 @@ export default function RegisterAluno() {
                 keyboardType="default"
                 placeholderTextColor="#999"
               />
-              {errors.altura && (
-                <Text style={styles.errorText}>{errors.altura.message}</Text>
-              )}
+              {errors.altura && <S.ErrorText>{errors.altura.message}</S.ErrorText>}
             </>
           )}
         />
@@ -415,8 +390,8 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Peso</Text>
-              <TextInput
-                style={[styles.input, errors.peso && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.peso}
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
                   const numericValue = parseFloat(text.replace(",", "."));
@@ -430,7 +405,7 @@ export default function RegisterAluno() {
                 keyboardType="numeric"
                 placeholderTextColor="#999"
               />
-              {errors.peso && <Text style={styles.errorText}>{errors.peso.message}</Text>}
+              {errors.peso && <S.ErrorText>{errors.peso.message}</S.ErrorText>}
             </>
           )}
         />
@@ -441,10 +416,10 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>Bioimpedância (%)</Text>
-              <TextInput
-                style={[styles.input, errors.bioimpedancia && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.bioimpedancia}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, '').replace(',', '.');
+                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
                   onChange(numeric);
                 }}
                 value={value}
@@ -452,7 +427,9 @@ export default function RegisterAluno() {
                 keyboardType="numeric"
                 placeholderTextColor="#999"
               />
-              {errors.bioimpedancia && <Text style={styles.errorText}>{errors.bioimpedancia.message}</Text>}
+              {errors.bioimpedancia && (
+                <S.ErrorText>{errors.bioimpedancia.message}</S.ErrorText>
+              )}
             </>
           )}
         />
@@ -463,21 +440,20 @@ export default function RegisterAluno() {
           render={({ field: { onChange, value } }) => (
             <>
               <Text>IMC</Text>
-              <TextInput
-                style={[styles.input, errors.imc && styles.errorInput]}
+              <S.Input
+                hasError={!!errors.imc}
                 value={value !== undefined && value !== null ? String(value) : ""}
                 onChangeText={(text) => {
                   const numericValue = parseFloat(text.replace(",", "."));
                   if (!isNaN(numericValue)) {
                     onChange(numericValue);
-                  } else {
                   }
                 }}
                 placeholder="22.5"
                 keyboardType="numeric"
                 placeholderTextColor="#999"
               />
-              {errors.imc && <Text style={styles.errorText}>{errors.imc.message}</Text>}
+              {errors.imc && <S.ErrorText>{errors.imc.message}</S.ErrorText>}
             </>
           )}
         />
@@ -509,18 +485,11 @@ export default function RegisterAluno() {
                 />
               ) : (
                 <>
-                  <TouchableOpacity
-                    style={[
-                      styles.picker,
-                      errors.data_do_exame && styles.errorInput,
-                      { justifyContent: "center", paddingHorizontal: 10 },
-                    ]}
-                    onPress={() => setShowDatePicker(true)}
-                  >
+                  <S.PickerWrapper hasError={!!errors.data_do_exame} onPress={() => setShowDatePicker(true)}>
                     <Text style={{ color: value ? colors.text.primary : "#999" }}>
                       {value || "Selecionar data"}
                     </Text>
-                  </TouchableOpacity>
+                  </S.PickerWrapper>
 
                   {showDatePicker && (
                     <DateTimePicker
@@ -540,7 +509,7 @@ export default function RegisterAluno() {
               )}
 
               {errors.data_do_exame && (
-                <Text style={styles.errorText}>{errors.data_do_exame.message}</Text>
+                <S.ErrorText>{errors.data_do_exame.message}</S.ErrorText>
               )}
             </>
           )}
@@ -573,24 +542,21 @@ export default function RegisterAluno() {
                 />
               ) : (
                 <>
-                  <TouchableOpacity
-                    style={[
-                      styles.picker,
-                      errors.hora_do_exame && styles.errorInput,
-                      { justifyContent: "center", paddingHorizontal: 10 },
-                    ]}
+                  <S.DatePickerButton
+                    hasError={!!errors.hora_do_exame}
                     onPress={() => setShowTimePicker(true)}
                   >
                     <Text style={{ color: value ? colors.text.primary : "#999" }}>
                       {value || "Selecionar hora"}
                     </Text>
-                  </TouchableOpacity>
+                  </S.DatePickerButton>
 
                   {showTimePicker && (
                     <DateTimePicker
                       value={value ? new Date(`1970-01-01T${value}:00`) : new Date()}
                       mode="time"
                       display="default"
+                      is24Hour={true}
                       onChange={(event, selectedTime) => {
                         setShowTimePicker(false);
                         if (selectedTime) {
@@ -605,7 +571,7 @@ export default function RegisterAluno() {
               )}
 
               {errors.hora_do_exame && (
-                <Text style={styles.errorText}>{errors.hora_do_exame.message}</Text>
+                <S.ErrorText>{errors.hora_do_exame.message}</S.ErrorText>
               )}
             </>
           )}
@@ -616,20 +582,20 @@ export default function RegisterAluno() {
           name="agua_corporal_total"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Água Corporal Total (%)</Text>
-              <TextInput
-                style={[styles.input, errors.agua_corporal_total && styles.errorInput]}
+              <S.Label>Água Corporal Total (%)</S.Label>
+              <S.Input
+                hasError={!!errors.agua_corporal_total}
+                keyboardType="numeric"
+                placeholder="Ex: 55.3"
+                placeholderTextColor="#999"
+                value={value?.toString() ?? ""}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, '').replace(',', '.');
+                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
                   onChange(numeric);
                 }}
-                value={value?.toString() ?? ''}
-                placeholder="Ex: 55.3"
-                keyboardType="numeric"
-                placeholderTextColor="#999"
               />
               {errors.agua_corporal_total && (
-                <Text style={styles.errorText}>{errors.agua_corporal_total.message}</Text>
+                <S.ErrorText>{errors.agua_corporal_total.message}</S.ErrorText>
               )}
             </>
           )}
@@ -640,20 +606,20 @@ export default function RegisterAluno() {
           name="gordura_corporal"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Gordura Corporal (%)</Text>
-              <TextInput
-                style={[styles.input, errors.gordura_corporal && styles.errorInput]}
+              <S.Label>Gordura Corporal (%)</S.Label>
+              <S.Input
+                hasError={!!errors.gordura_corporal}
+                keyboardType="numeric"
+                placeholder="Ex: 18.2"
+                placeholderTextColor="#999"
+                value={value?.toString() ?? ""}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, '').replace(',', '.');
+                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
                   onChange(numeric);
                 }}
-                value={value?.toString() ?? ''}
-                placeholder="Ex: 18.2"
-                keyboardType="numeric"
-                placeholderTextColor="#999"
               />
               {errors.gordura_corporal && (
-                <Text style={styles.errorText}>{errors.gordura_corporal.message}</Text>
+                <S.ErrorText>{errors.gordura_corporal.message}</S.ErrorText>
               )}
             </>
           )}
@@ -664,20 +630,20 @@ export default function RegisterAluno() {
           name="massa_muscular_esqueletica"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Massa Muscular Esquelética (%)</Text>
-              <TextInput
-                style={[styles.input, errors.massa_muscular_esqueletica && styles.errorInput]}
+              <S.Label>Massa Muscular Esquelética (%)</S.Label>
+              <S.Input
+                hasError={!!errors.massa_muscular_esqueletica}
+                keyboardType="numeric"
+                placeholder="Ex: 40.0"
+                placeholderTextColor="#999"
+                value={value?.toString() ?? ""}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, '').replace(',', '.');
+                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
                   onChange(numeric);
                 }}
-                value={value?.toString() ?? ''}
-                placeholder="Ex: 40.0"
-                keyboardType="numeric"
-                placeholderTextColor="#999"
               />
               {errors.massa_muscular_esqueletica && (
-                <Text style={styles.errorText}>{errors.massa_muscular_esqueletica.message}</Text>
+                <S.ErrorText>{errors.massa_muscular_esqueletica.message}</S.ErrorText>
               )}
             </>
           )}
@@ -688,20 +654,20 @@ export default function RegisterAluno() {
           name="taxa_metabolica_basal"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Taxa Metabólica Basal (kcal)</Text>
-              <TextInput
-                style={[styles.input, errors.taxa_metabolica_basal && styles.errorInput]}
+              <S.Label>Taxa Metabólica Basal (kcal)</S.Label>
+              <S.Input
+                hasError={!!errors.taxa_metabolica_basal}
+                keyboardType="numeric"
+                placeholder="Ex: 1500"
+                placeholderTextColor="#999"
+                value={value?.toString() ?? ""}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9]/g, '');
+                  const numeric = text.replace(/[^0-9]/g, "");
                   onChange(numeric);
                 }}
-                value={value?.toString() ?? ''}
-                placeholder="Ex: 1500"
-                keyboardType="numeric"
-                placeholderTextColor="#999"
               />
               {errors.taxa_metabolica_basal && (
-                <Text style={styles.errorText}>{errors.taxa_metabolica_basal.message}</Text>
+                <S.ErrorText>{errors.taxa_metabolica_basal.message}</S.ErrorText>
               )}
             </>
           )}
@@ -712,19 +678,19 @@ export default function RegisterAluno() {
           name="proteinas"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Proteína (%)</Text>
-              <TextInput
-                style={[styles.input, errors.proteinas && styles.errorInput]}
+              <S.Label>Proteína (%)</S.Label>
+              <S.Input
+                hasError={!!errors.proteinas}
+                keyboardType="numeric"
+                placeholder="Ex: 15.0"
+                placeholderTextColor="#999"
+                value={value?.toString() ?? ""}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, '').replace(',', '.');
+                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
                   onChange(numeric);
                 }}
-                value={value?.toString() ?? ''}
-                placeholder="Ex: 15.0"
-                keyboardType="numeric"
-                placeholderTextColor="#999"
               />
-              {errors.proteinas && <Text style={styles.errorText}>{errors.proteinas.message}</Text>}
+              {errors.proteinas && <S.ErrorText>{errors.proteinas.message}</S.ErrorText>}
             </>
           )}
         />
@@ -734,178 +700,42 @@ export default function RegisterAluno() {
           name="minerais"
           render={({ field: { onChange, value } }) => (
             <>
-              <Text>Minerais (%)</Text>
-              <TextInput
-                style={[styles.input, errors.minerais && styles.errorInput]}
+              <S.Label>Minerais (%)</S.Label>
+              <S.Input
+                hasError={!!errors.minerais}
+                keyboardType="numeric"
+                placeholder="Ex: 5.0"
+                placeholderTextColor="#999"
+                value={value?.toString() ?? ""}
                 onChangeText={(text) => {
-                  const numeric = text.replace(/[^0-9.,]/g, '').replace(',', '.');
+                  const numeric = text.replace(/[^0-9.,]/g, "").replace(",", ".");
                   onChange(numeric);
                 }}
-                value={value?.toString() ?? ''}
-                placeholder="Ex: 5.0"
-                keyboardType="numeric"
-                placeholderTextColor="#999"
               />
-              {errors.minerais && <Text style={styles.errorText}>{errors.minerais.message}</Text>}
+              {errors.minerais && <S.ErrorText>{errors.minerais.message}</S.ErrorText>}
             </>
           )}
         />
+      </S.Section>
 
-        <Controller
-          control={control}
-          name="senha"
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <View style={{ marginBottom: 16 }}>
-              <Text style={{ marginBottom: 4, color: colors.text.primary }}>Senha</Text>
-              <TextInput
-                style={{
-                  backgroundColor: colors.white,
-                  borderColor: error ? colors.status.error : colors.border,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  padding: 12,
-                  color: colors.text.primary,
-                }}
-                placeholder="Digite sua senha"
-                placeholderTextColor={colors.text.muted}
-                secureTextEntry
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-              {error && (
-                <Text style={{ color: colors.status.error, marginTop: 4 }}>
-                  {error.message}
-                </Text>
-              )}
-            </View>
-          )}
-        />
-
-      </View>
-
-      <View style={styles.buttons}>
-        <TouchableOpacity
-          style={[styles.button, styles.submitButton]}
-          onPress={handleSubmit(onSubmit)}
-          disabled={isLoading}
-        >
+      <S.Buttons>
+        <S.SubmitButton onPress={handleSubmit(onSubmit)} disabled={isLoading}>
           {isLoading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>Cadastrar</Text>
+            <S.ButtonText>Cadastrar</S.ButtonText>
           )}
-        </TouchableOpacity>
+        </S.SubmitButton>
 
-        <TouchableOpacity
-          style={[styles.button, styles.getButton]}
-          onPress={getAlunos}
-          disabled={isLoading}
-        >
-          <Text style={styles.buttonText}>Carregar Alunos</Text>
-        </TouchableOpacity>
+        <S.GetButton onPress={getAlunos} disabled={isLoading}>
+          <S.ButtonText>Carregar Alunos</S.ButtonText>
+        </S.GetButton>
 
-        <TouchableOpacity
-          style={[styles.button, styles.resetButton]}
-          onPress={resetForm}
-          disabled={isLoading}
-        >
-          <Text style={styles.buttonText}>Resetar</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        <S.ResetButton onPress={resetForm} disabled={isLoading}>
+          <S.ButtonText>Resetar</S.ButtonText>
+        </S.ResetButton>
+      </S.Buttons>
+      
+    </S.Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    backgroundColor: colors.background,
-  },
-  loginBtn: {
-    alignSelf: "flex-end",
-    marginBottom: 8,
-  },
-  loginBtnText: {
-    color: colors.primary.DEFAULT,
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: colors.text.primary,
-  },
-  titleHighlight: {
-    color: colors.primary.DEFAULT,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 12,
-    color: colors.text.primary,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.secondary.DEFAULT,
-    borderRadius: 4,
-    padding: 8,
-    marginBottom: 8,
-    color: colors.text.primary,
-    backgroundColor: colors.white,
-  },
-  inputMultiline: {
-    borderWidth: 1,
-    borderColor: colors.secondary.DEFAULT,
-    borderRadius: 4,
-    padding: 8,
-    marginBottom: 8,
-    textAlignVertical: "top",
-    color: colors.text.primary,
-    backgroundColor: colors.white,
-  },
-  picker: {
-    borderWidth: 1,
-    borderColor: colors.secondary.DEFAULT,
-    borderRadius: 4,
-    marginBottom: 8,
-    height: 50,
-    color: colors.text.primary,
-    backgroundColor: colors.white,
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 32,
-  },
-  button: {
-    flex: 1,
-    padding: 12,
-    borderRadius: 4,
-    marginHorizontal: 4,
-    alignItems: "center",
-  },
-  submitButton: {
-    backgroundColor: colors.primary.DEFAULT,
-  },
-  getButton: {
-    backgroundColor: colors.secondary.DEFAULT,
-  },
-  resetButton: {
-    backgroundColor: colors.dark.background,
-  },
-  buttonText: {
-    color: colors.white,
-    fontWeight: "bold",
-  },
-  errorText: {
-    color: colors.dark.background,
-    marginBottom: 8,
-  },
-  errorInput: {
-    borderColor: colors.dark.background,
-  },
-});

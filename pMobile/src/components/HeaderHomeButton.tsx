@@ -12,7 +12,7 @@ export default function HeaderHomeButton() {
   const navigation = useNavigation<NavigationProp>();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ marginLeft: 12 }}>
+    <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')} style={{ marginLeft: 12 }}>
       <Ionicons name="home" size={24} color={colors.white} />
     </TouchableOpacity>
   );
