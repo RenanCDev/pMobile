@@ -12,7 +12,7 @@ export default function DeletePersonal() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background, // cor clara de fundo da paleta
+    backgroundColor: colors.background,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: colors.primary.DEFAULT, // cor roxa principal da paleta
+    color: colors.primary.DEFAULT,
   },
 });
 

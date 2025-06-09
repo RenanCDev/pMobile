@@ -54,7 +54,7 @@ const onSubmit = async (data: FormData) => {
 
   try {
     setIsLoading(true);
-    await saveServico(data, personalLogado.nome); // o id será gerado dentro
+    await saveServico(data, personalLogado.nome);
     await reloadData();
     Alert.alert('Sucesso', 'Serviço salvo com sucesso!');
     reset();

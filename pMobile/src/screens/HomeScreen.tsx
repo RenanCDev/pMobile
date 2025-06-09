@@ -8,10 +8,13 @@ import CustomButton from '../components/CustomButton';
 import HeaderMenu from '../components/HeaderMenu';
 import * as S from '../styles/HomeScreen.styles';
 
+import { useDataContext } from '../context/DataContext';
+
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
+  const { personalLogado, alunoLogado } = useDataContext();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -23,9 +26,13 @@ export default function HomeScreen() {
     });
   }, [navigation]);
 
+  const nome = personalLogado?.nome ?? alunoLogado?.nome ?? '';
+
   return (
     <S.Container>
-      <S.Title>Bem-vindo!</S.Title>
+      <S.Title>
+        {nome ? `Faça bom uso do app, ${nome}` : 'Bem-vindo!'}
+      </S.Title>
 
       <CustomButton
         title="Login Personal"

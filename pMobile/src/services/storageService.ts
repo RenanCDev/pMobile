@@ -2,8 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeCPFFormatting } from '../utils/cpf/format';
 import { unformatPhoneNumber } from '../utils/celular/format';
 
-// -------------------- TYPES --------------------
-
 export interface Personal {
   id: number;
   dados_bancarios: {
@@ -65,8 +63,6 @@ export interface Servico {
   cadastrado_por: string;
 }
 
-// -------------------- PERSONAL --------------------
-
 export async function savePersonal(personalData: Personal) {
   try {
     const existing = await AsyncStorage.getItem('@personais');
@@ -113,8 +109,6 @@ export async function deletePersonal(cpf: string) {
     throw error;
   }
 }
-
-// -------------------- ALUNO --------------------
 
 export async function saveAluno(alunoData: Aluno) {
   try {
@@ -168,8 +162,6 @@ export async function deleteAluno(cpf: string) {
   const filtered = alunos.filter(a => a.pessoa.cpf !== cpf);
   await AsyncStorage.setItem('@alunos', JSON.stringify(filtered));
 }
-
-// -------------------- SERVICO --------------------
 
 export async function saveServico(servicoData: Omit<Servico, 'id' | 'cadastrado_por'>, nomePersonal: string) {
   try {
@@ -240,8 +232,6 @@ export async function deleteServico(id: number) {
   await AsyncStorage.setItem('@servicos', JSON.stringify(filtered));
 }
 
-// -------------------- LOGIN --------------------
-
 export async function loginPersonal(cpf: string, senha: string): Promise<Personal | null> {
   try {
     const data = await AsyncStorage.getItem('@personais');
@@ -259,11 +249,8 @@ export async function loginPersonal(cpf: string, senha: string): Promise<Persona
   }
 }
 
-// -------------------- UTIL --------------------
-
 export async function clearAllData() {
   await AsyncStorage.multiRemove(['@personais', '@alunos', '@servicos']);
 }
 
-// -------------------- SERVICO UTILS --------------------
 

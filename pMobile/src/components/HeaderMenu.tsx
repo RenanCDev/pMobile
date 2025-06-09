@@ -19,6 +19,11 @@ import {
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
+// Tipo que seleciona só as rotas que NÃO têm parâmetros
+type RoutesWithoutParams = {
+  [K in keyof RootStackParamList]: RootStackParamList[K] extends undefined ? K : never
+}[keyof RootStackParamList];
+
 export default function HeaderMenu() {
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation<NavigationProp>();
@@ -26,7 +31,7 @@ export default function HeaderMenu() {
   const openMenu = () => setIsVisible(true);
   const closeMenu = () => setIsVisible(false);
 
-  const handleNavigate = (route: keyof RootStackParamList) => {
+  const handleNavigate = (route: RoutesWithoutParams) => {
     closeMenu();
     navigation.navigate(route);
   };

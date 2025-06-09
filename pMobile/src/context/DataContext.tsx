@@ -9,7 +9,9 @@ type DataContextType = {
   isLoading: boolean;
   reloadData: () => Promise<void>;
   personalLogado: any | null;
-  setPersonalLogado: (personal: any) => void;
+  setPersonalLogado: (personal: any | null) => void;
+  alunoLogado: any | null;
+  setAlunoLogado: (aluno: any | null) => void;
 };
 
 const DataContext = createContext<DataContextType>({
@@ -20,6 +22,8 @@ const DataContext = createContext<DataContextType>({
   reloadData: async () => {},
   personalLogado: null,
   setPersonalLogado: () => {},
+  alunoLogado: null,
+  setAlunoLogado: () => {},
 });
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,7 +31,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [personais, setPersonais] = useState<any[]>([]);
   const [servicos, setServicos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [personalLogado, setPersonalLogado] = useState<any | null>(null);
+  
+  const [personalLogado, setPersonalLogadoState] = useState<any | null>(null);
+  const [alunoLogado, setAlunoLogadoState] = useState<any | null>(null);
 
   const loadAllData = async () => {
     try {
@@ -55,6 +61,21 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Função para garantir que só um esteja logado por vez
+  const setPersonalLogado = (personal: any | null) => {
+    if (personal) {
+      setAlunoLogadoState(null); // Desloga aluno ao logar personal
+    }
+    setPersonalLogadoState(personal);
+  };
+
+  const setAlunoLogado = (aluno: any | null) => {
+    if (aluno) {
+      setPersonalLogadoState(null); // Desloga personal ao logar aluno
+    }
+    setAlunoLogadoState(aluno);
+  };
+
   useEffect(() => {
     loadAllData();
   }, []);
@@ -69,6 +90,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         reloadData: loadAllData,
         personalLogado,
         setPersonalLogado,
+        alunoLogado,
+        setAlunoLogado,
       }}
     >
       {children}

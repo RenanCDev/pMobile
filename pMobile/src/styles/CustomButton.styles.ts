@@ -28,7 +28,7 @@ export const ButtonContainer = styled(TouchableOpacity)<ButtonContainerProps>`
     if (customBg) return customBg;
     switch (type) {
       case 'secondary':
-        return colors.secondary.dark; // para se destacar no dark
+        return colors.secondary.dark;
       case 'outline':
         return 'transparent';
       case 'danger':
