@@ -1,106 +1,182 @@
-# 📄 Briefing do Aplicativo
+# 📄 Relatório Técnico - Aplicativo de Gestão para Personal Trainers e Alunos
 
-## 📌 Equipe
+## 📌 Equipe de Desenvolvimento
 **The Full-Stacks**
-- 👨‍💻 José Alves  
-- 👨‍💻 Luiz Miguel  
-- 👨‍💻 Renan Missias
+- José Alves  
+- Luiz Miguel  
+- Renan Missias  
 
 ---
 
-## 🎯 Objetivo
-Desenvolver um aplicativo inovador que amplie as oportunidades de trabalho entre personal trainers e alunos, incentivando hábitos saudáveis por meio de desafios, jogos e metas. O foco é proporcionar uma experiência divertida, eficiente e motivadora.
+## 🎯 Objetivo do Projeto
+Desenvolver um aplicativo inovador que fortaleça a conexão entre personal trainers e alunos, promovendo hábitos saudáveis por meio de desafios, metas e gamificação. O sistema visa oferecer uma experiência prática, confiável e motivadora.
 
 ---
 
-## 🎯 Público-Alvo
-- 👥 **Clientes**: Educadores físicos e personal trainers  
-- 🏋️ **Usuários Finais**: Preparadores físicos e alunos de atividades físicas  
-- 📱 **Nível de Familiaridade com Apps**: Intermediário  
-- 💡 **Inspiração**: Duolingo  
-- 🖼️ **Imagem a Transmitir**: Confiabilidade, praticidade e leveza
+## 👥 Público-Alvo
+- **Clientes:** Educadores físicos, personal trainers  
+- **Usuários Finais:** Alunos de academias e profissionais da área  
+- **Inspiração visual e funcional:** Duolingo, Strava  
+- **Imagem a ser transmitida:** Leveza, confiança, praticidade e sofisticação  
 
 ---
 
-## 🚀 Principais Funcionalidades
-- ✅ Gerenciamento de cadastros de personal trainers e alunos  
-- ✅ Gestão de serviços e conteúdos para execução correta dos exercícios  
-- ✅ Integração de gamificação para engajar os usuários  
-- ✅ Gestão de pagamentos  
-- ✅ Integração com aplicativos do sistema e redes sociais
+## 🧱 Entidades Representativas e Atributos
+
+### 🧑‍🏫 Personal Trainer
+
+| Campo | Tipo | Observações |
+|-------|------|-------------|
+| nome | string | |
+| nome_social | string | |
+| cpf | string | Validação brasileira |
+| etnia | string | |
+| sexo | string | |
+| data_de_nascimento | date | |
+| email | string | |
+| numero_de_celular | string | |
+| estado_civil | string | |
+| cref | string | Registro profissional |
+| numero_conta | string | |
+| agencia | string | |
+| especialidades | array de strings | Lista dinâmica |
+| experiencia_profissional | texto | |
+| horarios_disponiveis | array | Agenda disponível |
+| locais_disponiveis | array | Locais de atendimento |
+| senha | string | Criptografada |
 
 ---
 
-## 🎖️ Diferenciais
-- ✨ Abordagem inovadora que vai além do simples acompanhamento de treinos  
-- ✨ Integração entre gamificação, pagamentos, compartilhamento e rankings  
-- ✨ Maior conexão entre profissionais e clientes, auxiliando na gestão financeira e na evolução pessoal dos alunos
+### 🧍 Aluno
+
+| Campo | Tipo | Observações |
+|-------|------|-------------|
+| nome | string | |
+| cpf | string | |
+| data_de_nascimento | date | |
+| email | string | |
+| numero_de_celular | string | |
+| sexo | string | |
+| nome_social | string | |
+| etnia | string | |
+| estado_civil | string | |
+| senha | string | |
+| bioimpedancia | boolean | Indica se houve exame |
+| data_do_exame | date | Opcional |
+| hora_do_exame | time | Opcional |
+| altura | float | em cm |
+| agua_corporal_total | float | % |
+| proteinas | float | % |
+| minerais | float | % |
+| gordura_corporal | float | % |
+| peso | float | kg |
+| massa_muscular_esqueletica | float | kg |
+| imc | float | Calculado |
+| taxa_metabolica_basal | float | kcal |
 
 ---
 
-## 🛠️ Tecnologias e Plataformas
-- 📱 **Plataformas**: Android e iOS  
-- 🖥️ **Framework/Backend**: Django e React Native  
-- 🗄️ **Banco de Dados**: PostgreSQL
+### 🛎️ Serviço
+
+| Campo | Tipo | Observações |
+|-------|------|-------------|
+| tipo | string | ex: "avaliação", "treino personalizado" |
+| descricao | string | texto livre |
+| valor | float | R$ |
 
 ---
 
-## 🔗 Integração
-- Instagram  
-- Calendário  
-- Gmail  
-- Outlook  
-- Funcionalidade de chamada telefônica
+### 📄 Contrato *(Telas ainda serão implementadas)*
+
+| Campo | Tipo | Observações |
+|-------|------|-------------|
+| aluno_id | ref Aluno | |
+| personal_id | ref Personal | |
+| servico_id | ref Serviço | |
+| data_inicio | date | |
+| data_fim | date | |
+| valor_total | float | |
+| status | string | ex: "ativo", "encerrado", "pendente" |
+
+---
+
+## 🧭 Mapeamento de Telas
+
+### ✅ Telas Implementadas
+
+- Login Personal  
+- Login Aluno  
+- Home (Dashboard)  
+- Cadastro de Personal Trainer  
+- Cadastro de Aluno  
+- Visualização de Personal  
+- Edição de Personal  
+- Visualização de Aluno  
+- Edição de Aluno  
+- Cadastro de Serviço  
+- Visualização de Serviço  
+- Edição de Serviço  
+
+---
+
+### 🔜 Telas a Implementar
+
+- Cadastro de Contrato  
+- Visualização de Contrato  
+- Edição de Contrato  
+
+---
+
+### 🌟 Funcionalidade Futura: Gamificação do Progresso
+
+- Sistema de pontos por consistência e metas atingidas  
+- Títulos e conquistas (ex: “Iniciante Dedicado”, “Mestre do Core”)  
+- Rankings locais e por especialidade  
+- Recompensas por fidelidade e progresso  
 
 ---
 
 ## 🎨 Design e Usabilidade
-- 🎭 **Conceito Visual**: Clean, sofisticado, inovador e com requinte  
-- 🔑 **Prioridades**:
-  - 📏 Responsividade para diferentes telas e dispositivos  
-  - 🎨 Identidade visual marcante  
-  - 🏆 Navegação intuitiva e simplificada  
-  - ⚡ Integração fluida e leve para melhor experiência do usuário
+
+| Aspecto | Diretriz |
+|--------|----------|
+| Estilo | Clean, sofisticado, leve |
+| UX/UI | Navegação simples e fluida |
+| Identidade visual | Cores claras, tipografia moderna, ícones intuitivos |
+| Responsividade | Total adaptação para Android e iOS |
+| Inspiração | Duolingo (gamificação) e Strava (social + fitness) |
 
 ---
 
-## ⏳ Prazos e Entregas
+## 🛠️ Tecnologias Utilizadas
 
-### 🏁 Prazo Final: 6 a 8 meses  
-_(Tempo estimado considerando o ritmo acadêmico e pessoal)_
+- **Frontend:** React Native  
+- **Backend:** Django  
+- **Banco de Dados:** PostgreSQL  
+- **Integrações:** Instagram, Gmail, Outlook, Calendário, Chamadas telefônicas  
 
-### 📌 Entregas Parciais Sugeridas
+---
 
-- 📅 **Marco 1 (1º a 2º mês)**:
-  - ✅ Refinamento da ideia e definição do escopo  
-  - ✅ Escolha de tecnologias e arquitetura inicial  
-  - ✅ Protótipos e wireframes
+## 📅 Cronograma de Entregas
 
-- 📅 **Marco 2 (3º a 4º mês)**:
-  - ✅ Desenvolvimento inicial do backend e banco de dados  
-  - ✅ Protótipo funcional do frontend  
-  - ✅ Primeiros testes internos
-
-- 📅 **Marco 3 (5º a 6º mês)**:
-  - ✅ Implementação das funcionalidades principais  
-  - ✅ Integrações e otimizações  
-  - ✅ Testes ampliados com usuários selecionados
-
-- 📅 **Marco 4 (7º a 8º mês)**:
-  - ✅ Ajustes com base no feedback  
-  - ✅ Preparação para publicação/teste aberto  
-  - ✅ Lançamento da primeira versão estável
+| Marco | Entregas |
+|-------|----------|
+| **1º e 2º mês** | Refinamento da ideia, escopo, wireframes |
+| **3º e 4º mês** | Backend, banco de dados, protótipo funcional |
+| **5º e 6º mês** | Funcionalidades principais, testes internos |
+| **7º e 8º mês** | Ajustes, lançamento beta, testes com usuários |
 
 ---
 
 ## 📊 Benchmarking
 
-### 🎮 Duolingo (Educação/Gamificação)
-- ⏳ **Tempo de Desenvolvimento**: Primeira versão em 2 anos  
-- 🚧 **Principais Desafios**: Criar um sistema de gamificação envolvente  
-- 📌 **Aprendizados**: A gamificação deve ser intuitiva e manter os usuários motivados.
+| App | Destaques |
+|-----|-----------|
+| **Duolingo** | Gamificação intuitiva e motivadora |
+| **Strava** | Engajamento social e fidelização |
 
-### 🏃 Strava (Fitness & Social)
-- ⏳ **Tempo de Desenvolvimento**: Primeira versão funcional em cerca de 6 meses  
-- 🚧 **Principais Desafios**: Criar uma comunidade ativa e engajadora  
-- 📌 **Aprendizados**: A experiência social integrada aumenta a retenção dos usuários.
+---
+
+## ✅ Conclusão
+
+O sistema em desenvolvimento possui uma base sólida de funcionalidades, com um foco diferenciado em engajamento, saúde e relacionamento entre profissionais e alunos. A estrutura modular permite escalar novas features como gamificação e gestão financeira. Com a implementação das telas restantes e a futura integração de jogos e recompensas, o app tende a se posicionar como referência no segmento fitness-tech.
