@@ -2,9 +2,9 @@
 
 ## 📌 Equipe de Desenvolvimento
 **The Full-Stacks**
-- José Alves  
-- Luiz Miguel  
-- Renan Missias  
+- José Alves
+- Luiz Miguel
+- Renan Missias
 
 ---
 
@@ -14,10 +14,10 @@ Desenvolver um aplicativo inovador que fortaleça a conexão entre personal trai
 ---
 
 ## 👥 Público-Alvo
-- **Clientes:** Educadores físicos, personal trainers  
-- **Usuários Finais:** Alunos de academias e profissionais da área  
-- **Inspiração visual e funcional:** Duolingo, Strava  
-- **Imagem a ser transmitida:** Leveza, confiança, praticidade e sofisticação  
+- **Clientes:** Educadores físicos, personal trainers
+- **Usuários Finais:** Alunos de academias e profissionais da área
+- **Inspiração visual e funcional:** Duolingo, Strava
+- **Imagem a ser transmitida:** Leveza, confiança, praticidade e sofisticação
 
 ---
 
@@ -104,35 +104,61 @@ Desenvolver um aplicativo inovador que fortaleça a conexão entre personal trai
 
 ### ✅ Telas Implementadas
 
-- Login Personal  
-- Login Aluno  
-- Home (Dashboard)  
-- Cadastro de Personal Trainer  
-- Cadastro de Aluno  
-- Visualização de Personal  
-- Edição de Personal  
-- Visualização de Aluno  
-- Edição de Aluno  
-- Cadastro de Serviço  
-- Visualização de Serviço  
-- Edição de Serviço  
+### ✅ Telas Implementadas
+
+- Login Personal
+![Login Personal](screenshots/login_personal.jpg)
+
+- Login Aluno
+![Login Aluno](screenshots/login_aluno.jpg)
+
+- Home (Dashboard)
+![Home](screenshots/home.jpg)
+
+- Cadastro de Personal Trainer
+![Cadastro de Personal](screenshots/cad_personal.jpg)
+
+- Cadastro de Aluno
+![Cadastro de Aluno](screenshots/cad_aluno.jpg)
+
+- Visualização de Personal
+![Ver Personal](screenshots/ver_personal.jpg)
+
+- Edição de Personal
+![Editar Personal](screenshots/edit_personal.jpg)
+
+- Visualização de Aluno
+![Ver Aluno](screenshots/ver_aluno.jpg)
+
+- Edição de Aluno
+![Editar Aluno](screenshots/edit_aluno.jpg)
+
+- Cadastro de Serviço
+![Cadastro de Serviço](screenshots/cad_servico.jpg)
+
+- Visualização de Serviço
+![Ver Serviço](screenshots/ver_servico.jpg)
+
+- Edição de Serviço
+![Deletar Aluno](screenshots/edit_servico.jpg)
+
 
 ---
 
 ### 🔜 Telas a Implementar
 
-- Cadastro de Contrato  
-- Visualização de Contrato  
-- Edição de Contrato  
+- Cadastro de Contrato
+- Visualização de Contrato
+- Edição de Contrato
 
 ---
 
 ### 🌟 Funcionalidade Futura: Gamificação do Progresso
 
-- Sistema de pontos por consistência e metas atingidas  
-- Títulos e conquistas (ex: “Iniciante Dedicado”, “Mestre do Core”)  
-- Rankings locais e por especialidade  
-- Recompensas por fidelidade e progresso  
+- Sistema de pontos por consistência e metas atingidas
+- Títulos e conquistas (ex: “Iniciante Dedicado”, “Mestre do Core”)
+- Rankings locais e por especialidade
+- Recompensas por fidelidade e progresso
 
 ---
 
@@ -150,10 +176,10 @@ Desenvolver um aplicativo inovador que fortaleça a conexão entre personal trai
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Frontend:** React Native  
-- **Backend:** Django  
-- **Banco de Dados:** PostgreSQL  
-- **Integrações:** Instagram, Gmail, Outlook, Calendário, Chamadas telefônicas  
+- **Frontend:** React Native
+- **Backend:** Django
+- **Banco de Dados:** PostgreSQL
+- **Integrações:** Instagram, Gmail, Outlook, Calendário, Chamadas telefônicas
 
 ---
 
