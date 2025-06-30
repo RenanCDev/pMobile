@@ -115,7 +115,7 @@ export default function RegisterPersonal() {
                 onChangeText={onChange}
                 value={value}
                 placeholder="Nome completo"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 style={errors.nome && { borderColor: colors.dark.background }}
               />
               {errors.nome && <S.ErrorText>{errors.nome.message}</S.ErrorText>}
@@ -133,7 +133,7 @@ export default function RegisterPersonal() {
                 onChangeText={onChange}
                 value={value}
                 placeholder="Nome Social"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 hasError={!!errors.nome_social}
               />
               {errors.nome_social && <S.ErrorText>{errors.nome_social.message}</S.ErrorText>}
@@ -155,7 +155,7 @@ export default function RegisterPersonal() {
                 value={value}
                 placeholder="000.000.000-00"
                 keyboardType="numeric"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 hasError={!!errors.cpf}
               />
               {errors.cpf && <S.ErrorText>{errors.cpf.message}</S.ErrorText>}
@@ -275,7 +275,7 @@ export default function RegisterPersonal() {
                 placeholder="email@example.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 hasError={!!errors.email}
               />
               {errors.email && <S.ErrorText>{errors.email.message}</S.ErrorText>}
@@ -297,7 +297,7 @@ export default function RegisterPersonal() {
                 value={value}
                 keyboardType="phone-pad"
                 placeholder="(00) 00000-0000"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 hasError={!!errors.numero_de_celular}
               />
               {errors.numero_de_celular && (
@@ -344,7 +344,7 @@ export default function RegisterPersonal() {
                   onChangeText={onChange}
                   value={value}
                   placeholder="CREF"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={colors.text.placeholder}
                   hasError={!!errors.cref}
                 />
                 {errors.cref && <S.ErrorText>{errors.cref.message}</S.ErrorText>}
@@ -366,7 +366,7 @@ export default function RegisterPersonal() {
                   value={value !== undefined ? String(value) : ""}
                   placeholder="Agência"
                   keyboardType="numeric"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={colors.text.placeholder}
                   hasError={!!errors.agencia}
                 />
                 {errors.agencia && <S.ErrorText>{errors.agencia.message}</S.ErrorText>}
@@ -388,7 +388,7 @@ export default function RegisterPersonal() {
                   value={value !== undefined ? String(value) : ""}
                   placeholder="Número da conta"
                   keyboardType="numeric"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={colors.text.placeholder}
                   hasError={!!errors.numero_conta}
                 />
                 {errors.numero_conta && (
@@ -416,7 +416,7 @@ export default function RegisterPersonal() {
                 onChangeText={onChange}
                 value={value}
                 placeholder="Conte-nos sobre sua experiência profissional"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
               />
               {errors.experiencia_profissional && (
                 <S.ErrorText>{errors.experiencia_profissional.message}</S.ErrorText>
@@ -440,7 +440,7 @@ export default function RegisterPersonal() {
                   onChangeText={onChange}
                   value={value}
                   placeholder="Ex: Musculação, Yoga, Pilates"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={colors.text.placeholder}
                 />
                 {errors.especialidades && (
                   <S.ErrorText>{errors.especialidades.message}</S.ErrorText>
@@ -468,7 +468,7 @@ export default function RegisterPersonal() {
                   }}
                   value={value !== undefined ? String(value) : ""}
                   placeholder="Ex: 123,456,789"
-                  placeholderTextColor="#999"
+                  placeholderTextColor={colors.text.placeholder}
                   keyboardType="numeric"
                 />
                 {errors.horarios_disponiveis && (
@@ -496,7 +496,7 @@ export default function RegisterPersonal() {
                 onChangeText={onChange}
                 value={value}
                 placeholder="Ex: Academia X, Parque Y"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 numberOfLines={2}
               />
               {error && <S.ErrorText>{error.message}</S.ErrorText>}
@@ -513,7 +513,7 @@ export default function RegisterPersonal() {
               <S.Input
                 hasError={!!error}
                 placeholder="Digite sua senha"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.text.placeholder}
                 secureTextEntry
                 onBlur={onBlur}
                 onChangeText={onChange}

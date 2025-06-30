@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import colors from '../constants/colors';
 import { Picker } from '@react-native-picker/picker';
 import { TouchableOpacity } from 'react-native';
+import { css } from 'styled-components';
+import { Platform } from 'react-native';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -79,19 +81,28 @@ export const PickerWrapper = styled(TouchableOpacity)<{ hasError?: boolean }>`
 `;
 
 export const StyledPicker = styled(Picker)`
+  height: 44px;
+  background-color: ${colors.dark.surface};
+  border-radius: 12px;
+  padding: 10px;
   color: ${colors.text.inverted};
+  border-width: 1px;
+  border-color: ${colors.border};
+  margin-bottom: 8px;
 `;
 
 export const DatePickerButton = styled(TouchableOpacity)<{ hasError?: boolean }>`
   height: 50px;
   background-color: ${colors.dark.surface};
   border-radius: 12px;
-  justify-content: center;
   padding: 0 12px;
   border-width: 1px;
+  border-style: solid;
   border-color: ${({ hasError }) =>
     hasError ? colors.status.error : colors.border};
   margin-bottom: 8px;
+  font-size: 16px;
+  justify-content: center;
 `;
 
 export const Buttons = styled.View`
