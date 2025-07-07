@@ -53,7 +53,7 @@ export default function ViewPersonal() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
       <S.Container>
         <S.Section>
           <S.SectionTitle>

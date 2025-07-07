@@ -60,7 +60,7 @@ export default function ViewServico() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
       <S.Container>
         <S.SectionTitle>Seus Serviços</S.SectionTitle>
 
