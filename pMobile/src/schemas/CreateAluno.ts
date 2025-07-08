@@ -7,10 +7,8 @@ export const CreateAluno = z.object({
     .string()
     .min(5, "Deve ter no mínimo 5 letras.")
     .max(50, "Deve ter no máximo 50 letras.")
-    .regex(
-      /^[A-Za-zÀ-ÿ\s]+$/,
-      "O nome não pode conter números ou caracteres especiais."
-    ),
+    .regex(/^[A-Za-zÀ-ÿ\s]+$/, "O nome não pode conter números ou caracteres especiais."),
+
   cpf: z
     .string()
     .min(11, "CPF é obrigatório.")
@@ -35,7 +33,7 @@ export const CreateAluno = z.object({
 
   estado_civil: z.string(),
 
-  bioimpedancia: z.string(),
+  bioimpedancia: z.number().optional(),
 
   data_do_exame: z.string().refine(
     (val) => {
@@ -48,24 +46,24 @@ export const CreateAluno = z.object({
 
   hora_do_exame: z.string().min(1, "Hora do exame é obrigatória"),
 
-  altura: z.string(),
+  altura: z.number().optional(),
 
-  agua_corporal_total: z.string(),
+  agua_corporal_total: z.number().optional(),
 
-  proteinas: z.string(),
+  proteinas: z.number().optional(),
 
-  minerais: z.string(),
+  minerais: z.number().optional(),
 
-  gordura_corporal: z.string(),
+  gordura_corporal: z.number().optional(),
 
-  peso: z.string(),
+  peso: z.number().optional(),
 
-  massa_muscular_esqueletica: z.string(),
+  massa_muscular_esqueletica: z.number().optional(),
 
-  imc: z.string(),
+  imc: z.number().optional(),
 
-  taxa_metabolica_basal: z.string(),
-  
+  taxa_metabolica_basal: z.number().int().optional(),
+
   senha: z
     .string()
     .min(5, "A senha deve ter no mínimo 5 caracteres.")

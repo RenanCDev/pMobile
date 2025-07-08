@@ -1,51 +1,36 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
+import { Aluno, Personal } from '../services/storageService';
 
 type DataContextType = {
-  alunos: any[];
-  personais: any[];
+  alunos: Aluno[];
+  personais: Personal[];
   servicos: any[];
   isLoading: boolean;
   reloadData: () => Promise<void>;
-  personalLogado: any | null;
-  setPersonalLogado: (personal: any | null) => void;
-  alunoLogado: any | null;
-  setAlunoLogado: (aluno: any | null) => void;
+  personalLogado: Personal | null;
+  setPersonalLogado: (personal: Personal | null) => void;
+  alunoLogado: Aluno | null;
+  setAlunoLogado: (aluno: Aluno | null) => void;
   deleteAluno: (cpf: string) => Promise<void>;
   deletePersonal: (cpf: string) => Promise<void>;
   deleteServico: (id: string) => Promise<void>;
-  editAluno: (cpf: string, novoAluno: any) => Promise<void>;
-  editPersonal: (cpf: string, novoPersonal: any) => Promise<void>;
+  editAluno: (cpf: string, novoAluno: Aluno) => Promise<void>;
+  editPersonal: (cpf: string, novoPersonal: Personal) => Promise<void>;
   editServico: (id: string, novoServico: any) => Promise<void>;
 };
 
-const DataContext = createContext<DataContextType>({
-  alunos: [],
-  personais: [],
-  servicos: [],
-  isLoading: false,
-  reloadData: async () => {},
-  personalLogado: null,
-  setPersonalLogado: () => {},
-  alunoLogado: null,
-  setAlunoLogado: () => {},
-  deleteAluno: async () => {},
-  deletePersonal: async () => {},
-  deleteServico: async () => {},
-  editAluno: async () => {},
-  editPersonal: async () => {},
-  editServico: async () => {},
-});
+const DataContext = createContext<DataContextType>({} as DataContextType);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [alunos, setAlunos] = useState<any[]>([]);
-  const [personais, setPersonais] = useState<any[]>([]);
+  const [alunos, setAlunos] = useState<Aluno[]>([]);
+  const [personais, setPersonais] = useState<Personal[]>([]);
   const [servicos, setServicos] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [personalLogado, setPersonalLogadoState] = useState<any | null>(null);
-  const [alunoLogado, setAlunoLogadoState] = useState<any | null>(null);
+  const [personalLogado, setPersonalLogadoState] = useState<Personal | null>(null);
+  const [alunoLogado, setAlunoLogadoState] = useState<Aluno | null>(null);
 
   const loadAllData = async () => {
     try {
@@ -70,19 +55,19 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const setPersonalLogado = (personal: any | null) => {
+  const setPersonalLogado = (personal: Personal | null) => {
     if (personal) setAlunoLogadoState(null);
     setPersonalLogadoState(personal);
   };
 
-  const setAlunoLogado = (aluno: any | null) => {
+  const setAlunoLogado = (aluno: Aluno | null) => {
     if (aluno) setPersonalLogadoState(null);
     setAlunoLogadoState(aluno);
   };
 
   const deleteAluno = async (cpf: string) => {
     try {
-      const updated = alunos.filter((a) => a.cpf !== cpf);
+      const updated = alunos.filter((a) => a.pessoa.cpf !== cpf);
       setAlunos(updated);
       await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
     } catch (err) {
@@ -113,34 +98,37 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const editAluno = async (cpf: string, novoAluno: any) => {
+  const editAluno = async (cpf: string, novoAluno: Aluno) => {
     try {
-      const updated = alunos.map((a) => a.cpf === cpf ? novoAluno : a);
+      const updated = alunos.map((a) =>
+        a.pessoa.cpf === cpf ? novoAluno : a
+      );
       setAlunos(updated);
       await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
+
+      if (alunoLogado?.pessoa.cpf === cpf) {
+        setAlunoLogadoState(novoAluno);
+      }
     } catch (err) {
       console.error("Erro ao editar aluno:", err);
       Alert.alert("Erro", "Falha ao editar aluno.");
     }
   };
 
-  const editPersonal = async (cpf: string, updatedData: any) => {
+  const editPersonal = async (cpf: string, updatedData: Personal) => {
     try {
       const updatedPersonais = personais.map((p) =>
-        p.cpf === cpf ? { ...p, ...updatedData } : p
+        p.cpf === cpf ? updatedData : p
       );
       setPersonais(updatedPersonais);
       await AsyncStorage.setItem("@personais", JSON.stringify(updatedPersonais));
 
-      // Atualiza o personal logado se for ele
       if (personalLogado?.cpf === cpf) {
-        setPersonalLogadoState({ ...personalLogado, ...updatedData });
+        setPersonalLogadoState(updatedData);
       }
-
     } catch (error) {
       console.error("Erro ao editar personal:", error);
       Alert.alert("Erro", "Falha ao editar personal.");
-      throw error;
     }
   };
 
@@ -184,4 +172,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useDataContext = () => useContext(DataContext);
+export const useDataContext = () => {
+  const context = useContext(DataContext);
+  if (!context) {
+    throw new Error("useDataContext deve ser usado dentro de um DataProvider");
+  }
+  return context;
+};

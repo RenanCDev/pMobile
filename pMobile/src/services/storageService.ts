@@ -109,18 +109,18 @@ export async function deletePersonal(cpf: string) {
     throw error;
   }
 }
-
 export async function saveAluno(alunoData: Aluno) {
   try {
     const existing = await AsyncStorage.getItem('@alunos');
     const parsed: Aluno[] = existing ? JSON.parse(existing) : [];
 
     const cpf = removeCPFFormatting(alunoData.pessoa.cpf);
-    const exists = parsed.some(a => a.pessoa.cpf === cpf);
+    const exists = parsed.some(a => removeCPFFormatting(a.pessoa?.cpf) === cpf);
     if (exists) throw new Error('CPF já cadastrado');
 
     const lastId = parsed.length > 0 ? parsed[parsed.length - 1].id : 0;
-    const newAluno = {
+
+    const newAluno: Aluno = {
       ...alunoData,
       id: lastId + 1,
       pessoa: {
@@ -248,6 +248,24 @@ export async function loginPersonal(cpf: string, senha: string): Promise<Persona
     return null;
   }
 }
+
+export async function loginAluno(cpf: string, senha: string): Promise<Aluno | null> {
+  try {
+    const data = await AsyncStorage.getItem('@alunos');
+    if (!data) return null;
+
+    const alunos: Aluno[] = JSON.parse(data);
+    const aluno = alunos.find(
+      a => removeCPFFormatting(a.pessoa.cpf) === cpf && a.senha === senha
+    );
+
+    return aluno || null;
+  } catch (error) {
+    console.error('Erro no login do aluno:', error);
+    return null;
+  }
+}
+
 
 export async function clearAllData() {
   await AsyncStorage.multiRemove(['@personais', '@alunos', '@servicos']);

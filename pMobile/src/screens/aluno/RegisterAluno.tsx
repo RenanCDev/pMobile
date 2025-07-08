@@ -90,10 +90,15 @@ export default function RegisterAluno() {
       reset();
     } catch (err) {
       console.error(err);
-      Alert.alert("Erro", "Falha ao salvar localmente.");
+      if (err instanceof Error && err.message === 'CPF já cadastrado') {
+        Alert.alert("Erro", "Já existe um aluno com este CPF.");
+      } else {
+        Alert.alert("Erro", "Falha ao salvar localmente.");
+      }
     } finally {
       setIsLoading(false);
     }
+    
   };
   
   async function handleGetAlunos() {
@@ -765,6 +770,26 @@ export default function RegisterAluno() {
                 <S.ErrorText>{errors.minerais.message}</S.ErrorText>
               )}
             </>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="senha"
+          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+            <S.Section>
+              <S.Label>Senha</S.Label>
+              <S.Input
+                hasError={!!error}
+                placeholder="Digite sua senha"
+                placeholderTextColor={colors.text.placeholder}
+                secureTextEntry
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+              {error && <S.ErrorText>{error.message}</S.ErrorText>}
+            </S.Section>
           )}
         />
       </S.Section>

@@ -5,6 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+import { loginAluno } from "../../services/storageService";
+import { useDataContext } from "../../context/DataContext";
+import { removeCPFFormatting } from "../../utils/cpf/format";
+
 import { RootStackParamList } from "../../navigation/types";
 import { formatCPF } from "../../utils/cpf/format";
 import { loginSchema, LoginFormData } from "../../schemas/Login";
@@ -20,10 +24,23 @@ export default function LoginAluno() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    Alert.alert("Login Aluno", `CPF: ${data.cpf}\nSenha: ${data.senha}`);
+  const { setAlunoLogado } = useDataContext();
+
+  const onSubmit = async (data: LoginFormData) => {
+    const cpfSemFormatacao = removeCPFFormatting(data.cpf);
+    const aluno = await loginAluno(cpfSemFormatacao, data.senha);
+  
+    if (!aluno) {
+      Alert.alert("Erro", "CPF ou senha inválidos.");
+      return;
+    }
+  
+    setAlunoLogado(aluno);
+  
+    Alert.alert("Login realizado", `Bem-vindo(a), ${aluno.pessoa.nome}`);
     navigation.navigate("HomeScreen");
   };
+  
 
   return (
     <S.Container>
