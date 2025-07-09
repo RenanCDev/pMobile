@@ -246,17 +246,16 @@ export default function RegisterAluno() {
                   value={value || ""}
                   onChange={(e) => onChange(e.target.value)}
                   style={{
-                    borderWidth: 1,
-                    borderColor: errors.data_de_nascimento
-                      ? "red"
-                      : colors.secondary.DEFAULT,
-                    borderRadius: 4,
-                    marginBottom: 8,
                     height: 50,
-                    color: colors.text.primary,
-                    backgroundColor: colors.white,
+                    backgroundColor: colors.dark.surface,
+                    borderRadius: 12,
+                    padding: 10,
+                    color: colors.text.inverted,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: errors.data_de_nascimento ? "red" : colors.border,
+                    marginBottom: 8,
                     fontSize: 16,
-                    width: "100%",
                     outlineStyle: "none",
                   }}
                 />
@@ -494,15 +493,16 @@ export default function RegisterAluno() {
                   value={value || ""}
                   onChange={(e) => onChange(e.target.value)}
                   style={{
-                    borderWidth: 1,
-                    borderColor: errors.data_do_exame ? "red" : colors.secondary.DEFAULT,
-                    borderRadius: 4,
-                    marginBottom: 8,
                     height: 50,
-                    color: colors.text.primary,
-                    backgroundColor: colors.white,
+                    backgroundColor: colors.dark.surface,
+                    borderRadius: 12,
+                    padding: 10,
+                    color: colors.text.inverted,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: errors.data_de_nascimento ? "red" : colors.border,
+                    marginBottom: 8,
                     fontSize: 16,
-                    width: "100%",
                     outlineStyle: "none",
                   }}
                 />
@@ -547,19 +547,20 @@ export default function RegisterAluno() {
               <S.Label>Hora do exame</S.Label>
               {Platform.OS === "web" ? (
                 <input
-                  type="time"
+                  type="date"
                   value={value || ""}
                   onChange={(e) => onChange(e.target.value)}
                   style={{
-                    borderWidth: 1,
-                    borderColor: errors.hora_do_exame ? "red" : colors.secondary.DEFAULT,
-                    borderRadius: 4,
-                    marginBottom: 8,
                     height: 50,
-                    color: colors.text.primary,
-                    backgroundColor: colors.white,
+                    backgroundColor: colors.dark.surface,
+                    borderRadius: 12,
+                    padding: 10,
+                    color: colors.text.inverted,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: errors.data_de_nascimento ? "red" : colors.border,
+                    marginBottom: 8,
                     fontSize: 16,
-                    width: "100%",
                     outlineStyle: "none",
                   }}
                 />

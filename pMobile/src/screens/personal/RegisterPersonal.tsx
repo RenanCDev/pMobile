@@ -110,7 +110,7 @@ export default function RegisterPersonal() {
           name="nome"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>Nome completo</S.TitleHighlight>
+              <S.Label>Nome completo</S.Label>
               <S.Input
                 onChangeText={onChange}
                 value={value}
@@ -128,7 +128,7 @@ export default function RegisterPersonal() {
           name="nome_social"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>Nome Social</S.TitleHighlight>
+              <S.Label>Nome Social</S.Label>
               <S.Input
                 onChangeText={onChange}
                 value={value}
@@ -146,7 +146,7 @@ export default function RegisterPersonal() {
           name="cpf"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>CPF</S.TitleHighlight>
+              <S.Label>CPF</S.Label>
               <S.Input
                 onChangeText={(text) => {
                   const formatted = formatCPF(text);
@@ -168,7 +168,7 @@ export default function RegisterPersonal() {
           name="etnia"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>Etnia</S.TitleHighlight>
+              <S.Label>Etnia</S.Label>
               <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="nao_informado" />
                 <Picker.Item label="Amarela" value="amarela" />
@@ -187,7 +187,7 @@ export default function RegisterPersonal() {
           name="sexo"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>Sexo</S.TitleHighlight>
+              <S.Label>Sexo</S.Label>
               <S.StyledPicker selectedValue={value} onValueChange={onChange}>
                 <Picker.Item label="Não informado" value="N" />
                 <Picker.Item label="Feminino" value="F" />
@@ -204,23 +204,23 @@ export default function RegisterPersonal() {
           name="data_de_nascimento"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>Data de nascimento</S.TitleHighlight>
-
+              <S.Label>Data de nascimento</S.Label>
               {Platform.OS === "web" ? (
                 <input
                   type="date"
                   value={value || ""}
                   onChange={(e) => onChange(e.target.value)}
                   style={{
-                    borderWidth: 1,
-                    borderColor: errors.data_de_nascimento ? "red" : colors.secondary.DEFAULT,
-                    borderRadius: 4,
-                    marginBottom: 8,
                     height: 50,
-                    color: colors.text.primary,
-                    backgroundColor: colors.white,
+                    backgroundColor: colors.dark.surface,
+                    borderRadius: 12,
+                    padding: 10,
+                    color: colors.text.inverted,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: errors.data_de_nascimento ? "red" : colors.border,
+                    marginBottom: 8,
                     fontSize: 16,
-                    width: "100%",
                     outlineStyle: "none",
                   }}
                 />
@@ -268,7 +268,7 @@ export default function RegisterPersonal() {
           name="email"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>E-mail</S.TitleHighlight>
+              <S.Label>E-mail</S.Label>
               <S.Input
                 onChangeText={onChange}
                 value={value}
@@ -288,7 +288,7 @@ export default function RegisterPersonal() {
           name="numero_de_celular"
           render={({ field: { onChange, value } }) => (
             <S.Section>
-              <S.TitleHighlight>Celular</S.TitleHighlight>
+              <S.Label>Celular</S.Label>
               <S.Input
                 onChangeText={(text) => {
                   const formatted = formatPhoneNumber(text);
@@ -400,11 +400,9 @@ export default function RegisterPersonal() {
 
         </S.Section>
 
-        <S.Section>
           <S.SectionTitle>
             Experiência <S.TitleHighlight>Profissional</S.TitleHighlight>
           </S.SectionTitle>
-        </S.Section>
 
         <Controller
           control={control}

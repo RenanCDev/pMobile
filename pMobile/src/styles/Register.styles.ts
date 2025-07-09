@@ -2,8 +2,6 @@ import styled from 'styled-components/native';
 import colors from '../constants/colors';
 import { Picker } from '@react-native-picker/picker';
 import { TouchableOpacity } from 'react-native';
-import { css } from 'styled-components';
-import { Platform } from 'react-native';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -33,13 +31,14 @@ export const TitleHighlight = styled.Text`
 `;
 
 export const Section = styled.View`
-  margin-bottom: 24px;
+  margin-bottom: 5px;
 `;
 
 export const SectionTitle = styled.Text`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 12px;
+  margin-top: 12px;
   color: ${colors.text.inverted};
 `;
 
@@ -50,7 +49,7 @@ export const Label = styled.Text`
 `;
 
 export const Input = styled.TextInput<{ hasError?: boolean }>`
-  height: 44px;
+  height: 50px;
   background-color: ${colors.dark.surface};
   border-radius: 12px;
   padding: 10px;
@@ -81,7 +80,7 @@ export const PickerWrapper = styled(TouchableOpacity)<{ hasError?: boolean }>`
 `;
 
 export const StyledPicker = styled(Picker)`
-  height: 44px;
+  height: 50px;
   background-color: ${colors.dark.surface};
   border-radius: 12px;
   padding: 10px;
