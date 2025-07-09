@@ -547,7 +547,7 @@ export default function RegisterAluno() {
               <S.Label>Hora do exame</S.Label>
               {Platform.OS === "web" ? (
                 <input
-                  type="date"
+                  type="time"
                   value={value || ""}
                   onChange={(e) => onChange(e.target.value)}
                   style={{
