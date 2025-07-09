@@ -13,7 +13,7 @@ import DeletePersonal from '../screens/personal/DeletePersonal';
 import ViewPersonal from '../screens/personal/ViewPersonal';
 
 import RegisterAluno from '../screens/aluno/RegisterAluno';
-import EditAluno from '../screens/aluno/EditAluno';
+import { EditAluno } from "../screens/aluno/EditAluno";
 import DeleteAluno from '../screens/aluno/DeleteAluno';
 import ViewAluno from '../screens/aluno/ViewAluno';
 

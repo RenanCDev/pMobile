@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-native';
+import { Alert, Modal } from 'react-native';
+import { useDataContext } from '../context/DataContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -25,6 +26,7 @@ type RoutesWithoutParams = {
 }[keyof RootStackParamList];
 
 export default function HeaderMenu() {
+  const { alunoLogado } = useDataContext();
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation<NavigationProp>();
 
@@ -54,7 +56,18 @@ export default function HeaderMenu() {
 
               <SectionTitle>Alunos</SectionTitle>
               <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
-              <MenuItem label="Editar Aluno" onPress={() => handleNavigate('EditAluno')} />
+              <MenuItem
+                label="Editar Aluno"
+                onPress={ async () => {
+                  closeMenu();
+                  if (!alunoLogado) {
+                    navigation.navigate('LoginAluno');
+                    console.log("Aluno não cadastrado");
+                    return;
+                  }
+                  navigation.navigate('EditAluno', { cpf: alunoLogado.pessoa.cpf });
+                }}
+              />
               <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteAluno')} />
               <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
 
