@@ -12,7 +12,7 @@ export default function ViewServico() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   if (!personalLogado) {
-    Alert.alert("Erro", "Você precisa estar logado para ver seus serviços.");
+    Alert.alert("Erro", "Você precisa ser um personal para visualizar seus serviços.");
     return (
       <S.Container>
         <S.SectionTitle>Serviços</S.SectionTitle>

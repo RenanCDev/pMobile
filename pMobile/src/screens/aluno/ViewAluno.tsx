@@ -1,5 +1,5 @@
-import React from "react";
-import { Alert, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, Alert } from "react-native";
 import * as S from "../../styles/Register.styles";
 import { formatCPF } from "../../utils/cpf/format";
 import { formatPhoneNumber } from "../../utils/celular/format";
@@ -7,10 +7,19 @@ import { useNavigation } from "@react-navigation/native";
 import { useDataContext } from "../../context/DataContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/types";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 export default function ViewAluno() {
-  const { alunoLogado, deleteAluno, reloadData, setAlunoLogado } = useDataContext();
+  const {
+    alunoLogado,
+    deleteAluno,
+    reloadData,
+    setAlunoLogado,
+  } = useDataContext();
+
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   if (!alunoLogado) {
     Alert.alert("Erro", "Você precisa estar logado para visualizar seu perfil.");
@@ -22,31 +31,22 @@ export default function ViewAluno() {
     );
   }
 
-  async function handleDelete() {
-    Alert.alert(
-      "Confirmação",
-      "Tem certeza que deseja excluir seu perfil de aluno?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Excluir",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteAluno(alunoLogado.pessoa.cpf);
-              setAlunoLogado(null);
-              await reloadData();
-              Alert.alert("Sucesso", "Perfil de aluno excluído com sucesso!");
-              navigation.navigate("HomeScreen");
-            } catch (error) {
-              Alert.alert("Erro", "Não foi possível excluir o aluno.");
-              console.error(error);
-            }
-          },
-        },
-      ]
-    );
-  }
+  const handleDelete = () => {
+    setDeleteModalVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    setDeleteModalVisible(false);
+    try {
+      await deleteAluno(alunoLogado.pessoa.cpf);
+      setAlunoLogado(null);
+      await reloadData();
+      navigation.navigate("HomeScreen");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro", "Não foi possível excluir o aluno.");
+    }
+  };
 
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
@@ -63,7 +63,7 @@ export default function ViewAluno() {
 
           <S.Box>
             <S.BoxLabel>Nome social</S.BoxLabel>
-            <S.BoxValue>{alunoLogado.pessoa.nome_social || '-'}</S.BoxValue>
+            <S.BoxValue>{alunoLogado.pessoa.nome_social || "-"}</S.BoxValue>
           </S.Box>
 
           <S.Box>
@@ -165,7 +165,11 @@ export default function ViewAluno() {
 
         <S.Buttons>
           <S.SubmitButton
-            onPress={() => navigation.navigate("EditAluno", { cpf: alunoLogado.pessoa.cpf })}
+            onPress={() =>
+              navigation.navigate("EditAluno", {
+                cpf: alunoLogado.pessoa.cpf,
+              })
+            }
           >
             <S.ButtonText>Editar</S.ButtonText>
           </S.SubmitButton>
@@ -174,6 +178,14 @@ export default function ViewAluno() {
             <S.ButtonText>Excluir</S.ButtonText>
           </S.ResetButton>
         </S.Buttons>
+
+        <ConfirmDeleteModal
+          visible={deleteModalVisible}
+          onCancel={() => setDeleteModalVisible(false)}
+          onConfirm={confirmDelete}
+          title="Confirmar exclusão"
+          message="Tem certeza que deseja excluir seu perfil de aluno?"
+        />
       </S.Container>
     </ScrollView>
   );
