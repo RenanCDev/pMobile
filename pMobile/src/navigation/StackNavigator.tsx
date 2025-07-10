@@ -57,12 +57,18 @@ export default function StackNavigator() {
       <Stack.Screen name="LoginAluno" component={LoginAluno} options={{ title: 'Login Aluno' }} />
 
       <Stack.Screen name="RegisterPersonal" component={RegisterPersonal} options={{ title: 'Cadastrar Personal' }} />
+      <Stack.Screen name="EditPersonal" component={EditPersonal} options={{ title: 'Editar Personal' }} />
+      <Stack.Screen name="DeletePersonal" component={DeletePersonal} options={{ title: 'Excluir Personal' }} />
       <Stack.Screen name="ViewPersonal" component={ViewPersonal} options={{ title: 'Visualizar Personais' }} />
 
       <Stack.Screen name="RegisterAluno" component={RegisterAluno} options={{ title: 'Cadastrar Aluno' }} />
+      <Stack.Screen name="EditAluno" component={EditAluno} options={{ title: 'Editar Aluno' }} />
+      <Stack.Screen name="DeleteAluno" component={DeleteAluno} options={{ title: 'Excluir Aluno' }} />
       <Stack.Screen name="ViewAluno" component={ViewAluno} options={{ title: 'Visualizar Alunos' }} />
 
       <Stack.Screen name="RegisterServico" component={RegisterServico} options={{ title: 'Cadastrar Serviço' }} />
+      <Stack.Screen name="EditServico" component={EditServico} options={{ title: 'Editar Serviço' }} />
+      <Stack.Screen name="DeleteServico" component={DeleteServico} options={{ title: 'Excluir Serviço' }} />
       <Stack.Screen name="ViewServico" component={ViewServico} options={{ title: 'Visualizar Serviços' }} />
     </Stack.Navigator>
   );
