@@ -56,19 +56,6 @@ export default function HeaderMenu() {
 
               <SectionTitle>Alunos</SectionTitle>
               <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
-              <MenuItem
-                label="Editar Aluno"
-                onPress={ async () => {
-                  closeMenu();
-                  if (!alunoLogado) {
-                    navigation.navigate('LoginAluno');
-                    console.log("Aluno não cadastrado");
-                    return;
-                  }
-                  navigation.navigate('EditAluno', { cpf: alunoLogado.pessoa.cpf });
-                }}
-              />
-              <MenuItem label="Excluir Aluno" onPress={() => handleNavigate('DeleteAluno')} />
               <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
 
               <SectionTitle>Serviços</SectionTitle>

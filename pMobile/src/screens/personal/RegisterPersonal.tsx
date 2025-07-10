@@ -317,8 +317,7 @@ export default function RegisterPersonal() {
                 <S.StyledPicker
                   selectedValue={value}
                   onValueChange={onChange}
-                  mode="dropdown"
-                
+                  mode="dropdown"                
                 >
                   <Picker.Item label="Não informado" value="nao_informado" />
                   <Picker.Item label="Casado" value="casado" />
