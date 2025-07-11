@@ -107,7 +107,7 @@ export const DatePickerButton = styled(TouchableOpacity)<{ hasError?: boolean }>
 export const Buttons = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-bottom: 30px;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -116,6 +116,7 @@ export const Button = styled.TouchableOpacity`
   border-radius: 12px;
   margin-left: 4px;
   margin-right: 4px;
+  margin-top: 0px;
   align-items: center;
   justify-content: center;
 `;
@@ -157,6 +158,7 @@ export const Box = styled.View`
   margin-bottom: 12px;
   border-width: 1px;
   border-color: ${colors.border};
+  align-items: center;
 `;
 
 export const BoxLabel = styled.Text`

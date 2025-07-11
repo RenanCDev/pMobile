@@ -56,7 +56,6 @@ export function EditPersonal({ route, navigation }: Props) {
     },
   });
 
-  // Quando personal carrega, preenche o form
   useEffect(() => {
     if (personal) {
       reset({
@@ -115,7 +114,7 @@ export function EditPersonal({ route, navigation }: Props) {
   }
 
   return (
-    <S.Container>
+    <S.Container contentContainerStyle={{ paddingBottom: 40 }}>
       <S.Title>
         Cadastro de <S.TitleHighlight>Personal</S.TitleHighlight>
       </S.Title>
@@ -243,7 +242,7 @@ export function EditPersonal({ route, navigation }: Props) {
                     ]}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <S.ButtonText style={{ color: value ? colors.text.primary : "#999" }}>
+                    <S.ButtonText style={{ color: value ? colors.text.inverted : "#999" }}>
                       {value || "Selecionar data"}
                     </S.ButtonText>
                   </S.StyledPicker>
@@ -536,9 +535,9 @@ export function EditPersonal({ route, navigation }: Props) {
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <S.Button onPress={handleSubmit(onSubmit)}>
+        <S.SubmitButton onPress={handleSubmit(onSubmit)}>
           <S.ButtonText>Salvar</S.ButtonText>
-        </S.Button>
+        </S.SubmitButton>
       )}
     </S.Section>
   </S.Container>

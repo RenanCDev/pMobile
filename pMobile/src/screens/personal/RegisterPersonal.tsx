@@ -91,7 +91,7 @@ export default function RegisterPersonal() {
   }
 
   return (
-    <S.Container>
+    <S.Container contentContainerStyle={{ paddingBottom: 40 }}>
       <S.LoginButton onPress={handleLoginClick}>
         <S.LoginButtonText>Login</S.LoginButtonText>
       </S.LoginButton>
@@ -234,7 +234,7 @@ export default function RegisterPersonal() {
                     ]}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <S.ButtonText style={{ color: value ? colors.text.primary : "#999" }}>
+                    <S.ButtonText style={{ color: value ? colors.text.inverted : "#999" }}>
                       {value || "Selecionar data"}
                     </S.ButtonText>
                   </S.StyledPicker>

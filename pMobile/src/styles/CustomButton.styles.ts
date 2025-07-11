@@ -1,3 +1,4 @@
+// src/components/CustomButton.tsx
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 import colors from '../constants/colors';
@@ -5,26 +6,20 @@ import colors from '../constants/colors';
 type ButtonType = 'primary' | 'secondary' | 'outline' | 'danger';
 
 interface ButtonContainerProps {
-  type: ButtonType;
-  disabled: boolean;
+  type?: ButtonType;
+  disabled?: boolean;
   customBg?: string;
-  isPressed: boolean;
+  isPressed?: boolean;
 }
 
 export const ButtonContainer = styled(TouchableOpacity)<ButtonContainerProps>`
-  padding-top: 14px;
-  padding-bottom: 14px;
-  padding-left: 24px;
-  padding-right: 24px;
-
+  padding: 14px 24px;
+  margin: 8px 0;
   border-radius: 12px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-
   align-items: center;
   justify-content: center;
 
-  background-color: ${({ type, customBg }) => {
+  background-color: ${({ type = 'primary', customBg }) => {
     if (customBg) return customBg;
     switch (type) {
       case 'secondary':
@@ -33,22 +28,21 @@ export const ButtonContainer = styled(TouchableOpacity)<ButtonContainerProps>`
         return 'transparent';
       case 'danger':
         return colors.status.error;
-      case 'primary':
       default:
         return colors.primary.dark;
     }
   }};
 
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
   transform: ${({ isPressed }) => (isPressed ? 'scale(0.97)' : 'scale(1)')};
 
-  border-width: ${({ type }) => (type === 'outline' ? '2px' : '0px')};
-  border-color: ${({ type }) =>
+  border-width: ${({ type = 'primary' }) => (type === 'outline' ? '2px' : '0px')};
+  border-color: ${({ type = 'primary' }) =>
     type === 'outline' ? colors.secondary.DEFAULT : 'transparent'};
 `;
 
 interface ButtonTextProps {
-  type: ButtonType;
+  type?: ButtonType;
   customColor?: string;
 }
 
@@ -57,7 +51,7 @@ export const ButtonText = styled.Text<ButtonTextProps>`
   font-weight: bold;
   text-align: center;
 
-  color: ${({ type, customColor }) => {
+  color: ${({ type = 'primary', customColor }) => {
     if (customColor) return customColor;
     return type === 'outline' ? colors.secondary.DEFAULT : colors.text.inverted;
   }};
