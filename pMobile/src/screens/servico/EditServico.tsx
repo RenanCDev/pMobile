@@ -19,7 +19,7 @@ import {
   TextArea,
   ErrorText,
   ButtonRow,
-} from '../../styles/RegisterServico.styles';
+} from '../../styles/Register.styles';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditServico'>;
 

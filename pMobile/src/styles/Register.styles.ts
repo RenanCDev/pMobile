@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import colors from '../constants/colors';
 import { Picker } from '@react-native-picker/picker';
-import { TouchableOpacity } from 'react-native';
+import { ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -170,4 +170,19 @@ export const BoxLabel = styled.Text`
 export const BoxValue = styled.Text`
   color: ${colors.text.inverted};
   font-size: 16px;
+`;
+
+export const TextArea = styled(TextInput)`
+  height: 120px;
+  background-color: ${colors.dark.surface};
+  border-radius: 12px;
+  padding: 10px;
+  color: ${colors.text.inverted};
+  margin-bottom: 4px;
+`;
+
+export const ButtonRow = styled.View`
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
 `;

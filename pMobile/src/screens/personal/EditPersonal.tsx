@@ -535,9 +535,11 @@ export function EditPersonal({ route, navigation }: Props) {
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <S.SubmitButton onPress={handleSubmit(onSubmit)}>
-          <S.ButtonText>Salvar</S.ButtonText>
-        </S.SubmitButton>
+        <S.Buttons>
+          <S.SubmitButton onPress={handleSubmit(onSubmit)}>
+            <S.ButtonText>Salvar</S.ButtonText>
+          </S.SubmitButton>
+        </S.Buttons>
       )}
     </S.Section>
   </S.Container>

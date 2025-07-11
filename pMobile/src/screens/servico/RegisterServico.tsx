@@ -14,7 +14,7 @@ import {
   TextArea,
   ErrorText,
   ButtonRow,
-} from '../../styles/RegisterServico.styles';
+} from '../../styles/Register.styles';
 import { saveServico, getServicos } from '../../services/storageService';
 import { useDataContext } from '../../context/DataContext';
 

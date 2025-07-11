@@ -10,8 +10,6 @@ import { z } from "zod";
 import { useDataContext } from "../../context/DataContext";
 import { RootStackParamList } from "../../navigation/types";
 import * as S from "../../styles/Register.styles";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import colors from "../../constants/colors";
 import { UpdateAluno } from "../../schemas/UpdateAluno";
 
