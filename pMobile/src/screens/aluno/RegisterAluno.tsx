@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SuccessModal from "../../components/SuccessModal";
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Platform } from "react-native";
@@ -31,6 +32,7 @@ type AlunoFormData = z.infer<typeof CreateAluno>;
 export default function RegisterAluno() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [textValueAltura, setTextValueAltura] = React.useState("");
@@ -86,8 +88,8 @@ export default function RegisterAluno() {
     try {
       setIsLoading(true);
       await saveAluno(cleanData);
-      Alert.alert("Sucesso", "Aluno cadastrado localmente!");
       reset();
+      setSuccessModalVisible(true);
     } catch (err) {
       console.error(err);
       if (err instanceof Error && err.message === 'CPF já cadastrado') {
@@ -812,7 +814,15 @@ export default function RegisterAluno() {
           <S.ButtonText>Resetar</S.ButtonText>
         </S.ResetButton>
       </S.Buttons>
-      
+
+      <SuccessModal
+        visible={successModalVisible}
+        onClose={() => {
+          setSuccessModalVisible(false);
+          navigation.navigate("HomeScreen" as never);
+        }}
+        message="Aluno cadastrado com sucesso!"
+      />
     </S.Container>
   );
 }

@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
-import { Aluno, Personal } from '../services/storageService';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
+import { Aluno, Personal } from "../services/storageService";
 
 type DataContextType = {
   alunos: Aluno[];
@@ -16,12 +16,22 @@ type DataContextType = {
   deleteAluno: (cpf: string) => Promise<void>;
   deletePersonal: (cpf: string) => Promise<void>;
   deleteServico: (id: string) => Promise<void>;
-  editAluno: (cpf: string, novoAluno: Aluno) => Promise<void>;
-  editPersonal: (cpf: string, novoPersonal: Personal) => Promise<void>;
-  editServico: (id: string, novoServico: any) => Promise<void>;
 };
 
-const DataContext = createContext<DataContextType>({} as DataContextType);
+const DataContext = createContext<DataContextType>({
+  alunos: [],
+  personais: [],
+  servicos: [],
+  isLoading: false,
+  reloadData: async () => {},
+  personalLogado: null,
+  setPersonalLogado: () => {},
+  alunoLogado: null,
+  setAlunoLogado: () => {},
+  deleteAluno: async () => {},
+  deletePersonal: async () => {},
+  deleteServico: async () => {},
+});
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -45,8 +55,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAlunos(a ? JSON.parse(a) : []);
       setPersonais(p ? JSON.parse(p) : []);
       setServicos(s ? JSON.parse(s) : []);
-
-      console.log("Dados carregados");
     } catch (err) {
       console.error("Erro ao carregar dados:", err);
       Alert.alert("Erro", "Falha ao carregar dados locais.");
@@ -55,96 +63,61 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const restoreSession = async () => {
+    try {
+      const aluno = await AsyncStorage.getItem("@alunoLogado");
+      if (aluno) setAlunoLogadoState(JSON.parse(aluno));
+
+      const personal = await AsyncStorage.getItem("@personalLogado");
+      if (personal) setPersonalLogadoState(JSON.parse(personal));
+    } catch (err) {
+      console.error("Erro ao restaurar sessão:", err);
+    }
+  };
+
   const setPersonalLogado = (personal: Personal | null) => {
-    if (personal) setAlunoLogadoState(null);
     setPersonalLogadoState(personal);
+    if (personal) {
+      AsyncStorage.setItem("@personalLogado", JSON.stringify(personal));
+      AsyncStorage.removeItem("@alunoLogado");
+      setAlunoLogadoState(null);
+    } else {
+      AsyncStorage.removeItem("@personalLogado");
+    }
   };
 
   const setAlunoLogado = (aluno: Aluno | null) => {
-    if (aluno) setPersonalLogadoState(null);
     setAlunoLogadoState(aluno);
+    if (aluno) {
+      AsyncStorage.setItem("@alunoLogado", JSON.stringify(aluno));
+      AsyncStorage.removeItem("@personalLogado");
+      setPersonalLogadoState(null);
+    } else {
+      AsyncStorage.removeItem("@alunoLogado");
+    }
   };
 
   const deleteAluno = async (cpf: string) => {
-    try {
-      const updated = alunos.filter((a) => a.pessoa.cpf !== cpf);
-      setAlunos(updated);
-      await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
-    } catch (err) {
-      console.error("Erro ao deletar aluno:", err);
-      Alert.alert("Erro", "Falha ao deletar aluno.");
-    }
+    const updated = alunos.filter(a => a.pessoa.cpf !== cpf);
+    setAlunos(updated);
+    await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
   };
 
   const deletePersonal = async (cpf: string) => {
-    try {
-      const updated = personais.filter((p) => p.cpf !== cpf);
-      setPersonais(updated);
-      await AsyncStorage.setItem("@personais", JSON.stringify(updated));
-    } catch (err) {
-      console.error("Erro ao deletar personal:", err);
-      Alert.alert("Erro", "Falha ao deletar personal.");
-    }
+    const updated = personais.filter(p => p.cpf !== cpf);
+    setPersonais(updated);
+    await AsyncStorage.setItem("@personais", JSON.stringify(updated));
   };
 
   const deleteServico = async (id: string) => {
-    try {
-      const updated = servicos.filter((s) => s.id !== id);
-      setServicos(updated);
-      await AsyncStorage.setItem("@servicos", JSON.stringify(updated));
-    } catch (err) {
-      console.error("Erro ao deletar serviço:", err);
-      Alert.alert("Erro", "Falha ao deletar serviço.");
-    }
-  };
-
-  const editAluno = async (cpf: string, novoAluno: Aluno) => {
-    try {
-      const updated = alunos.map((a) =>
-        a.pessoa.cpf === cpf ? novoAluno : a
-      );
-      setAlunos(updated);
-      await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
-
-      if (alunoLogado?.pessoa.cpf === cpf) {
-        setAlunoLogadoState(novoAluno);
-      }
-    } catch (err) {
-      console.error("Erro ao editar aluno:", err);
-      Alert.alert("Erro", "Falha ao editar aluno.");
-    }
-  };
-
-  const editPersonal = async (cpf: string, updatedData: Personal) => {
-    try {
-      const updatedPersonais = personais.map((p) =>
-        p.cpf === cpf ? updatedData : p
-      );
-      setPersonais(updatedPersonais);
-      await AsyncStorage.setItem("@personais", JSON.stringify(updatedPersonais));
-
-      if (personalLogado?.cpf === cpf) {
-        setPersonalLogadoState(updatedData);
-      }
-    } catch (error) {
-      console.error("Erro ao editar personal:", error);
-      Alert.alert("Erro", "Falha ao editar personal.");
-    }
-  };
-
-  const editServico = async (id: string, novoServico: any) => {
-    try {
-      const updated = servicos.map((s) => s.id === id ? novoServico : s);
-      setServicos(updated);
-      await AsyncStorage.setItem("@servicos", JSON.stringify(updated));
-    } catch (err) {
-      console.error("Erro ao editar serviço:", err);
-      Alert.alert("Erro", "Falha ao editar serviço.");
-    }
+    const updated = servicos.filter(s => s.id !== id);
+    setServicos(updated);
+    await AsyncStorage.setItem("@servicos", JSON.stringify(updated));
   };
 
   useEffect(() => {
     loadAllData();
+    restoreSession();
   }, []);
 
   return (
@@ -162,9 +135,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteAluno,
         deletePersonal,
         deleteServico,
-        editAluno,
-        editPersonal,
-        editServico,
       }}
     >
       {children}
@@ -172,10 +142,4 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useDataContext = () => {
-  const context = useContext(DataContext);
-  if (!context) {
-    throw new Error("useDataContext deve ser usado dentro de um DataProvider");
-  }
-  return context;
-};
+export const useDataContext = () => useContext(DataContext);

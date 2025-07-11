@@ -36,7 +36,7 @@ export default function HeaderMenu() {
   const handleNavigate = (route: RoutesWithoutParams) => {
     closeMenu();
     navigation.navigate(route);
-  };
+  };  
 
   return (
     <Container>
