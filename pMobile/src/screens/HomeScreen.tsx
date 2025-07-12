@@ -10,7 +10,6 @@ import * as S from "../styles/HomeScreen.styles";
 
 import { useDataContext } from "../context/DataContext";
 import LogoutConfirmModal from "../components/LogoutConfirmModal";
-import { clearAllData } from "../services/storageService";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "HomeScreen">;
 

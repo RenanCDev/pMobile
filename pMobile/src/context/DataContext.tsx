@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { Aluno, Personal } from "../services/storageService";
+import { removeCPFFormatting } from "../utils/cpf/format";
 
 type DataContextType = {
   alunos: Aluno[];
@@ -16,6 +17,7 @@ type DataContextType = {
   deleteAluno: (cpf: string) => Promise<void>;
   deletePersonal: (cpf: string) => Promise<void>;
   deleteServico: (id: string) => Promise<void>;
+  editPersonal: (cpf: string, data: Personal) => Promise<void>;
 };
 
 const DataContext = createContext<DataContextType>({
@@ -31,6 +33,7 @@ const DataContext = createContext<DataContextType>({
   deleteAluno: async () => {},
   deletePersonal: async () => {},
   deleteServico: async () => {},
+  editPersonal: async () => {},
 });
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -115,6 +118,21 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await AsyncStorage.setItem("@servicos", JSON.stringify(updated));
   };
 
+  const editPersonal = async (cpfParam: string, data: Personal) => {
+    const targetCpf = removeCPFFormatting(cpfParam);
+
+    const updated = personais.map((p) => {
+      return removeCPFFormatting(p.cpf) === targetCpf ? data : p;
+    });
+
+    setPersonais(updated);
+    await AsyncStorage.setItem("@personais", JSON.stringify(updated));
+
+    if (personalLogado && removeCPFFormatting(personalLogado.cpf) === targetCpf) {
+      setPersonalLogado(data);
+    }
+  };
+
   useEffect(() => {
     loadAllData();
     restoreSession();
@@ -135,6 +153,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteAluno,
         deletePersonal,
         deleteServico,
+        editPersonal,
       }}
     >
       {children}

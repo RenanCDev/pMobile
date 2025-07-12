@@ -24,6 +24,7 @@ export const Title = styled.Text`
   font-weight: bold;
   margin-bottom: 24px;
   color: ${colors.text.inverted};
+  text-align: center;
 `;
 
 export const TitleHighlight = styled.Text`
@@ -179,10 +180,37 @@ export const TextArea = styled(TextInput)`
   padding: 10px;
   color: ${colors.text.inverted};
   margin-bottom: 4px;
+  border-width: 1px;
+  border-color: ${colors.border};
 `;
 
 export const ButtonRow = styled.View`
   flex-direction: column;
   gap: 16px;
   margin-top: 24px;
+  width: 100%;
+`;
+
+export const Overlay = styled.View`
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ModalContent = styled.View`
+  width: 80%;
+  background-color: ${colors.dark.surface};
+  border-radius: 12px;
+  border-width: 1px;
+  border-color: ${colors.border};
+  padding: 20px;
+  align-items: center;
+`;
+
+export const Message = styled.Text`
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: ${colors.text.muted};
 `;

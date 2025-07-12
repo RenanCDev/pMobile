@@ -8,18 +8,11 @@ import { RootStackParamList } from '../../navigation/types';
 import { CreateServico } from '../../schemas/CreateServico';
 import { getServicoById, updateServico } from '../../services/storageService';
 import { useDataContext } from '../../context/DataContext';
+
 import CustomButton from '../../components/CustomButton';
 import colors from '../../constants/colors';
 
-import {
-  Container,
-  Title,
-  Label,
-  Input,
-  TextArea,
-  ErrorText,
-  ButtonRow,
-} from '../../styles/Register.styles';
+import * as S from '../../styles/Register.styles';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EditServico'>;
 
@@ -62,7 +55,7 @@ export default function EditServico({ route, navigation }: Props) {
           Alert.alert('Erro', 'Serviço não encontrado');
           navigation.goBack();
         }
-      } catch (err) {
+      } catch {
         Alert.alert('Erro', 'Falha ao carregar serviço');
       }
     }
@@ -90,34 +83,34 @@ export default function EditServico({ route, navigation }: Props) {
   };
 
   return (
-    <Container keyboardShouldPersistTaps="handled">
-      <Title>Editar Serviço</Title>
+    <S.Container keyboardShouldPersistTaps="handled">
+      <S.Title>Editar Serviço</S.Title>
 
-      <Label>Tipo de Serviço</Label>
+      <S.Label>Tipo de Serviço</S.Label>
       <Controller
         name="tipo"
         control={control}
         render={({ field: { value, onChange } }) => (
           <>
-            <Input
+            <S.Input
               value={value}
               onChangeText={onChange}
               placeholder="Ex: Avaliação"
               placeholderTextColor={colors.text.muted}
               autoCapitalize="words"
             />
-            {errors.tipo && <ErrorText>{errors.tipo.message}</ErrorText>}
+            {errors.tipo && <S.ErrorText>{errors.tipo.message}</S.ErrorText>}
           </>
         )}
       />
 
-      <Label>Descrição</Label>
+      <S.Label>Descrição</S.Label>
       <Controller
         name="descricao"
         control={control}
         render={({ field: { value, onChange } }) => (
           <>
-            <TextArea
+            <S.TextArea
               value={value}
               onChangeText={onChange}
               placeholder="Descreva o serviço"
@@ -125,30 +118,30 @@ export default function EditServico({ route, navigation }: Props) {
               multiline
               textAlignVertical="top"
             />
-            {errors.descricao && <ErrorText>{errors.descricao.message}</ErrorText>}
+            {errors.descricao && <S.ErrorText>{errors.descricao.message}</S.ErrorText>}
           </>
         )}
       />
 
-      <Label>Valor</Label>
+      <S.Label>Valor</S.Label>
       <Controller
         name="valor"
         control={control}
         render={({ field: { value, onChange } }) => (
           <>
-            <Input
+            <S.Input
               value={value}
               onChangeText={onChange}
               placeholder="R$"
               placeholderTextColor={colors.text.muted}
               keyboardType="numeric"
             />
-            {errors.valor && <ErrorText>{errors.valor.message}</ErrorText>}
+            {errors.valor && <S.ErrorText>{errors.valor.message}</S.ErrorText>}
           </>
         )}
       />
 
-      <ButtonRow>
+      <S.ButtonRow>
         <CustomButton
           title={isLoading ? 'Salvando...' : 'Salvar Alterações'}
           onPress={handleSubmit(onSubmit)}
@@ -158,9 +151,10 @@ export default function EditServico({ route, navigation }: Props) {
           title="Cancelar"
           onPress={() => navigation.goBack()}
           backgroundColor={colors.dark.surface}
+          textColor={colors.text.inverted}
           disabled={isLoading}
         />
-      </ButtonRow>
-    </Container>
+      </S.ButtonRow>
+    </S.Container>
   );
 }
