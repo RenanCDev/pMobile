@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Modal } from 'react-native';
+import { Modal } from 'react-native';
 import { useDataContext } from '../context/DataContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +20,6 @@ import {
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-// Tipo que seleciona só as rotas que NÃO têm parâmetros
 type RoutesWithoutParams = {
   [K in keyof RootStackParamList]: RootStackParamList[K] extends undefined ? K : never
 }[keyof RootStackParamList];
@@ -36,7 +35,7 @@ export default function HeaderMenu() {
   const handleNavigate = (route: RoutesWithoutParams) => {
     closeMenu();
     navigation.navigate(route);
-  };  
+  };
 
   return (
     <Container>
@@ -57,6 +56,10 @@ export default function HeaderMenu() {
               <SectionTitle>Alunos</SectionTitle>
               <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
               <MenuItem label="Visualizar Aluno" onPress={() => handleNavigate('ViewAluno')} />
+              
+              {alunoLogado && (
+                <MenuItem label="Meus Contratos" onPress={() => handleNavigate('ViewContratosAluno')} />
+              )}
 
               <SectionTitle>Serviços</SectionTitle>
               <MenuItem label="Cadastrar Serviço" onPress={() => handleNavigate('RegisterServico')} />

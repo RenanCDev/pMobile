@@ -22,6 +22,8 @@ import EditServico from '../screens/servico/EditServico';
 import DeleteServico from '../screens/servico/DeleteServico';
 import ViewServico from '../screens/servico/ViewServico';
 
+import ViewContratosAluno from '../screens/aluno/ViewContratosAlunos';
+
 import HeaderMenu from '../components/HeaderMenu';
 import HeaderHomeButton from '../components/HeaderHomeButton';
 import colors from '../constants/colors';
@@ -65,6 +67,7 @@ export default function StackNavigator() {
       <Stack.Screen name="EditAluno" component={EditAluno} options={{ title: 'Editar Aluno' }} />
       <Stack.Screen name="DeleteAluno" component={DeleteAluno} options={{ title: 'Excluir Aluno' }} />
       <Stack.Screen name="ViewAluno" component={ViewAluno} options={{ title: 'Visualizar Alunos' }} />
+      <Stack.Screen name="ViewContratosAluno" component={ViewContratosAluno} options={{ title: 'Meus Contratos' }} />
 
       <Stack.Screen name="RegisterServico" component={RegisterServico} options={{ title: 'Cadastrar Serviço' }} />
       <Stack.Screen name="EditServico" component={EditServico} options={{ title: 'Editar Serviço' }} />

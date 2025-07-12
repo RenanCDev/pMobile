@@ -1,60 +1,89 @@
 import React from "react";
 import { Alert, ScrollView } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as S from "../../styles/Register.styles";
 import { useDataContext } from "../../context/DataContext";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/types';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/types";
+import { saveContrato } from "../../services/storageService";
 
 export default function ViewServico() {
-  const { servicos, personalLogado, reloadData } = useDataContext();
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const {
+    servicos,
+    personalLogado,
+    alunoLogado,
+    reloadData,
+  } = useDataContext();
 
-  if (!personalLogado) {
-    Alert.alert("Erro", "Você precisa ser um personal para visualizar seus serviços.");
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  // Nem aluno nem personal logado → erro
+  if (!personalLogado && !alunoLogado) {
+    Alert.alert("Erro", "Você precisa estar logado para visualizar os serviços.");
     return (
       <S.Container>
         <S.SectionTitle>Serviços</S.SectionTitle>
-        <S.Label>Faça login para visualizar seus serviços.</S.Label>
+        <S.Label>Faça login para visualizar os serviços disponíveis.</S.Label>
       </S.Container>
     );
   }
 
   const servicosDoPersonal = servicos.filter(
-    (s) => s.cadastrado_por === personalLogado.nome
+    (s) => personalLogado && s.cadastrado_por === personalLogado.nome
   );
 
   async function handleDelete(id: string) {
-    Alert.alert(
-      "Confirmação",
-      "Tem certeza que deseja excluir este serviço?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Excluir",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              const novosServicos = servicos.filter((s) => s.id !== id);
-              await AsyncStorage.setItem("@servicos", JSON.stringify(novosServicos));
-              reloadData();
-              Alert.alert("Sucesso", "Serviço excluído com sucesso!");
-            } catch (error) {
-              Alert.alert("Erro", "Não foi possível excluir o serviço.");
-              console.error(error);
-            }
-          },
+    Alert.alert("Confirmação", "Tem certeza que deseja excluir este serviço?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Excluir",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            const novosServicos = servicos.filter((s) => s.id !== id);
+            await AsyncStorage.setItem("@servicos", JSON.stringify(novosServicos));
+            reloadData();
+            Alert.alert("Sucesso", "Serviço excluído com sucesso!");
+          } catch (error) {
+            Alert.alert("Erro", "Não foi possível excluir o serviço.");
+            console.error(error);
+          }
         },
-      ]
-    );
+      },
+    ]);
   }
 
-  if (servicosDoPersonal.length === 0) {
+  async function handleContratar(servicoId: number) {
+    if (!alunoLogado) {
+      Alert.alert("Erro", "Você precisa estar logado como aluno.");
+      return;
+    }
+
+    try {
+      await saveContrato({
+        alunoCpf: alunoLogado.pessoa.cpf,
+        servicoId,
+      });
+      Alert.alert("Sucesso", "Serviço contratado!");
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Erro", "Falha ao contratar serviço.");
+    }
+  }
+
+  const listaServicos = personalLogado ? servicosDoPersonal : servicos;
+
+  if (listaServicos.length === 0) {
     return (
       <S.Container>
-        <S.SectionTitle>Seus Serviços</S.SectionTitle>
-        <S.Label>Você ainda não cadastrou nenhum serviço.</S.Label>
+        <S.SectionTitle>Serviços</S.SectionTitle>
+        <S.Label>
+          {personalLogado
+            ? "Você ainda não cadastrou nenhum serviço."
+            : "Nenhum serviço disponível no momento."}
+        </S.Label>
       </S.Container>
     );
   }
@@ -62,9 +91,9 @@ export default function ViewServico() {
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
       <S.Container>
-        <S.SectionTitle>Seus Serviços</S.SectionTitle>
+        <S.SectionTitle>Serviços</S.SectionTitle>
 
-        {servicosDoPersonal.map((servico) => (
+        {listaServicos.map((servico) => (
           <S.Section key={servico.id}>
             <S.Box>
               <S.BoxLabel>Tipo</S.BoxLabel>
@@ -81,18 +110,35 @@ export default function ViewServico() {
               <S.BoxValue>R$ {servico.valor}</S.BoxValue>
             </S.Box>
 
-            <S.Buttons>
-              <S.SubmitButton
-                onPress={() =>
-                  navigation.navigate("EditServico", { servicoId: servico.id })
-                }
-              >
-                <S.ButtonText>Editar</S.ButtonText>
-              </S.SubmitButton>
+            <S.Box>
+              <S.BoxLabel>Cadastrado por</S.BoxLabel>
+              <S.BoxValue>{servico.cadastrado_por}</S.BoxValue>
+            </S.Box>
 
-              <S.ResetButton onPress={() => handleDelete(servico.id)}>
-                <S.ButtonText>Excluir</S.ButtonText>
-              </S.ResetButton>
+            <S.Buttons>
+              {personalLogado ? (
+                <>
+                  <S.SubmitButton
+                    onPress={() =>
+                      navigation.navigate("EditServico", {
+                        servicoId: servico.id,
+                      })
+                    }
+                  >
+                    <S.ButtonText>Editar</S.ButtonText>
+                  </S.SubmitButton>
+
+                  <S.ResetButton onPress={() => handleDelete(servico.id)}>
+                    <S.ButtonText>Excluir</S.ButtonText>
+                  </S.ResetButton>
+                </>
+              ) : (
+                <S.SubmitButton
+                  onPress={() => handleContratar(servico.id)}
+                >
+                  <S.ButtonText>Contratar</S.ButtonText>
+                </S.SubmitButton>
+              )}
             </S.Buttons>
           </S.Section>
         ))}

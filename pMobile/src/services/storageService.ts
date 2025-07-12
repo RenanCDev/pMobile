@@ -63,6 +63,39 @@ export interface Servico {
   cadastrado_por: string;
 }
 
+export interface Contrato {
+  id: number;
+  alunoCpf: string;
+  servicoId: number;
+  dataContratacao: string;
+  status: 'ativo' | 'cancelado';
+}
+
+export async function saveContrato(contrato: Omit<Contrato, 'id' | 'dataContratacao'>) {
+  const existing = await AsyncStorage.getItem('@contratos');
+  const parsed: Contrato[] = existing ? JSON.parse(existing) : [];
+
+  const lastId = parsed.length > 0 ? parsed[parsed.length - 1].id : 0;
+
+  const novoContrato: Contrato = {
+    id: lastId + 1,
+    alunoCpf: contrato.alunoCpf,
+    servicoId: contrato.servicoId,
+    dataContratacao: new Date().toISOString(),
+    status: 'ativo',
+  };
+
+  parsed.push(novoContrato);
+
+  await AsyncStorage.setItem('@contratos', JSON.stringify(parsed));
+}
+
+export async function getContratos(): Promise<Contrato[]> {
+  const data = await AsyncStorage.getItem('@contratos');
+  return data ? JSON.parse(data) : [];
+}
+
+
 export async function savePersonal(personalData: Personal) {
   try {
     const existing = await AsyncStorage.getItem('@personais');

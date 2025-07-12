@@ -133,6 +133,21 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const editAluno = async (cpfParam: string, data: Aluno) => {
+    const targetCpf = removeCPFFormatting(cpfParam);
+  
+    const updated = alunos.map((a) => {
+      return removeCPFFormatting(a.pessoa.cpf) === targetCpf ? data : a;
+    });
+  
+    setAlunos(updated);
+    await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
+  
+    if (alunoLogado && removeCPFFormatting(alunoLogado.pessoa.cpf) === targetCpf) {
+      setAlunoLogado(data);
+    }
+  };
+
   useEffect(() => {
     loadAllData();
     restoreSession();
@@ -154,6 +169,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deletePersonal,
         deleteServico,
         editPersonal,
+        editAluno,
       }}
     >
       {children}
