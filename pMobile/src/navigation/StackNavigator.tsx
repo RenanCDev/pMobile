@@ -9,7 +9,6 @@ import LoginAluno from '../screens/login/LoginAluno';
 
 import RegisterPersonal from '../screens/personal/RegisterPersonal';
 import { EditPersonal } from '../screens/personal/EditPersonal';
-import DeletePersonal from '../screens/personal/DeletePersonal';
 import ViewPersonal from '../screens/personal/ViewPersonal';
 
 import RegisterAluno from '../screens/aluno/RegisterAluno';
@@ -60,7 +59,7 @@ export default function StackNavigator() {
 
       <Stack.Screen name="RegisterPersonal" component={RegisterPersonal} options={{ title: 'Cadastrar Personal' }} />
       <Stack.Screen name="EditPersonal" component={EditPersonal} options={{ title: 'Editar Personal' }} />
-      <Stack.Screen name="DeletePersonal" component={DeletePersonal} options={{ title: 'Excluir Personal' }} />
+    
       <Stack.Screen name="ViewPersonal" component={ViewPersonal} options={{ title: 'Visualizar Personais' }} />
 
       <Stack.Screen name="RegisterAluno" component={RegisterAluno} options={{ title: 'Cadastrar Aluno' }} />
