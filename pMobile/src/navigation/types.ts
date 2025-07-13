@@ -3,6 +3,7 @@ export type RootStackParamList = {
   LoginPersonal: undefined;
   LoginAluno: undefined;
   RegisterPersonal: undefined;
+  ViewContratosPersonal: undefined;
   EditPersonal: { cpf: string };
   ViewPersonal: undefined;
   RegisterAluno: undefined;

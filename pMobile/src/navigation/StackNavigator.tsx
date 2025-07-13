@@ -13,12 +13,10 @@ import ViewPersonal from '../screens/personal/ViewPersonal';
 
 import RegisterAluno from '../screens/aluno/RegisterAluno';
 import { EditAluno } from "../screens/aluno/EditAluno";
-import DeleteAluno from '../screens/aluno/DeleteAluno';
 import ViewAluno from '../screens/aluno/ViewAluno';
 
 import RegisterServico from '../screens/servico/RegisterServico';
 import EditServico from '../screens/servico/EditServico';
-import DeleteServico from '../screens/servico/DeleteServico';
 import ViewServico from '../screens/servico/ViewServico';
 
 import ViewContratosAluno from '../screens/aluno/ViewContratosAlunos';
@@ -66,13 +64,11 @@ export default function StackNavigator() {
 
       <Stack.Screen name="RegisterAluno" component={RegisterAluno} options={{ title: 'Cadastrar Aluno' }} />
       <Stack.Screen name="EditAluno" component={EditAluno} options={{ title: 'Editar Aluno' }} />
-      <Stack.Screen name="DeleteAluno" component={DeleteAluno} options={{ title: 'Excluir Aluno' }} />
       <Stack.Screen name="ViewAluno" component={ViewAluno} options={{ title: 'Visualizar Alunos' }} />
       <Stack.Screen name="ViewContratosAluno" component={ViewContratosAluno} options={{ title: 'Meus Contratos' }} />
 
       <Stack.Screen name="RegisterServico" component={RegisterServico} options={{ title: 'Cadastrar Serviço' }} />
       <Stack.Screen name="EditServico" component={EditServico} options={{ title: 'Editar Serviço' }} />
-      <Stack.Screen name="DeleteServico" component={DeleteServico} options={{ title: 'Excluir Serviço' }} />
       <Stack.Screen name="ViewServico" component={ViewServico} options={{ title: 'Visualizar Serviços' }} />
     </Stack.Navigator>
   );
