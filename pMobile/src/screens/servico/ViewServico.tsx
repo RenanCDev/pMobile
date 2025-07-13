@@ -1,5 +1,5 @@
-import React from "react";
-import { Alert, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, Modal, View, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as S from "../../styles/Register.styles";
 import { useDataContext } from "../../context/DataContext";
@@ -19,9 +19,11 @@ export default function ViewServico() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // Nem aluno nem personal logado → erro
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedServicoId, setSelectedServicoId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   if (!personalLogado && !alunoLogado) {
-    Alert.alert("Erro", "Você precisa estar logado para visualizar os serviços.");
     return (
       <S.Container>
         <S.SectionTitle>Serviços</S.SectionTitle>
@@ -35,41 +37,30 @@ export default function ViewServico() {
   );
 
   async function handleDelete(id: string) {
-    Alert.alert("Confirmação", "Tem certeza que deseja excluir este serviço?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Excluir",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            const novosServicos = servicos.filter((s) => s.id !== id);
-            await AsyncStorage.setItem("@servicos", JSON.stringify(novosServicos));
-            reloadData();
-            Alert.alert("Sucesso", "Serviço excluído com sucesso!");
-          } catch (error) {
-            Alert.alert("Erro", "Não foi possível excluir o serviço.");
-            console.error(error);
-          }
-        },
-      },
-    ]);
+    const novosServicos = servicos.filter((s) => s.id !== id);
+    await AsyncStorage.setItem("@servicos", JSON.stringify(novosServicos));
+    reloadData();
   }
 
-  async function handleContratar(servicoId: number) {
-    if (!alunoLogado) {
-      Alert.alert("Erro", "Você precisa estar logado como aluno.");
+  async function handleConfirmarContratacao() {
+    if (!alunoLogado || selectedServicoId == null) {
+      setModalVisible(false);
       return;
     }
+
+    setIsLoading(true);
 
     try {
       await saveContrato({
         alunoCpf: alunoLogado.pessoa.cpf,
-        servicoId,
+        servicoId: selectedServicoId,
       });
-      Alert.alert("Sucesso", "Serviço contratado!");
+      await reloadData();
     } catch (err) {
       console.error(err);
-      Alert.alert("Erro", "Falha ao contratar serviço.");
+    } finally {
+      setIsLoading(false);
+      setModalVisible(false);
     }
   }
 
@@ -134,7 +125,10 @@ export default function ViewServico() {
                 </>
               ) : (
                 <S.SubmitButton
-                  onPress={() => handleContratar(servico.id)}
+                  onPress={() => {
+                    setSelectedServicoId(servico.id);
+                    setModalVisible(true);
+                  }}
                 >
                   <S.ButtonText>Contratar</S.ButtonText>
                 </S.SubmitButton>
@@ -142,6 +136,51 @@ export default function ViewServico() {
             </S.Buttons>
           </S.Section>
         ))}
+
+        {/* Modal de confirmação */}
+        <Modal
+          transparent
+          visible={modalVisible}
+          animationType="fade"
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <View style={{
+              backgroundColor: 'white',
+              borderRadius: 10,
+              padding: 20,
+              width: '80%',
+            }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+                Confirmar Contratação
+              </Text>
+              <Text style={{ marginBottom: 20 }}>
+                Você confirma a contratação deste serviço?
+              </Text>
+
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <S.ResetButton
+                  style={{ marginRight: 10 }}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <S.ButtonText>Cancelar</S.ButtonText>
+                </S.ResetButton>
+
+                <S.SubmitButton
+                  onPress={handleConfirmarContratacao}
+                  disabled={isLoading}
+                >
+                  <S.ButtonText>Confirmar</S.ButtonText>
+                </S.SubmitButton>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </S.Container>
     </ScrollView>
   );
