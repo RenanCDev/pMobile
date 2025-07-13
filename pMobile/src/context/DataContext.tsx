@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
-import { Aluno, Personal } from "../services/storageService";
+import { Aluno, Personal, Contrato } from "../services/storageService";
 import { removeCPFFormatting } from "../utils/cpf/format";
 
 type Contrato = {
@@ -29,9 +29,28 @@ type DataContextType = {
   editPersonal: (cpf: string, data: Personal) => Promise<void>;
   editAluno: (cpf: string, data: Aluno) => Promise<void>;
   cancelarContrato: (id: number) => Promise<void>;
+  addContrato: (contrato: Contrato) => Promise<void>;
 };
 
-const DataContext = createContext<DataContextType>({} as any);
+const DataContext = createContext<DataContextType>({
+  alunos: [],
+  personais: [],
+  servicos: [],
+  contratosAluno: [],
+  isLoading: false,
+  reloadData: async () => {},
+  personalLogado: null,
+  setPersonalLogado: () => {},
+  alunoLogado: null,
+  setAlunoLogado: () => {},
+  deleteAluno: async () => {},
+  deletePersonal: async () => {},
+  deleteServico: async () => {},
+  editPersonal: async () => {},
+  editAluno: async () => {},
+  cancelarContrato: async () => {},
+  addContrato: async () => {},
+});
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -46,6 +65,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loadAllData = async () => {
     setIsLoading(true);
     try {
+      setIsLoading(true);
+
       const [a, p, s, c] = await Promise.all([
         AsyncStorage.getItem("@alunos"),
         AsyncStorage.getItem("@personais"),
@@ -119,11 +140,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const editPersonal = async (cpfParam: string, data: Personal) => {
     const targetCpf = removeCPFFormatting(cpfParam);
-
-    const updated = personais.map((p) => {
-      return removeCPFFormatting(p.cpf) === targetCpf ? data : p;
-    });
-
+    const updated = personais.map(p => removeCPFFormatting(p.cpf) === targetCpf ? data : p);
     setPersonais(updated);
     await AsyncStorage.setItem("@personais", JSON.stringify(updated));
 
@@ -134,11 +151,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const editAluno = async (cpfParam: string, data: Aluno) => {
     const targetCpf = removeCPFFormatting(cpfParam);
-
-    const updated = alunos.map((a) => {
-      return removeCPFFormatting(a.pessoa.cpf) === targetCpf ? data : a;
-    });
-
+    const updated = alunos.map(a => removeCPFFormatting(a.pessoa.cpf) === targetCpf ? data : a);
     setAlunos(updated);
     await AsyncStorage.setItem("@alunos", JSON.stringify(updated));
 
@@ -148,11 +161,15 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const cancelarContrato = async (id: number) => {
-    const updated = contratosAluno.map(c =>
-      c.id === id ? { ...c, status: "cancelado" } : c
-    );
-    setContratosAluno(updated);
-    await AsyncStorage.setItem("@contratos", JSON.stringify(updated));
+    const atualizados = contratosAluno.map(c => c.id === id ? { ...c, status: "cancelado" } : c);
+    setContratosAluno(atualizados);
+    await AsyncStorage.setItem("@contratos", JSON.stringify(atualizados));
+  };
+
+  const addContrato = async (contrato: Contrato) => {
+    const novos = [...contratosAluno, contrato];
+    setContratosAluno(novos);
+    await AsyncStorage.setItem("@contratos", JSON.stringify(novos));
   };
 
   useEffect(() => {
@@ -178,7 +195,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         deleteServico,
         editPersonal,
         editAluno,
-        cancelarContrato
+        cancelarContrato,
+        addContrato,
       }}
     >
       {children}

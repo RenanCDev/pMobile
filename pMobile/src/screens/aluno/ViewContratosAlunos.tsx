@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, ScrollView, ActivityIndicator } from "react-native";
+import { Alert, ScrollView, ActivityIndicator, Platform } from "react-native";
 import * as S from "../../styles/Register.styles";
 import { useDataContext } from "../../context/DataContext";
 import { getServicos } from "../../services/storageService";
@@ -32,6 +32,27 @@ export default function ViewContratosAluno() {
   const contratosDoAluno = contratosAluno.filter(
     (c) => c.alunoCpf === alunoLogado?.pessoa.cpf
   );
+
+  async function handleCancelar(id: number) {
+    if (Platform.OS === "web") {
+      const confirm = window.confirm("Deseja cancelar este contrato?");
+      if (!confirm) return;
+      await cancelarContrato(id);
+      window.alert("Contrato cancelado!");
+    } else {
+      Alert.alert("Confirmação", "Deseja cancelar este contrato?", [
+        { text: "Não", style: "cancel" },
+        {
+          text: "Sim",
+          style: "destructive",
+          onPress: async () => {
+            await cancelarContrato(id);
+            Alert.alert("Sucesso", "Contrato cancelado!");
+          },
+        },
+      ]);
+    }
+  }
 
   if (loading) {
     return (
@@ -97,18 +118,7 @@ export default function ViewContratosAluno() {
 
               {contrato.status === "ativo" && (
                 <S.Buttons>
-                  <S.ResetButton
-                    onPress={() => {
-                      Alert.alert("Confirmação", "Deseja cancelar este contrato?", [
-                        { text: "Não", style: "cancel" },
-                        {
-                          text: "Sim",
-                          style: "destructive",
-                          onPress: () => cancelarContrato(contrato.id),
-                        },
-                      ]);
-                    }}
-                  >
+                  <S.ResetButton onPress={() => handleCancelar(contrato.id)}>
                     <S.ButtonText>Cancelar</S.ButtonText>
                   </S.ResetButton>
                 </S.Buttons>
