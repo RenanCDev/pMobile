@@ -22,6 +22,7 @@ import DeleteServico from '../screens/servico/DeleteServico';
 import ViewServico from '../screens/servico/ViewServico';
 
 import ViewContratosAluno from '../screens/aluno/ViewContratosAlunos';
+import ViewContratosPersonal from '../screens/personal/ViewContratosPersonal';
 
 import HeaderMenu from '../components/HeaderMenu';
 import HeaderHomeButton from '../components/HeaderHomeButton';
@@ -61,6 +62,7 @@ export default function StackNavigator() {
       <Stack.Screen name="EditPersonal" component={EditPersonal} options={{ title: 'Editar Personal' }} />
     
       <Stack.Screen name="ViewPersonal" component={ViewPersonal} options={{ title: 'Visualizar Personais' }} />
+      <Stack.Screen name="ViewContratosPersonal" component={ViewContratosPersonal} options={{ title: 'Contratos dos Meus Serviços' }} />
 
       <Stack.Screen name="RegisterAluno" component={RegisterAluno} options={{ title: 'Cadastrar Aluno' }} />
       <Stack.Screen name="EditAluno" component={EditAluno} options={{ title: 'Editar Aluno' }} />

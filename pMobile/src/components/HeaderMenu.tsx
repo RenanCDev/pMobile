@@ -25,7 +25,7 @@ type RoutesWithoutParams = {
 }[keyof RootStackParamList];
 
 export default function HeaderMenu() {
-  const { alunoLogado } = useDataContext();
+  const { alunoLogado, personalLogado } = useDataContext();
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation<NavigationProp>();
 
@@ -52,6 +52,12 @@ export default function HeaderMenu() {
               <SectionTitle>Personals</SectionTitle>
               <MenuItem label="Cadastrar Personal" onPress={() => handleNavigate('RegisterPersonal')} />
               <MenuItem label="Visualizar Personal" onPress={() => handleNavigate('ViewPersonal')} />
+              {personalLogado && (
+                <MenuItem
+                  label="Contratos dos Meus Serviços"
+                  onPress={() => handleNavigate('ViewContratosPersonal')}
+                />
+              )}
 
               <SectionTitle>Alunos</SectionTitle>
               <MenuItem label="Cadastrar Aluno" onPress={() => handleNavigate('RegisterAluno')} />
