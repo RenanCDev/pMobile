@@ -1,7 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { Picker } from "@react-native-picker/picker";
-import * as S from "../../styles/Register.styles";
+import * as S from "../../../styles/Register.styles";
 
 type Option = {
   label: string;

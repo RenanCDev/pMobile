@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Platform, TouchableOpacity } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Controller } from "react-hook-form";
-import * as S from "../../styles/Register.styles";
-import colors from "../../constants/colors";
+import * as S from "../../../styles/Register.styles";
+import colors from "../../../constants/colors";
 
 type Props = {
   control: any;

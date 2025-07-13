@@ -1,17 +1,17 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import * as S from "../../styles/Register.styles";
-import colors from "../../constants/colors";
-import { formatPhoneNumber } from "../../utils/celular/format";
+import * as S from "../../../styles/Register.styles";
+import colors from "../../../constants/colors";
 
 type Props = {
   control: any;
   name: string;
+  placeholder: string;
   label: string;
   errors: any;
 };
 
-export default function PhoneInputField({ control, name, label, errors }: Props) {
+export default function TextInputField({ control, name, placeholder, label, errors }: Props) {
   return (
     <Controller
       control={control}
@@ -20,11 +20,10 @@ export default function PhoneInputField({ control, name, label, errors }: Props)
         <S.Section>
           <S.Label>{label}</S.Label>
           <S.Input
+            onChangeText={onChange}
             value={value}
-            onChangeText={(text) => onChange(formatPhoneNumber(text))}
-            placeholder="(00) 00000-0000"
+            placeholder={placeholder}
             placeholderTextColor={colors.text.placeholder}
-            keyboardType="phone-pad"
             hasError={!!errors[name]}
           />
           {errors[name] && <S.ErrorText>{errors[name].message}</S.ErrorText>}

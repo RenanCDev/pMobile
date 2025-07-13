@@ -1,26 +1,21 @@
 import React, { useState } from "react";
-import { Picker } from '@react-native-picker/picker';
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Platform } from "react-native";
 import { z } from "zod";
-import { Alert, TouchableOpacity, ActivityIndicator } from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { Alert, ActivityIndicator } from "react-native";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
 import { CreatePersonal } from "../../schemas/CreatePersonal";
-import colors from "../../constants/colors";
-import { formatCPF, removeCPFFormatting } from "../../utils/cpf/format";
-import { formatPhoneNumber, unformatPhoneNumber } from "../../utils/celular/format";
+import { removeCPFFormatting } from "../../utils/cpf/format";
+import { unformatPhoneNumber } from "../../utils/celular/format";
 import * as S from "../../styles/Register.styles";
 import { savePersonal , getPersonals } from '../../services/storageService';
-import * as I from "../../components/Form";
+import * as I from "../../components/form/input";
 
 type PersonalFormData = z.infer<typeof CreatePersonal>;
 
 export default function RegisterPersonal() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const {
     control,
@@ -175,7 +170,6 @@ export default function RegisterPersonal() {
         />
 
         <S.Section>
-
           <I.InputPicker
             control={control}
             name="estado_civil"

@@ -1,8 +1,8 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import * as S from "../../styles/Register.styles";
-import colors from "../../constants/colors";
-import { formatCPF } from "../../utils/cpf/format";
+import * as S from "../../../styles/Register.styles";
+import colors from "../../../constants/colors";
+import { formatCPF } from "../../../utils/cpf/format";
 
 type Props = {
   control: any;
