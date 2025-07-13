@@ -1,63 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Alert, ScrollView, ActivityIndicator } from "react-native";
 import * as S from "../../styles/Register.styles";
 import { useDataContext } from "../../context/DataContext";
-import { getContratos, getServicos, Contrato } from "../../services/storageService";
+import { getServicos } from "../../services/storageService";
 import colors from "../../constants/colors";
 
 export default function ViewContratosAluno() {
-  const { alunoLogado } = useDataContext();
-  const [contratos, setContratos] = useState<Contrato[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [servicosMap, setServicosMap] = useState<Record<number, any>>({});
+  const { alunoLogado, contratosAluno, cancelarContrato } = useDataContext();
+  const [loading, setLoading] = React.useState(true);
+  const [servicosMap, setServicosMap] = React.useState<Record<number, any>>({});
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!alunoLogado) {
       Alert.alert("Erro", "Você precisa estar logado como aluno.");
       return;
     }
 
-    async function loadData() {
-      setLoading(true);
-      const allContratos = await getContratos();
+    async function loadServicos() {
       const allServicos = await getServicos();
-
       const map = allServicos.reduce((acc, servico) => {
         acc[servico.id] = servico;
         return acc;
       }, {} as Record<number, any>);
-
       setServicosMap(map);
-
-      const contratosDoAluno = allContratos.filter(
-        (c) => c.alunoCpf === alunoLogado.pessoa.cpf
-      );
-
-      setContratos(contratosDoAluno);
       setLoading(false);
     }
 
-    loadData();
+    loadServicos();
   }, [alunoLogado]);
 
-  async function handleCancelar(id: number) {
-    Alert.alert("Confirmação", "Deseja cancelar este contrato?", [
-      { text: "Não", style: "cancel" },
-      {
-        text: "Sim",
-        style: "destructive",
-        onPress: async () => {
-          const atualizados = contratos.map((c) =>
-            c.id === id ? { ...c, status: "cancelado" } : c
-          );
-          setContratos(atualizados);
-
-          await AsyncStorage.setItem("@contratos", JSON.stringify(atualizados));
-          Alert.alert("Sucesso", "Contrato cancelado!");
-        },
-      },
-    ]);
-  }
+  const contratosDoAluno = contratosAluno.filter(
+    (c) => c.alunoCpf === alunoLogado?.pessoa.cpf
+  );
 
   if (loading) {
     return (
@@ -67,7 +41,7 @@ export default function ViewContratosAluno() {
     );
   }
 
-  if (!contratos.length) {
+  if (!contratosDoAluno.length) {
     return (
       <S.Container>
         <S.SectionTitle>Meus Contratos</S.SectionTitle>
@@ -81,7 +55,7 @@ export default function ViewContratosAluno() {
       <S.Container>
         <S.SectionTitle>Meus Contratos</S.SectionTitle>
 
-        {contratos.map((contrato) => {
+        {contratosDoAluno.map((contrato) => {
           const servico = servicosMap[contrato.servicoId];
           return (
             <S.Section key={contrato.id}>
@@ -123,7 +97,18 @@ export default function ViewContratosAluno() {
 
               {contrato.status === "ativo" && (
                 <S.Buttons>
-                  <S.ResetButton onPress={() => handleCancelar(contrato.id)}>
+                  <S.ResetButton
+                    onPress={() => {
+                      Alert.alert("Confirmação", "Deseja cancelar este contrato?", [
+                        { text: "Não", style: "cancel" },
+                        {
+                          text: "Sim",
+                          style: "destructive",
+                          onPress: () => cancelarContrato(contrato.id),
+                        },
+                      ]);
+                    }}
+                  >
                     <S.ButtonText>Cancelar</S.ButtonText>
                   </S.ResetButton>
                 </S.Buttons>
