@@ -15,7 +15,7 @@ export default function InputTaxaMetabolicaBasal({ control, errors }: Props) {
     <Controller
       control={control}
       name="taxa_metabolica_basal"
-      render={({ field: { onChange } }) => (
+      render={({ field: { onChange, value } }) => (
         <S.Section>
           <S.Label>Taxa Metabólica Basal (kcal)</S.Label>
           <S.Input
@@ -23,7 +23,7 @@ export default function InputTaxaMetabolicaBasal({ control, errors }: Props) {
             keyboardType="numeric"
             placeholder="Ex.: 1500"
             placeholderTextColor={colors.text.placeholder}
-            value={textValue}
+            value={value}
             onChangeText={(text) => {
               const onlyNumbers = text.replace(/[^0-9]/g, "");
               setTextValue(onlyNumbers);

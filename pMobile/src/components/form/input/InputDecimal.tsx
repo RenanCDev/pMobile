@@ -24,7 +24,7 @@ export default function InputDecimal({
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange } }) => (
+      render={({ field: { onChange, value } }) => (
         <S.Section>
           <S.Label>{label}</S.Label>
           <S.Input
@@ -32,7 +32,7 @@ export default function InputDecimal({
             keyboardType="decimal-pad"
             placeholder={placeholder}
             placeholderTextColor={colors.text.placeholder}
-            value={textValue}
+            value={value}
             onChangeText={(text) => {
               if (/^\d*\.?\d*$/.test(text)) {
                 setTextValue(text);

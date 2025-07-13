@@ -1,29 +1,13 @@
 import React, { useState } from "react";
 import SuccessModal from "../../components/SuccessModal";
-import { Picker } from '@react-native-picker/picker';
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Platform } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { z } from "zod";
-import {
-  Text,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { Alert, ActivityIndicator } from "react-native";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigation } from "@react-navigation/native";
-
 import { CreateAluno } from "../../schemas/CreateAluno";
-import colors from "../../constants/colors";
-import {
-  formatCPF,
-  removeCPFFormatting,
-} from "../../utils/cpf/format";
-import {
-  formatPhoneNumber,
-  unformatPhoneNumber,
-} from "../../utils/celular/format";
+import { removeCPFFormatting,} from "../../utils/cpf/format";
+import { unformatPhoneNumber } from "../../utils/celular/format";
 import * as S from "../../styles/Register.styles";
 import * as I from "../../components/form/input";
 import { saveAluno , getAlunos } from '../../services/storageService';
@@ -34,24 +18,11 @@ export default function RegisterAluno() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [textValueAltura, setTextValueAltura] = React.useState("");
-  const [textValuePeso, setTextValuePeso] = React.useState("");
-  const [textValueBio, setTextValueBio] = React.useState("");
-  const [textValueImc, setTextValueImc] = React.useState("");
-  const [textValueAguaCorporalTotal, setTextValueAguaCorporalTotal] = React.useState("");
-  const [textValueGorduraCorporal, setTextValueGorduraCorporal] = React.useState("");
-  const [textValueMassaMuscularEsqueletica, setTextValueMassaMuscularEsqueletica] = React.useState("");
-  const [textValueTaxaMetabolicaBasal, setTextValueTaxaMetabolicaBasal] = React.useState("");
-  const [textValueProteinas, setTextValueProteinas] = React.useState("");
-  const [textValueMinerais, setTextValueMinerais] = React.useState("");
 
   const {
     control,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<AlunoFormData>({
     resolver: zodResolver(CreateAluno),

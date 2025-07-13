@@ -40,18 +40,18 @@ export interface Aluno {
     estado_civil: string;
   };
   status: boolean;
-  bioimpedancia: string;
-  altura: string;
+  bioimpedancia: number;
+  altura: number;
   data_do_exame: string;
   hora_do_exame: string;
-  agua_corporal_total: string;
-  proteinas: string;
-  minerais: string;
-  gordura_corporal: string;
-  peso: string;
-  massa_muscular_esqueletica: string;
-  imc: string;
-  taxa_metabolica_basal: string;
+  agua_corporal_total: number;
+  proteinas: number;
+  minerais: number;
+  gordura_corporal: number;
+  peso: number;
+  massa_muscular_esqueletica: number;
+  imc: number;
+  taxa_metabolica_basal: number;
   senha: string;
 }
 

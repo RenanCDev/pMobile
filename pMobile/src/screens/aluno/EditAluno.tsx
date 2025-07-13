@@ -10,6 +10,8 @@ import { z } from "zod";
 import { useDataContext } from "../../context/DataContext";
 import { RootStackParamList } from "../../navigation/types";
 import * as S from "../../styles/Register.styles";
+import * as I from "../../components/form/input";
+import * as O from "../../components/form/output";
 import colors from "../../constants/colors";
 import { UpdateAluno } from "../../schemas/UpdateAluno";
 
@@ -24,7 +26,6 @@ export function EditAluno({ route, navigation }: Props) {
   const aluno = alunos.find((a) => a.pessoa.cpf === cpf);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const {
     control,
@@ -40,6 +41,7 @@ export function EditAluno({ route, navigation }: Props) {
     if (aluno) {
       reset({
         nome: aluno.pessoa.nome,
+        
         cpf: aluno.pessoa.cpf,
         nome_social: aluno.pessoa.nome_social ?? "",
         etnia: aluno.pessoa.etnia,
@@ -120,70 +122,195 @@ export function EditAluno({ route, navigation }: Props) {
     <S.Container>
       <S.Title>Edição de <S.TitleHighlight>Aluno</S.TitleHighlight></S.Title>
 
-      {/* Campos obrigatórios */}
-      {[
-        { name: "nome", label: "Nome", placeholder: "Nome completo" },
-        { name: "cpf", label: "CPF", placeholder: "", readonly: true },
-        { name: "email", label: "E-mail", placeholder: "email@example.com" },
-        { name: "numero_de_celular", label: "Celular", placeholder: "(00) 00000-0000" },
-        { name: "senha", label: "Senha", placeholder: "Senha", secure: true },
-        { name: "hora_do_exame", label: "Hora do exame", placeholder: "HH:MM" },
-      ].map(({ name, label, placeholder, readonly, secure }) => (
-        <Controller
-          key={name}
-          control={control}
-          name={name as keyof UpdateAlunoType}
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>{label}</S.Label>
-              <S.Input
-                editable={!readonly}
-                secureTextEntry={secure}
-                value={value?.toString() || ""}
-                onChangeText={onChange}
-                placeholder={placeholder}
-              />
-              {errors[name as keyof UpdateAlunoType] && (
-                <S.ErrorText>{errors[name as keyof UpdateAlunoType]?.message?.toString()}</S.ErrorText>
-              )}
-            </S.Section>
-          )}
-        />
-      ))}
+      <S.Section>
+        <S.SectionTitle>
+          Dados <S.TitleHighlight>Pessoais</S.TitleHighlight>
+        </S.SectionTitle>
 
-      {/* Campos opcionais */}
-      {[
-        "bioimpedancia",
-        "altura",
-        "agua_corporal_total",
-        "proteinas",
-        "minerais",
-        "gordura_corporal",
-        "peso",
-        "massa_muscular_esqueletica",
-        "imc",
-        "taxa_metabolica_basal",
-      ].map((name) => (
-        <Controller
-          key={name}
+        <I.InputText
           control={control}
-          name={name as keyof UpdateAlunoType}
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>{name.replace(/_/g, " ").toUpperCase()}</S.Label>
-              <S.Input
-                keyboardType="numeric"
-                value={value !== undefined ? String(value) : ""}
-                onChangeText={(text) => onChange(Number(text))}
-                placeholder={`Digite ${name.replace(/_/g, " ")}`}
-              />
-              {errors[name as keyof UpdateAlunoType] && (
-                <S.ErrorText>{errors[name as keyof UpdateAlunoType]?.message?.toString()}</S.ErrorText>
-              )}
-            </S.Section>
-          )}
+          name="nome"
+          placeholder="Nome Completo"
+          label="Nome Completo"
+          errors={errors}
         />
-      ))}
+
+        <I.InputText
+          control={control}
+          name="nome_social"
+          placeholder="Nome Social"
+          label="Nome Social"
+          errors={errors}
+        />
+
+        <O.OutputCPF
+          control={control}
+        />
+
+        <I.InputPicker
+          control={control}
+          name="etnia"
+          label="Etnia"
+          errors={errors}
+          options={[
+            { label: "Não informado", value: "nao_informado" },
+            { label: "Amarela", value: "amarela" },
+            { label: "Branca", value: "branca" },
+            { label: "Indígena", value: "indigena" },
+            { label: "Parda", value: "parda" },
+            { label: "Preta", value: "preta" },
+          ]}
+        />
+
+        <I.InputPicker
+          control={control}
+          name="sexo"
+          label="Sexo"
+          errors={errors}
+          options={[
+            { label: "Não informado", value: "N" },
+            { label: "Feminino", value: "F" },
+            { label: "Masculino", value: "M" },
+            { label: "Outro", value: "O" },
+          ]}
+        />
+
+        <I.InputDate
+          control={control}
+          name="data_de_nascimento"
+          label="Data de nascimento"
+          errors={errors}
+        />
+
+        <I.InputEmail
+          control={control}
+          errors={errors}
+        />
+
+        <I.InputPhone
+          control={control}
+          name="numero_de_celular"
+          label="Celular"
+          errors={errors}
+        />
+
+        <S.Section>
+          <I.InputPicker
+            control={control}
+            name="estado_civil"
+            label="Estado Civil"
+            errors={errors}
+            options={[
+              { label: "Não informado", value: "nao_informado" },
+              { label: "Casado", value: "casado" },
+              { label: "Divorciado", value: "divorciado" },
+              { label: "Solteiro", value: "solteiro" },
+              { label: "União estável", value: "uniao_estavel" },
+              { label: "Viúvo", value: "viuvo" },
+            ]}
+          />
+        </S.Section>
+      </S.Section>
+
+      <S.Section>
+        <S.SectionTitle>
+          Dados de <S.TitleHighlight>Saúde</S.TitleHighlight>
+        </S.SectionTitle>
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="altura"
+          label="Altura (M)"
+          placeholder="Ex.: 1.70"
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="peso"
+          label="Peso (Kg)"
+          placeholder="Ex.: 70.5"
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="bioimpedancia"
+          label="Bioimpedância"
+          placeholder="Ex.: 15.2"
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="imc"
+          label="IMC"
+          placeholder="Ex.: 22.5"
+        />
+        
+        <I.InputDate
+          control={control}
+          name="data_do_exame"
+          label="Data do Exame"
+          errors={errors}
+        />
+
+        <I.InputHora
+          control={control}
+          errors={errors}
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="agua_corporal_total"
+          label="Água Corporal Total (%)"
+          placeholder="Ex.: 55.3"
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="gordura_corporal"
+          label="Gordura Corporal (%)"
+          placeholder="Ex.: 18.2"
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="massa_muscular_esqueletica"
+          label="Massa Muscular Esquelética (%)"
+          placeholder="Ex.: 40.0"
+        />
+
+        <I.InputTaxaMetabolicaBasal
+          control={control}
+          errors={errors}
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="proteinas"
+          label="Proteína (%)"
+          placeholder="Ex.: 15.0"
+        />
+
+        <I.InputDecimal
+          control={control}
+          errors={errors}
+          name="minerais"
+          label="Minerais (%)"
+          placeholder="Ex.: 5.0"
+        />
+
+        <I.InputPassword
+          control={control}
+          errors={errors}
+        />
+      </S.Section>
 
       {isLoading ? (
         <ActivityIndicator size="large" color={colors.primary.DEFAULT} />
