@@ -17,7 +17,7 @@ export default function InputPassword({ control, errors }: Props) {
 const gerarSenha = async (onChange: (senha: string) => void) => {
   try {
     setLoading(true);
-    const response = await fetch("https://api.api-ninjas.com/v1/passwordgenerator?length=16", {
+    const response = await fetch("https://api.api-ninjas.com/v1/passwordgenerator?length=10", {
       headers: {
         "X-Api-Key": "EuDu2D8m6cFPPLNQuXtDDA==yk6qljAhKffHb3AI",
       },
