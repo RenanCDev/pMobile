@@ -4,6 +4,14 @@ import { Alert } from "react-native";
 import { Aluno, Personal, Contrato } from "../services/storageService";
 import { removeCPFFormatting } from "../utils/cpf/format";
 
+type Contrato = {
+  id: number;
+  alunoCpf: string;
+  servicoId: number;
+  dataContratacao: string;
+  status: "ativo" | "cancelado";
+};
+
 type DataContextType = {
   alunos: Aluno[];
   personais: Personal[];
@@ -55,6 +63,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [alunoLogado, setAlunoLogadoState] = useState<Aluno | null>(null);
 
   const loadAllData = async () => {
+    setIsLoading(true);
     try {
       setIsLoading(true);
 

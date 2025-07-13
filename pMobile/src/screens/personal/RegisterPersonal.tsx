@@ -13,6 +13,7 @@ import { formatCPF, removeCPFFormatting } from "../../utils/cpf/format";
 import { formatPhoneNumber, unformatPhoneNumber } from "../../utils/celular/format";
 import * as S from "../../styles/Register.styles";
 import { savePersonal , getPersonals } from '../../services/storageService';
+import * as I from "../../components/Form";
 
 type PersonalFormData = z.infer<typeof CreatePersonal>;
 
@@ -105,346 +106,136 @@ export default function RegisterPersonal() {
           Dados <S.TitleHighlight>Pessoais</S.TitleHighlight>
         </S.SectionTitle>
 
-        <Controller
+        <I.InputText
           control={control}
           name="nome"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>Nome completo</S.Label>
-              <S.Input
-                onChangeText={onChange}
-                value={value}
-                placeholder="Nome completo"
-                placeholderTextColor={colors.text.placeholder}
-                style={errors.nome && { borderColor: colors.dark.background }}
-              />
-              {errors.nome && <S.ErrorText>{errors.nome.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          placeholder="Nome Completo"
+          label="Nome Completo"
+          errors={errors}
         />
 
-        <Controller
+        <I.InputText
           control={control}
           name="nome_social"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>Nome Social</S.Label>
-              <S.Input
-                onChangeText={onChange}
-                value={value}
-                placeholder="Nome Social"
-                placeholderTextColor={colors.text.placeholder}
-                hasError={!!errors.nome_social}
-              />
-              {errors.nome_social && <S.ErrorText>{errors.nome_social.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          placeholder="Nome Social"
+          label="Nome Social"
+          errors={errors}
         />
 
-        <Controller
+        <I.InputCPF
           control={control}
-          name="cpf"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>CPF</S.Label>
-              <S.Input
-                onChangeText={(text) => {
-                  const formatted = formatCPF(text);
-                  onChange(formatted);
-                }}
-                value={value}
-                placeholder="000.000.000-00"
-                keyboardType="numeric"
-                placeholderTextColor={colors.text.placeholder}
-                hasError={!!errors.cpf}
-              />
-              {errors.cpf && <S.ErrorText>{errors.cpf.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          errors={errors}
         />
 
-        <Controller
+        <I.InputPicker
           control={control}
           name="etnia"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>Etnia</S.Label>
-              <S.StyledPicker selectedValue={value} onValueChange={onChange}>
-                <Picker.Item label="Não informado" value="nao_informado" />
-                <Picker.Item label="Amarela" value="amarela" />
-                <Picker.Item label="Branca" value="branca" />
-                <Picker.Item label="Indígena" value="indigena" />
-                <Picker.Item label="Parda" value="parda" />
-                <Picker.Item label="Preta" value="preta" />
-              </S.StyledPicker>
-              {errors.etnia && <S.ErrorText>{errors.etnia.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          label="Etnia"
+          errors={errors}
+          options={[
+            { label: "Não informado", value: "nao_informado" },
+            { label: "Amarela", value: "amarela" },
+            { label: "Branca", value: "branca" },
+            { label: "Indígena", value: "indigena" },
+            { label: "Parda", value: "parda" },
+            { label: "Preta", value: "preta" },
+          ]}
         />
 
-        <Controller
+        <I.InputPicker
           control={control}
           name="sexo"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>Sexo</S.Label>
-              <S.StyledPicker selectedValue={value} onValueChange={onChange}>
-                <Picker.Item label="Não informado" value="N" />
-                <Picker.Item label="Feminino" value="F" />
-                <Picker.Item label="Masculino" value="M" />
-                <Picker.Item label="Outro" value="O" />
-              </S.StyledPicker>
-              {errors.sexo && <S.ErrorText>{errors.sexo.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          label="Sexo"
+          errors={errors}
+          options={[
+            { label: "Não informado", value: "N" },
+            { label: "Feminino", value: "F" },
+            { label: "Masculino", value: "M" },
+            { label: "Outro", value: "O" },
+          ]}
         />
 
-        <Controller
+        <I.InputDate
           control={control}
           name="data_de_nascimento"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>Data de nascimento</S.Label>
-              {Platform.OS === "web" ? (
-                <input
-                  type="date"
-                  value={value || ""}
-                  onChange={(e) => onChange(e.target.value)}
-                  style={{
-                    height: 50,
-                    backgroundColor: colors.dark.surface,
-                    borderRadius: 12,
-                    padding: 10,
-                    color: colors.text.inverted,
-                    borderWidth: 1,
-                    borderStyle: "solid",
-                    borderColor: errors.data_de_nascimento ? "red" : colors.border,
-                    marginBottom: 8,
-                    fontSize: 16,
-                    outlineStyle: "none",
-                  }}
-                />
-              ) : (
-                <>
-                  <S.StyledPicker
-                    as={TouchableOpacity}
-                    style={[
-                      errors.data_de_nascimento && { borderColor: colors.dark.background },
-                      { justifyContent: "center", paddingHorizontal: 10 },
-                    ]}
-                    onPress={() => setShowDatePicker(true)}
-                  >
-                    <S.ButtonText style={{ color: value ? colors.text.inverted : "#999" }}>
-                      {value || "Selecionar data"}
-                    </S.ButtonText>
-                  </S.StyledPicker>
-
-                  {showDatePicker && (
-                    <DateTimePicker
-                      value={value ? new Date(value) : new Date()}
-                      mode="date"
-                      display="default"
-                      onChange={(event, selectedDate) => {
-                        setShowDatePicker(false);
-                        if (selectedDate) {
-                          const formattedDate = selectedDate.toISOString().split("T")[0];
-                          onChange(formattedDate);
-                        }
-                      }}
-                    />
-                  )}
-                </>
-              )}
-
-              {errors.data_de_nascimento && (
-                <S.ErrorText>{errors.data_de_nascimento.message}</S.ErrorText>
-              )}
-            </S.Section>
-          )}
+          label="Data de nascimento"
+          errors={errors}
         />
 
-        <Controller
+        <I.InputEmail
           control={control}
-          name="email"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>E-mail</S.Label>
-              <S.Input
-                onChangeText={onChange}
-                value={value}
-                placeholder="email@example.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                placeholderTextColor={colors.text.placeholder}
-                hasError={!!errors.email}
-              />
-              {errors.email && <S.ErrorText>{errors.email.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          errors={errors}
         />
 
-        <Controller
+        <I.InputPhone
           control={control}
           name="numero_de_celular"
-          render={({ field: { onChange, value } }) => (
-            <S.Section>
-              <S.Label>Celular</S.Label>
-              <S.Input
-                onChangeText={(text) => {
-                  const formatted = formatPhoneNumber(text);
-                  onChange(formatted);
-                }}
-                value={value}
-                keyboardType="phone-pad"
-                placeholder="(00) 00000-0000"
-                placeholderTextColor={colors.text.placeholder}
-                hasError={!!errors.numero_de_celular}
-              />
-              {errors.numero_de_celular && (
-                <S.ErrorText>{errors.numero_de_celular.message}</S.ErrorText>
-              )}
-            </S.Section>
-          )}
+          label="Celular"
+          errors={errors}
         />
 
         <S.Section>
-          <Controller
+
+          <I.InputPicker
             control={control}
             name="estado_civil"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <S.Label>Estado Civil</S.Label>
-                <S.StyledPicker
-                  selectedValue={value}
-                  onValueChange={onChange}
-                  mode="dropdown"                
-                >
-                  <Picker.Item label="Não informado" value="nao_informado" />
-                  <Picker.Item label="Casado" value="casado" />
-                  <Picker.Item label="Divorciado" value="divorciado" />
-                  <Picker.Item label="Solteiro" value="solteiro" />
-                  <Picker.Item label="União estável" value="uniao_estavel" />
-                  <Picker.Item label="Viúvo" value="viuvo" />
-                </S.StyledPicker>
-                {errors.estado_civil && (
-                  <S.ErrorText>{errors.estado_civil.message}</S.ErrorText>
-                )}
-              </>
-            )}
+            label="Estado Civil"
+            errors={errors}
+            options={[
+              { label: "Não informado", value: "nao_informado" },
+              { label: "Casado", value: "casado" },
+              { label: "Divorciado", value: "divorciado" },
+              { label: "Solteiro", value: "solteiro" },
+              { label: "União estável", value: "uniao_estavel" },
+              { label: "Viúvo", value: "viuvo" },
+            ]}
           />
 
-          <Controller
+          <I.InputText
             control={control}
             name="cref"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <S.Label>CREF</S.Label>
-                <S.Input
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="CREF"
-                  placeholderTextColor={colors.text.placeholder}
-                  hasError={!!errors.cref}
-                />
-                {errors.cref && <S.ErrorText>{errors.cref.message}</S.ErrorText>}
-              </>
-            )}
+            placeholder="CREF"
+            label="CREF"
+            errors={errors}
           />
 
-          <Controller
+          <I.InputAgencia
             control={control}
-            name="agencia"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <S.Label>Agência</S.Label>
-                <S.Input
-                  onChangeText={(text) => {
-                    const numericValue = text.replace(/\D/g, "");
-                    onChange(numericValue ? Number(numericValue) : undefined);
-                  }}
-                  value={value !== undefined ? String(value) : ""}
-                  placeholder="Agência"
-                  keyboardType="numeric"
-                  placeholderTextColor={colors.text.placeholder}
-                  hasError={!!errors.agencia}
-                />
-                {errors.agencia && <S.ErrorText>{errors.agencia.message}</S.ErrorText>}
-              </>
-            )}
+            errors={errors}
           />
 
-          <Controller
+          <I.InputConta
             control={control}
-            name="numero_conta"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <S.Label>Número da conta</S.Label>
-                <S.Input
-                  onChangeText={(text) => {
-                    const numericValue = text.replace(/\D/g, "");
-                    onChange(numericValue ? Number(numericValue) : undefined);
-                  }}
-                  value={value !== undefined ? String(value) : ""}
-                  placeholder="Número da conta"
-                  keyboardType="numeric"
-                  placeholderTextColor={colors.text.placeholder}
-                  hasError={!!errors.numero_conta}
-                />
-                {errors.numero_conta && (
-                  <S.ErrorText>{errors.numero_conta.message}</S.ErrorText>
-                )}
-              </>
-            )}
+            errors={errors}
           />
 
         </S.Section>
 
-          <S.SectionTitle>
-            Experiência <S.TitleHighlight>Profissional</S.TitleHighlight>
-          </S.SectionTitle>
-
-        <Controller
+        <S.SectionTitle>
+          Experiência <S.TitleHighlight>Profissional</S.TitleHighlight>
+        </S.SectionTitle>
+        
+        <I.InputText
           control={control}
           name="experiencia_profissional"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <S.Label>Experiência</S.Label>
-              <S.InputMultiline
-                onChangeText={onChange}
-                value={value}
-                placeholder="Conte-nos sobre sua experiência profissional"
-                placeholderTextColor={colors.text.placeholder}
-              />
-              {errors.experiencia_profissional && (
-                <S.ErrorText>{errors.experiencia_profissional.message}</S.ErrorText>
-              )}
-            </>
-          )}
+          placeholder="Conte-nos sobre sua experiência profissional"
+          label="Experiências"
+          errors={errors}
         />
 
         <S.Section>
           <S.SectionTitle>
             Especialidades <S.TitleHighlight>(separe por vírgula)</S.TitleHighlight>
           </S.SectionTitle>
-
-          <Controller
+          
+          <I.InputText
             control={control}
             name="especialidades"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <S.Label>Especialidades</S.Label>
-                <S.InputMultiline
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="Ex: Musculação, Yoga, Pilates"
-                  placeholderTextColor={colors.text.placeholder}
-                />
-                {errors.especialidades && (
-                  <S.ErrorText>{errors.especialidades.message}</S.ErrorText>
-                )}
-              </>
-            )}
+            placeholder="Ex: Musculação, Yoga, Pilates"
+            label="Especialidades"
+            errors={errors}
           />
+
         </S.Section>
 
         <S.Section>
@@ -452,27 +243,9 @@ export default function RegisterPersonal() {
             Horários <S.TitleHighlight>Disponíveis</S.TitleHighlight>
           </S.SectionTitle>
 
-          <Controller
+          <I.InputHorariosDisponiveis
             control={control}
-            name="horarios_disponiveis"
-            render={({ field: { onChange, value } }) => (
-              <>
-                <S.Label>Horários disponíveis</S.Label>
-                <S.InputMultiline
-                  onChangeText={(text) => {
-                    const onlyNumbersAndCommas = text.replace(/[^0-9,]/g, "");
-                    onChange(onlyNumbersAndCommas);
-                  }}
-                  value={value !== undefined ? String(value) : ""}
-                  placeholder="Ex: 123,456,789"
-                  placeholderTextColor={colors.text.placeholder}
-                  keyboardType="numeric"
-                />
-                {errors.horarios_disponiveis && (
-                  <S.ErrorText>{errors.horarios_disponiveis.message}</S.ErrorText>
-                )}
-              </>
-            )}
+            errors={errors}
           />
         </S.Section>
       </S.Section>
@@ -482,43 +255,14 @@ export default function RegisterPersonal() {
           Locais <S.TitleHighlight>Disponíveis</S.TitleHighlight>
         </S.SectionTitle>
 
-        <Controller
+        <I.InputLocaisDisponiveis
           control={control}
-          name="locais_disponiveis"
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <S.Section>
-              <S.Label>Locais disponíveis</S.Label>
-              <S.InputMultiline
-                hasError={!!error}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Ex: Academia X, Parque Y"
-                placeholderTextColor={colors.text.placeholder}
-                numberOfLines={2}
-              />
-              {error && <S.ErrorText>{error.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          errors={errors}
         />
 
-        <Controller
+        <I.InputPassword
           control={control}
-          name="senha"
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <S.Section>
-              <S.Label>Senha</S.Label>
-              <S.Input
-                hasError={!!error}
-                placeholder="Digite sua senha"
-                placeholderTextColor={colors.text.placeholder}
-                secureTextEntry
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-              {error && <S.ErrorText>{error.message}</S.ErrorText>}
-            </S.Section>
-          )}
+          errors={errors}
         />
 
       </S.Section>
