@@ -10,6 +10,7 @@ export type RootStackParamList = {
   EditAluno: { cpf: string };
   DeleteAluno: undefined;
   ViewAluno: undefined;
+  ViewContratosAluno: undefined;
   RegisterServico: undefined;
   EditServico: { servicoId: number };
   DeleteServico: undefined;
