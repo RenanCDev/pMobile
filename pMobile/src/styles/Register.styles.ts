@@ -214,3 +214,36 @@ export const Message = styled.Text`
   margin-bottom: 20px;
   color: ${colors.text.muted};
 `;
+
+export const PasswordButton = styled.TouchableOpacity`
+  margin-top: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: ${colors.dark.card};
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
+`;
+
+export const TogglePasswordButton = styled.TouchableOpacity`
+  margin-top: 8px;
+  align-self: flex-end;
+`;
+
+export const InputWrapper = styled.View`
+  position: relative;
+  width: 100%;
+  justify-content: center;
+`;
+
+export const EyeButton = styled.TouchableOpacity`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-12px);
+  z-index: 1;
+`;
