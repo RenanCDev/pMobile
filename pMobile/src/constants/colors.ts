@@ -22,7 +22,7 @@ const colors = {
     secondary: '#6B21A8',
     muted: '#A78BFA',
     inverted: '#FFFFFF',
-    placeholder: '#999'
+    placeholder: '#999999'
   },
 
   accent: {
