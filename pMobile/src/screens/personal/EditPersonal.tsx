@@ -245,7 +245,7 @@ export function EditPersonal({ route, navigation }: Props) {
           <I.InputText
             control={control}
             name="especialidades"
-            placeholder="Ex: Musculação, Yoga, Pilates"
+            placeholder="Ex.: Musculação, Yoga, Pilates"
             label="Especialidades"
             errors={errors}
           />

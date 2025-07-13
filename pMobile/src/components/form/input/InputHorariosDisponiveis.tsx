@@ -22,7 +22,7 @@ export default function InputHorariosDisponiveis({ control, errors }: Props) {
               onChange(cleaned);
             }}
             value={value !== undefined ? String(value) : ""}
-            placeholder="Ex: 123,456,789"
+            placeholder="Ex.: 123,456,789"
             placeholderTextColor={colors.text.placeholder}
             keyboardType="numeric"
           />

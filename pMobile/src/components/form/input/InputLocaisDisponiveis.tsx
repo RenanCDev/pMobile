@@ -20,7 +20,7 @@ export default function InputLocaisDisponiveis({ control, errors }: Props) {
             hasError={!!error}
             onChangeText={onChange}
             value={value}
-            placeholder="Ex: Academia X, Parque Y"
+            placeholder="Ex.: Academia X, Parque Y"
             placeholderTextColor={colors.text.placeholder}
             numberOfLines={2}
           />

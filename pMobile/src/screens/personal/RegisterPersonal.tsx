@@ -225,7 +225,7 @@ export default function RegisterPersonal() {
           <I.InputText
             control={control}
             name="especialidades"
-            placeholder="Ex: Musculação, Yoga, Pilates"
+            placeholder="Ex,: Musculação, Yoga, Pilates"
             label="Especialidades"
             errors={errors}
           />

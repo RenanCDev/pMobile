@@ -29,7 +29,7 @@ export default function DatePickerField({ control, name, label, errors }: Props)
               value={value || ""}
               onChange={(e) => onChange(e.target.value)}
               style={{
-                height: 50,
+                height: 30,
                 backgroundColor: colors.dark.surface,
                 borderRadius: 12,
                 padding: 10,
@@ -48,7 +48,7 @@ export default function DatePickerField({ control, name, label, errors }: Props)
                 onPress={() => setShowPicker(true)}
                 hasError={!!errors[name]}
               >
-                <S.ButtonText style={{ color: value ? colors.text.inverted : "#999" }}>
+                <S.ButtonText style={{ color: value ? colors.text.inverted : colors.text.placeholder }}>
                   {value || "Selecionar data"}
                 </S.ButtonText>
               </S.DatePickerButton>
