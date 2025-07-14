@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SuccessModal from "../../components/SuccessModal";
+import ErrorModal from "../../components/ErrorModal";
 import { z } from "zod";
 import { Alert, ActivityIndicator } from "react-native";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,8 @@ export default function RegisterAluno() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     control,
@@ -65,29 +68,16 @@ export default function RegisterAluno() {
     } catch (err) {
       console.error(err);
       if (err instanceof Error && err.message === 'CPF já cadastrado') {
-        Alert.alert("Erro", "Já existe um aluno com este CPF.");
+        setErrorMessage("Já existe um aluno com este CPF.");
       } else {
-        Alert.alert("Erro", "Falha ao salvar localmente.");
+        setErrorMessage("Não foi possível salvar os dados. Tente novamente.");
       }
+      setErrorModalVisible(true);
     } finally {
       setIsLoading(false);
     }
     
   };
-  
-  async function handleGetAlunos() {
-    try {
-      setIsLoading(true);
-      const alunos = await getAlunos();
-      Alert.alert("Sucesso", "Dados carregados. Veja no console.");
-      console.log("Alunos:", alunos);
-    } catch (err) {
-      console.error(err);
-      Alert.alert("Erro", "Falha ao carregar dados locais.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
   
   function handleLoginClick() {
     navigation.navigate("LoginAluno" as never);
@@ -311,6 +301,7 @@ export default function RegisterAluno() {
         <S.ResetButton onPress={resetForm} disabled={isLoading}>
           <S.ButtonText>Resetar</S.ButtonText>
         </S.ResetButton>
+
       </S.Buttons>
 
       <SuccessModal
@@ -321,6 +312,13 @@ export default function RegisterAluno() {
         }}
         message="Aluno cadastrado com sucesso!"
       />
+
+      <ErrorModal
+        visible={errorModalVisible}
+        onClose={() => setErrorModalVisible(false)}
+        message={errorMessage}
+      />
+
     </S.Container>
   );
 }

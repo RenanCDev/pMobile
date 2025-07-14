@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SuccessModal from "../../components/SuccessModal";
+import ErrorModal from "../../components/ErrorModal";
 import { z } from "zod";
 import { Alert, ActivityIndicator } from "react-native";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,8 @@ export default function RegisterPersonal() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     control,
@@ -61,10 +64,11 @@ export default function RegisterPersonal() {
     } catch (err) {
       console.error(err);
       if (err instanceof Error && err.message === 'CPF já cadastrado') {
-        Alert.alert("Erro", "Já existe um personal com este CPF.");
+        setErrorMessage("Já existe um personal com este CPF.");
       } else {
-        Alert.alert("Erro", "Falha ao salvar localmente.");
+        setErrorMessage("Não foi possível salvar os dados. Tente novamente.");
       }
+      setErrorModalVisible(true);
     } finally {
       setIsLoading(false);
     }
@@ -275,6 +279,12 @@ export default function RegisterPersonal() {
           navigation.navigate("HomeScreen" as never);
         }}
         message="Personal cadastrado com sucesso!"
+      />
+
+      <ErrorModal
+        visible={errorModalVisible}
+        onClose={() => setErrorModalVisible(false)}
+        message={errorMessage}
       />
       
     </S.Container>  
