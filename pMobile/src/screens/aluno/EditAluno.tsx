@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import SuccessModal from "../../components/SuccessModal";
 import { Alert, ActivityIndicator, Platform } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +23,7 @@ type UpdateAlunoType = z.infer<typeof UpdateAluno>;
 export function EditAluno({ route, navigation }: Props) {
   const { cpf } = route.params;
   const { alunos, editAluno } = useDataContext();
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const aluno = alunos.find((a) => a.pessoa.cpf === cpf);
 
@@ -99,12 +101,16 @@ export function EditAluno({ route, navigation }: Props) {
         hora_do_exame: data.hora_do_exame,
       };
 
-      await editAluno(cpf, cleanData);
-      Alert.alert("Sucesso", "Aluno atualizado com sucesso!");
-      navigation.goBack();
-    } catch (error) {
-      Alert.alert("Erro", "Falha ao atualizar aluno.");
-      console.error(error);
+    await editAluno(cpf, cleanData);
+      reset();
+      setSuccessModalVisible(true);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof Error && err.message === 'CPF já cadastrado') {
+        Alert.alert("Erro", "Já existe um aluno com este CPF.");
+      } else {
+        Alert.alert("Erro", "Falha ao salvar localmente.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -321,6 +327,16 @@ export function EditAluno({ route, navigation }: Props) {
           </S.SubmitButton>
         </S.Buttons>
       )}
+
+      <SuccessModal
+        visible={successModalVisible}
+        onClose={() => {
+          setSuccessModalVisible(false);
+          navigation.navigate("HomeScreen" as never);
+        }}
+        message="Aluno editado com sucesso!"
+      />
+
     </S.Container>
   );
 }

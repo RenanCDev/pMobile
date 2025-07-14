@@ -308,10 +308,6 @@ export default function RegisterAluno() {
           )}
         </S.SubmitButton>
 
-        <S.GetButton onPress={handleGetAlunos} disabled={isLoading}>
-          <S.ButtonText>Carregar Alunos</S.ButtonText>
-        </S.GetButton>
-
         <S.ResetButton onPress={resetForm} disabled={isLoading}>
           <S.ButtonText>Resetar</S.ButtonText>
         </S.ResetButton>

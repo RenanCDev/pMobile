@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import SuccessModal from "../../components/SuccessModal";
 import { Alert, ScrollView, ActivityIndicator, Platform } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +21,7 @@ type UpdatePersonalType = z.infer<typeof UpdatePersonal>;
 export function EditPersonal({ route, navigation }: Props) {
   const { cpf } = route.params;
   const { personais, editPersonal } = useDataContext();
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const personal = personais.find((p) => p.cpf === cpf);
 
@@ -84,7 +86,7 @@ export function EditPersonal({ route, navigation }: Props) {
     try {
       const cleanData = {
         ...data,
-        cpf: removeCPFFormatting(data.cpf),
+        cpf: (data.cpf),
         numero_de_celular: unformatPhoneNumber(data.numero_de_celular),
         dados_bancarios: {
           numero_conta: data.numero_conta,
@@ -93,14 +95,18 @@ export function EditPersonal({ route, navigation }: Props) {
       };
 
       await editPersonal(cpf, cleanData);
-      Alert.alert("Sucesso", "Personal trainer atualizado com sucesso!");
-      navigation.goBack();
-    } catch (error) {
-      Alert.alert("Erro", "Falha ao atualizar personal.");
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+        reset();
+        setSuccessModalVisible(true);
+      } catch (err) {
+        console.error(err);
+        if (err instanceof Error && err.message === 'CPF já cadastrado') {
+          Alert.alert("Erro", "Já existe um personal com este CPF.");
+        } else {
+          Alert.alert("Erro", "Falha ao salvar localmente.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
   };
 
   if (!personal) {
@@ -288,6 +294,16 @@ export function EditPersonal({ route, navigation }: Props) {
         </S.Buttons>
       )}
     </S.Section>
+
+    <SuccessModal
+      visible={successModalVisible}
+      onClose={() => {
+        setSuccessModalVisible(false);
+        navigation.navigate("HomeScreen" as never);
+      }}
+      message="Personal editado com sucesso!"
+    />
+    
   </S.Container>
   );
 }

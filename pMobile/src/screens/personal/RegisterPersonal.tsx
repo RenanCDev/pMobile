@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SuccessModal from "../../components/SuccessModal";
 import { z } from "zod";
 import { Alert, ActivityIndicator } from "react-native";
 import { useForm } from "react-hook-form";
@@ -16,6 +17,7 @@ type PersonalFormData = z.infer<typeof CreatePersonal>;
 export default function RegisterPersonal() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const {
     control,
@@ -54,29 +56,20 @@ export default function RegisterPersonal() {
     try {
       setIsLoading(true);
       await savePersonal(cleanData);
-      Alert.alert("Sucesso", "Personal cadastrado localmente!");
       reset();
-    } catch (err) {
-      console.error("Erro ao salvar:", err);
-      Alert.alert("Erro", "CPF já cadastrado");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  async function loadPersonals() {
-    try {
-      setIsLoading(true);
-      const personals = await getPersonals();
-      Alert.alert("Sucesso", "Dados carregados. Veja no console.");
-      console.log("Personais:", personals);
+      setSuccessModalVisible(true);
     } catch (err) {
       console.error(err);
-      Alert.alert("Erro", "Falha ao carregar dados locais.");
+      if (err instanceof Error && err.message === 'CPF já cadastrado') {
+        Alert.alert("Erro", "Já existe um personal com este CPF.");
+      } else {
+        Alert.alert("Erro", "Falha ao salvar localmente.");
+      }
     } finally {
       setIsLoading(false);
     }
-  }
+    
+  };
 
   function handleLoginClick() {
     navigation.navigate("LoginPersonal" as never);
@@ -270,14 +263,20 @@ export default function RegisterPersonal() {
           )}
         </S.SubmitButton>
 
-        <S.GetButton onPress={loadPersonals} disabled={isLoading}>
-          <S.ButtonText>Carregar Personais</S.ButtonText>
-        </S.GetButton>
-
         <S.ResetButton onPress={resetForm} disabled={isLoading}>
           <S.ButtonText>Resetar</S.ButtonText>
         </S.ResetButton>
       </S.Buttons>
+
+      <SuccessModal
+        visible={successModalVisible}
+        onClose={() => {
+          setSuccessModalVisible(false);
+          navigation.navigate("HomeScreen" as never);
+        }}
+        message="Personal cadastrado com sucesso!"
+      />
+      
     </S.Container>  
   );
 }
