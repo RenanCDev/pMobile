@@ -4,7 +4,6 @@ import { Alert, ScrollView, ActivityIndicator, Platform } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { formatCPF, removeCPFFormatting } from "../../utils/cpf/format";
 import { formatPhoneNumber, unformatPhoneNumber } from "../../utils/celular/format";
 import { UpdatePersonal } from "../../schemas/UpdatePersonal";
 import { z } from "zod";
@@ -26,7 +25,6 @@ export function EditPersonal({ route, navigation }: Props) {
   const personal = personais.find((p) => p.cpf === cpf);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const {
     control,
@@ -66,7 +64,7 @@ export function EditPersonal({ route, navigation }: Props) {
         sexo: personal.sexo,
         data_de_nascimento: personal.data_de_nascimento,
         email: personal.email,
-        numero_de_celular: formatPhoneNumber(personal.numero_de_celular),
+        numero_de_celular: (personal.numero_de_celular),
         estado_civil: personal.estado_civil,
         cref: personal.cref,
         numero_conta: personal.dados_bancarios?.numero_conta,
