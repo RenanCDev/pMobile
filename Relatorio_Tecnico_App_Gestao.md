@@ -125,7 +125,7 @@ Desenvolver um aplicativo inovador que fortaleça a conexão entre personal trai
 - Cadastro de Contrato
 - Visualização de Contrato
 - Edição de Contrato
-
+- (Funcionalidades já existem por meio do botão contratar o serviço, header menu de visualizar serviço e cancelamento de um contrato mas as telas seriam mais abrangentes para o caso de uso.)
 ---
 
 ## 🧰 Componentes Reutilizáveis
@@ -218,3 +218,79 @@ Todos os formulários são validados usando **Zod** integrando com **React Hook 
 ## ✅ Conclusão
 
 O sistema em desenvolvimento possui uma base sólida de funcionalidades, com um foco diferenciado em engajamento, saúde e relacionamento entre profissionais e alunos. A estrutura modular permite escalar novas features como gamificação e gestão financeira. Com a implementação das telas restantes e a futura integração de jogos e recompensas, o app tende a se posicionar como referência no segmento fitness-tech.
+
+## ✅ Telas
+
+Segue abaixo imagens finais das telas do projeto
+
+- Home
+![Home](screenshots_final/tela(1).jpeg)
+
+- Login Aluno
+![Login Aluno](screenshots_final/tela(2).jpeg)
+
+- Login Personal
+![Login Personal](screenshots_final/tela(3).jpeg)
+
+- Login Personal
+![Login Personal](screenshots_final/tela(4).jpeg)
+
+- Home Personal
+![Home Personal](screenshots_final/tela(5).jpeg)
+
+- View Personal
+![View Personal](screenshots_final/tela(6).jpeg)
+
+- View Personal
+![View Personal](screenshots_final/tela(7).jpeg)
+
+- Edit Personal
+![Edit Personal](screenshots_final/tela(8).jpeg)
+
+- Edit Personal
+![Edit Personal](screenshots_final/tela(9).jpeg)
+
+- View Serviços Personal
+![View Serviços Personal](screenshots_final/tela(10).jpeg)
+
+- Edit Serviços Personal
+![Edit Serviços Personal](screenshots_final/tela(11).jpeg)
+
+- HeaderMenu Personal
+![HeaderMenu](screenshots_final/tela(12).jpeg)
+
+- Contratos Personal
+![Contratos Personal](screenshots_final/tela(13).jpeg)
+
+- Contratos Personal
+![Contratos Personal](screenshots_final/tela(14).jpeg)
+
+- Erro de Login
+![Erro de Login](screenshots_final/tela(15).jpeg)
+
+- View Alunos
+![View Alunos](screenshots_final/tela(16).jpeg)
+
+- View Alunos
+![View Alunos](screenshots_final/tela(17).jpeg)
+
+- Edit Alunos
+![Edit Alunos](screenshots_final/tela(18).jpeg)
+
+- View Serviços Aluno
+![View Serviços Aluno](screenshots_final/tela(19).jpeg)
+
+- Contratação Serviço
+![Contratação Serviço](screenshots_final/tela(20).jpeg)
+
+- Header Menu Aluno
+![Header Menu Aluno](screenshots_final/tela(21).jpeg)
+
+- Contratos Aluno
+![Contratos Aluno](screenshots_final/tela(22).jpeg)
+
+- Logout
+![Logout](screenshots_final/tela(23).jpeg)
+
+
+
